@@ -1,0 +1,129 @@
+name: vsp-alpha7-cross-build-snapshot
+
+on:
+  push:
+    branches:
+      - vsp/alpha7-cross-build-20260811
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vsp-alpha7-cross-build-snapshot-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  SOURCE_TAG: v0.145.0-vsp.11.1-alpha.7
+  SOURCE_COMMIT: 4c522e8baddd73227eda1f381270ffd3e4918658
+  SOURCE_TREE: db939a72aed565653f5396dd34844a6bd3e24071
+  SNAPSHOT_COMMIT: d79afe3613cadfda8ac3fd7ff81940586574c026
+  SNAPSHOT_TREE: 70b88316f84fbffab0e5321bc99d3812b5c836a9
+  UPSTREAM_TAG: rust-v0.145.0-alpha.4
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            target: aarch64-apple-darwin
+            archive: vsp-codex-preview-macos-arm64.tar.gz
+          - runner: windows-2022
+            target: x86_64-pc-windows-msvc
+            archive: vsp-codex-preview-windows-x64-msvc.tar.gz
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          ref: ${{ env.SNAPSHOT_COMMIT }}
+          fetch-depth: 1
+          lfs: false
+
+      - name: Verify Alpha7 source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${SNAPSHOT_COMMIT}"
+          test "$(git rev-parse HEAD^{tree})" = "${SNAPSHOT_TREE}"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          expected = {
+              "source_tag": "v0.145.0-vsp.11.1-alpha.7",
+              "source_commit": "4c522e8baddd73227eda1f381270ffd3e4918658",
+              "source_tree": "db939a72aed565653f5396dd34844a6bd3e24071",
+              "snapshot_source_commit": "b03535cd3fc829f718aec69aaec531de3da4daec",
+              "snapshot_source_tree": "6b0caf6ee570bfffc763389bd435753658d2b830",
+          }
+          provenance = json.loads(Path(".vsp-alpha7-source-provenance.json").read_text())
+          for key, value in expected.items():
+              assert provenance[key] == value, (key, provenance.get(key))
+          removed = provenance["removed_files"]
+          assert len(removed) == 33
+          assert all(not Path(path).exists() for path in removed)
+          print(json.dumps(provenance, sort_keys=True))
+          PY
+
+      - name: Verify workspace version
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import re
+
+          expected = "0.145.0-vsp.11.1-alpha.7"
+          cargo = pathlib.Path("codex-rs/Cargo.toml").read_text()
+          package = json.loads(pathlib.Path("codex-cli/package.json").read_text())
+          match = re.search(r"(?m)^version = \"([^\"]+)\"", cargo)
+          assert match and match.group(1) == expected, match.group(1) if match else None
+          assert package["version"] == expected, package["version"]
+          print(expected)
+          PY
+
+      - uses: dtolnay/rust-toolchain@e081816240890017053eacbb1bdf337761dc5582 # 1.95.0
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Configure rusty_v8 artifacts
+        uses: ./.github/actions/setup-rusty-v8
+        with:
+          target: ${{ matrix.target }}
+
+      - name: Build preview package
+        shell: bash
+        env:
+          LIBSQLITE3_FLAGS: ${{ runner.os == 'Windows' && 'SQLITE_DISABLE_INTRINSIC' || '' }}
+        run: |
+          set -euo pipefail
+          python3 scripts/build_vsp_preview_release.py \
+            --target "${{ matrix.target }}" \
+            --channel alpha \
+            --upstream-tag "${UPSTREAM_TAG}" \
+            --archive-name "${{ matrix.archive }}" \
+            --release-dir "dist/${{ matrix.target }}" \
+            --skip-stable-manifest \
+            --force
+
+      - name: Verify package outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "dist/${{ matrix.target }}/${{ matrix.archive }}"
+          test -s "dist/${{ matrix.target }}/${{ matrix.archive }}.sha256"
+          test -s "dist/${{ matrix.target }}/vsp-release-manifest.json"
+          grep -F "0.145.0-vsp.11.1-alpha.7" "dist/${{ matrix.target }}/vsp-release-manifest.json"
+          grep -F "${{ matrix.target }}" "dist/${{ matrix.target }}/vsp-release-manifest.json"
+
+      - name: Upload target package
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: vsp-preview-${{ matrix.target }}
+          path: dist/${{ matrix.target }}/*
+          if-no-files-found: error
