@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019f18ce-0581-7462-84de-5d3e62f2a305
+topic_summary: 所以，你还要正式修改一遍吗？我现在批准你在搞清楚计划之后，正式修改。修改完之后，做一版 sync doc release
+turn_count: 17

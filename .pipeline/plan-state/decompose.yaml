@@ -1,0 +1,266 @@
+phase: decompose
+cycle: C9
+status: confirmed
+created_at: "2026-06-14T09:10:28+08:00"
+confirmed_at: "2026-06-14T09:14:35+08:00"
+sources:
+  discover: ".pipeline/plan-state/discover.yaml"
+  technical_stack: ".pipeline/plan-state/technical-stack.yaml"
+  architecture: ".pipeline/plan-state/architecture.md"
+  architecture_brief: ".pipeline/architecture/c9-upstream-base-upgrade-and-deep-research-brief.md"
+summary:
+  primary_delivery: "Upgrade VSP-Codex base from 0.134.0-vsp.7.2 to upstream rust-v0.140.0-alpha.18 and publish a GitLab release."
+  secondary_delivery: "Produce a Deep Research requirement brief for Hypo-Workflow; no Codex-VSP prototype in C9."
+  worker_separation: strict
+  execution_subworkers_authorized: true
+milestones:
+  - id: M1
+    name: "Checkpoint Current Workflow State And Upgrade Branch"
+    kind: implementation
+    goal: "Create a clean, auditable starting point for the upstream upgrade by checkpointing current archive/planning changes and preparing an isolated upgrade branch."
+    technical_solution:
+      - "Use git status and scoped diff review to classify current changes into C9 archive/planning changes, existing user/local changes, and unrelated runtime noise."
+      - "Commit or otherwise checkpoint the archive/planning changes per user preference before any upstream merge."
+      - "Create a dedicated upgrade branch from the checkpointed state; do not overwrite user changes."
+    technical_route:
+      - "Inspect `git status --short` and `git diff --stat`."
+      - "Stage only intended Workflow/Cycle planning/archive files unless user explicitly expands scope."
+      - "Create a local checkpoint commit or branch marker for C9 planning/archive state."
+      - "Create an upgrade branch, e.g. `c9-upstream-0.140.0-alpha.18`."
+    research_required:
+      status: resolved
+      evidence: "User selected commit/checkpoint strategy during Discover."
+    risks_and_alternatives:
+      risks:
+        - "Dirty worktree could hide merge conflicts or mix user changes with upstream upgrade."
+        - "Accidentally staging unrelated user changes would violate worktree safety."
+      alternatives_rejected:
+        - "Merge directly on dirty main: rejected because diff and conflict ownership would be unclear."
+        - "Use destructive reset: rejected because user changes must not be reverted."
+    validation_path:
+      owner: test
+      commands:
+        - "git status --short"
+        - "git branch --show-current"
+        - "git log --oneline -n 3"
+      pass_signals:
+        - "Upgrade branch exists and current branch is the intended branch."
+        - "Checkpoint commit or equivalent recorded current C9 planning/archive state."
+        - "No unrelated user changes were staged or reverted."
+      fake_test_rejection: "Audit must reject claims that do not include actual git status/branch/log evidence."
+    audit_focus:
+      - "Confirm no unrelated user changes were reverted or silently included."
+      - "Confirm protected `.pipeline` state changes are intentional and recorded."
+
+  - id: M2
+    name: "Upstream Baseline Diff And Merge"
+    kind: implementation
+    goal: "Fetch and merge upstream `rust-v0.140.0-alpha.18`, producing a compilable conflict-resolved tree that preserves VSP surfaces."
+    technical_solution:
+      - "Fetch upstream tags and target tag."
+      - "Compare VSP current base against upstream target to identify high-risk subsystems before merging."
+      - "Merge upstream target into the isolated upgrade branch."
+      - "Resolve conflicts by preserving VSP-specific behavior where it intentionally diverges from upstream."
+    technical_route:
+      - "Run `git fetch upstream --tags` after execution gate."
+      - "Inspect `git log --oneline --left-right --cherry-pick` and conflict-prone paths."
+      - "Merge `rust-v0.140.0-alpha.18` into the upgrade branch."
+      - "Resolve conflicts in Rust workspace, package metadata, app-server protocol, TUI, installer/docs, and `.pipeline` release artifacts."
+      - "Run minimal compile/fmt checks to confirm the tree is structurally viable."
+    research_required:
+      status: pending_execution
+      evidence: "Requires execution-time upstream fetch and actual merge conflict inspection."
+      blocker: "Cannot know conflict set until fetch/merge occurs."
+    risks_and_alternatives:
+      risks:
+        - "Alpha upstream may introduce large app-server/protocol/TUI changes."
+        - "VSP provider, VSCode, Workflow and release customizations may conflict with upstream changes."
+        - "Lockfiles or generated schemas may require regeneration."
+      alternatives_rejected:
+        - "Cherry-pick only selected commits: rejected for this Cycle because user wants base version updated directly."
+        - "Target latest stable 0.139.0: rejected by user in Technical Stack checkpoint."
+    validation_path:
+      owner: test
+      commands:
+        - "git status --short"
+        - "cargo fmt --manifest-path codex-rs/Cargo.toml --check"
+        - "cargo check --manifest-path codex-rs/Cargo.toml -p codex-cli --bin vsp-codex"
+      pass_signals:
+        - "No unresolved merge conflicts remain."
+        - "Formatting check passes or any upstream formatting/tooling blocker is explicitly recorded."
+        - "`vsp-codex` binary target type-checks."
+      fake_test_rejection: "Audit must reject merge completion without real conflict status and compile/fmt evidence."
+    audit_focus:
+      - "Review conflict resolutions around VSP custom surfaces."
+      - "Confirm target tag is exactly `rust-v0.140.0-alpha.18`."
+      - "Confirm no upstream push or remote write occurred."
+
+  - id: M3
+    name: "Preserve VSP Runtime Surfaces"
+    kind: implementation
+    goal: "Reapply or adapt VSP-specific runtime behavior after upstream merge: provider/config, VSCode Remote SSH, Workflow surface, Subagent UX, and installer/updater compatibility."
+    technical_solution:
+      - "Treat VSP customizations as protected behavioral surfaces, not incidental conflicts."
+      - "Add or repair focused tests for each protected surface affected by the merge."
+      - "Adapt VSP code to upstream API shape instead of freezing old upstream internals."
+    technical_route:
+      - "Audit VSP provider/config paths and session provider cache behavior."
+      - "Audit `vsp-codex vscode` install/status/rollback and Remote SSH settings priority."
+      - "Audit Workflow runtime guidance, `/hw:*` routing, request_user_input metadata, Workflow Markdown surface, and plan freshness."
+      - "Audit Subagent naming/panel/prompt-report viewer behavior."
+      - "Repair compile/test failures and update fixtures/snapshots as required."
+    research_required:
+      status: pending_execution
+      evidence: "Depends on actual upstream merge changes."
+    risks_and_alternatives:
+      risks:
+        - "Upstream may have renamed or redesigned modules used by VSP patches."
+        - "Focused tests may need significant fixture updates."
+      alternatives_rejected:
+        - "Blindly keep VSP old code: rejected because it can fight upstream architecture."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui workflow_slash_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all request_user_input -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all workflow_markdown_surface -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-cli --test vscode -- --nocapture"
+      pass_signals:
+        - "Focused tests for protected VSP surfaces pass."
+        - "Failures are not waived without audit-approved rationale."
+      fake_test_rejection: "Audit must reject unit-only evidence if changed behavior affects live app-server/TUI/plugin surfaces."
+    audit_focus:
+      - "Check VSP protected surfaces against C7/C8 commitments."
+      - "Check docs do not overclaim Remote SSH/manual acceptance."
+
+  - id: M4
+    name: "Version Metadata And Release Surface Update"
+    kind: implementation
+    goal: "Update all VSP version, docs, install commands, release manifest, and release packaging metadata for the new upstream base."
+    technical_solution:
+      - "Move workspace version from `0.134.0-vsp.7.2` to a new VSP version based on `0.140.0-alpha.18`."
+      - "Use a consistent VSP version scheme such as `0.140.0-alpha.18-vsp.1` if Cargo semver accepts it, or an agreed compatible variant if not."
+      - "Regenerate release manifest/package artifacts using existing scripts."
+    technical_route:
+      - "Update `codex-rs/Cargo.toml` workspace package version."
+      - "Update README and docs install/version text."
+      - "Update `.pipeline/release/vsp-release-manifest.json` and new `.pipeline/release/<version>/` artifacts through `scripts/build_vsp_preview_release.py`."
+      - "Confirm install script remains compatible with official release mode and VSP archive-url mode."
+    research_required:
+      status: pending_execution
+      blocker: "Need confirm Cargo/package semver accepts the final VSP version string with upstream alpha component."
+      proposed_resolution: "Test candidate version string during implementation; if invalid, use Cargo-compatible `0.140.0-vsp.1` while documenting upstream tag `rust-v0.140.0-alpha.18`."
+    risks_and_alternatives:
+      risks:
+        - "Cargo semver may not accept `0.140.0-alpha.18-vsp.1`."
+        - "Docs may point to release asset before GitLab release exists."
+      alternatives:
+        - "Use Cargo-compatible `0.140.0-vsp.1` and record upstream alpha tag in release notes."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo metadata --manifest-path codex-rs/Cargo.toml --no-deps --format-version=1"
+        - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+        - "python3 scripts/build_vsp_preview_release.py --entrypoint-bin codex-rs/target/release/vsp-codex --cargo-profile release --force"
+        - "sha256sum -c .pipeline/release/<version>/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+        - "git diff --check"
+      pass_signals:
+        - "Workspace metadata parses."
+        - "Release binary builds and reports expected version."
+        - "Archive and checksum validate."
+        - "Manifest points to the intended GitLab release URL."
+      fake_test_rejection: "Audit must reject version/docs-only changes without package build and archive smoke evidence."
+    audit_focus:
+      - "Check every user-visible install/version reference is consistent."
+      - "Check release manifest does not break updater compatibility."
+
+  - id: M5
+    name: "Broad Regression And GitLab Release"
+    kind: implementation
+    goal: "Run final regression, create release commit/tag, push to GitLab, and publish the GitLab release assets after explicit execution gate."
+    technical_solution:
+      - "Use focused tests from prior milestones plus broad workspace checks appropriate for the changed surface."
+      - "Prepare release commit and tag only after tests pass."
+      - "Publish GitLab release with archive and checksum assets or links, then verify remote install metadata."
+    technical_route:
+      - "Run final focused regression suite."
+      - "Run broad Cargo formatting/build/test commands or document any environment-blocked gap."
+      - "Create release commit and tag after user confirmation."
+      - "Push `origin main` and tag after user confirmation."
+      - "Create GitLab release and attach/download-link package assets."
+      - "Verify `git ls-remote`, release URL, raw manifest, archive URL, and local install smoke."
+    research_required:
+      status: pending_execution
+      blocker: "Requires GitLab credentials and release tooling availability."
+    risks_and_alternatives:
+      risks:
+        - "GitLab auth or asset upload size can block release publication."
+        - "Full workspace tests may be long or flaky after upstream alpha merge."
+      alternatives:
+        - "If upload size fails, use release asset links to repository raw files as done in previous releases."
+        - "If full tests are impractical, use risk-based focused suite plus documented gap accepted by user."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo fmt --manifest-path codex-rs/Cargo.toml --check"
+        - "cargo test --manifest-path codex-rs/Cargo.toml --workspace"
+        - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+        - "git diff --check"
+        - "git ls-remote origin refs/heads/main refs/tags/<new-tag> refs/tags/<new-tag>^{}"
+        - "glab release view <new-tag> --repo heyx/Codex"
+        - "curl -fsSI <archive-url>"
+      pass_signals:
+        - "Final local validation passes or explicitly accepted gaps are recorded."
+        - "Remote main/tag point to release commit."
+        - "GitLab release exists and asset URLs resolve."
+      fake_test_rejection: "Audit must reject release claims without remote ref and release URL evidence."
+    audit_focus:
+      - "Confirm no upstream remote push."
+      - "Confirm GitLab release metadata matches version and manifest."
+      - "Confirm release notes honestly disclose upstream alpha base and validation gaps."
+
+  - id: M6
+    name: "Deep Research Workflow Requirement Brief"
+    kind: documentation
+    goal: "Finalize a Workflow-ready Deep Research requirement brief for later Hypo-Workflow implementation."
+    technical_solution:
+      - "Use the C9 architecture brief as the base."
+      - "Write a standalone requirement brief with problem statement, command semantics, Question Tool flow, Subagent fan-out, recursion/budget controls, artifact contract, UI expectations, validation scenario, and non-goals."
+      - "Store it in `.pipeline/architecture/` and reference it from C9 summary."
+    technical_route:
+      - "Refine `.pipeline/architecture/c9-upstream-base-upgrade-and-deep-research-brief.md` after user feedback."
+      - "Optionally add a machine-readable brief under `.pipeline/plan-state/deep-research-brief.yaml`."
+      - "Ensure brief clearly says C9 does not implement production Deep Research."
+    research_required:
+      status: resolved
+      evidence: "Discover collected product requirements and Architecture wrote initial brief."
+    risks_and_alternatives:
+      risks:
+        - "Brief may be mistaken for implementation."
+      alternatives_rejected:
+        - "Implement prototype in C9: rejected by user at Technical Stack checkpoint."
+    validation_path:
+      owner: test
+      commands:
+        - "rg -n \"Question Tool|Subagent|recursive|budget|follow-up|\\.pipeline/research|0.140.0-alpha.18\" .pipeline/architecture/c9-upstream-base-upgrade-and-deep-research-brief.md"
+      pass_signals:
+        - "Brief covers all user-requested Deep Research requirements."
+        - "Brief states non-goal: no C9 production implementation."
+      fake_test_rejection: "Audit must reject a brief that omits recursion, manual progress control, raw reports, output paths, or real-network validation scenario."
+    audit_focus:
+      - "Check the brief is actionable for Hypo-Workflow implementation."
+      - "Check scope boundary is honest."
+dependencies:
+  M1: []
+  M2: [M1]
+  M3: [M2]
+  M4: [M3]
+  M5: [M4]
+  M6: [M1]
+checkpoint:
+  requires_user_confirmation_before_generate: false
+  user_confirmed_generate: true
+  open_questions:
+    - "Confirm final VSP version string strategy during M4 execution if Cargo rejects alpha-derived VSP suffix."
+    - "Confirm remote push/tag/release before M5 performs external side effects."

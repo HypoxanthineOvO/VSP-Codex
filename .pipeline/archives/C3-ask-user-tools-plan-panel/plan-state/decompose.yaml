@@ -1,0 +1,355 @@
+p2_decompose:
+  cycle: C3
+  status: confirmed
+  generated_at: "2026-05-26T18:09:31+08:00"
+  feature: "Ask User Tools 与 Plan 常驻窗口"
+  source:
+    - ".pipeline/plan-state/p1-discover.yaml"
+    - ".pipeline/deep-plans/DP001-ask-user-tools/plan-context.md"
+  checkpoint_policy:
+    next_phase_requires_user_confirmation: false
+    generated_prompts: true
+    generated_architecture_files: true
+    start_command_is_execution_confirmation: false
+    continuous_execution_after_start: false
+  global_validation:
+    format:
+      - "just fmt"
+      - "just fix -p <changed-crate>"
+    focused_tests:
+      - "just test -p codex-app-server-protocol"
+      - "just test -p codex-core"
+      - "just test -p codex-tui"
+    schema_flow:
+      - "just write-app-server-schema"
+      - "just write-app-server-schema --experimental"
+      - "just test -p codex-app-server-protocol"
+    snapshot_flow:
+      - "just test -p codex-tui"
+      - "cargo insta pending-snapshots -p codex-tui"
+      - "cargo insta accept -p codex-tui"
+    full_suite_policy: "如 common/core/protocol 改动面超过 focused tests 覆盖，先征得用户同意再运行完整 just test。"
+    final_acceptance_gate: "C3 不能在用户真实换电脑 resume pending Ask 测试通过前验收；失败时在本 Cycle extend milestone 回修。"
+  milestones:
+    - id: M1
+      name: "Ask 协议模型与 app-server experimental schema"
+      goal: "把 request_user_input 扩展为可表达题型、总说明、逐题说明、结构化答案、secret 掩码和 native Ask capability 的跨客户端 experimental 契约。"
+      implementation_scope:
+        - "扩展 codex_protocol::request_user_input 类型，支持 request-level summary/description、question kind、per-question description、required/secret、option ids、ranking order 和结构化 answer。"
+        - "扩展 app-server v2 ToolRequestUserInput* payload，继续保持 experimental；生成 TypeScript 和 JSON schema fixtures。"
+        - "新增 native Ask UI client capability，字段名由实现阶段按现有 initialize/capability 风格确定；不得用 experimentalApi 代替 UI 支持判断。"
+        - "保留旧 answers: Vec<String> 或等价兼容层，避免现有 TUI/app-server 路径一次性断裂。"
+        - "同步 request_user_input fallback 所需 metadata：call_id、turn_id、question ids、question kinds、option ids。"
+      test_spec:
+        - "app-server-protocol tests 覆盖新 payload serde、TS/schema export、experimental gating 和旧字段兼容。"
+        - "协议单元测试覆盖 question kind 与 answer shape 的 round-trip。"
+        - "schema fixtures 同步普通和 experimental 输出。"
+      expected_outputs:
+        - "扩展后的 protocol request_user_input 类型。"
+        - "扩展后的 app-server v2 experimental ToolRequestUserInput* 类型。"
+        - "native Ask capability 设计和 schema fixture。"
+      technical_solution: "以现有 request_user_input 和 item/tool/requestUserInput 为源头演进，不新增平行 Ask API；在协议层引入显式 QuestionKind 与 structured answer，同时保留 legacy Vec<String> 兼容转换。app-server 继续实验化，native Ask UI capability 从 initialize connection capabilities 单独声明。"
+      technical_route:
+        - "在 codex-rs/protocol/src/request_user_input.rs 添加 QuestionKind、request summary、per-question description、option id、structured answer/order/freeText 字段。"
+        - "在 codex-rs/app-server-protocol/src/protocol/v2/item.rs 添加对应 v2 类型字段，遵守 camelCase、ts export、experimental 字段规则。"
+        - "在 codex-rs/app-server-protocol/src/protocol/v1.rs 的 InitializeCapabilities 或等价 connection capability 结构中添加 native Ask UI 支持字段。"
+        - "更新 app-server conversion：codex-rs/app-server/src/bespoke_event_handling.rs 的 RequestUserInput event -> ToolRequestUserInputParams 和 response -> core response 映射。"
+        - "保留旧 label/string answer 的降级/兼容路径，确保旧 single-choice overlay 未迁移前仍能工作。"
+        - "运行 schema 生成和 app-server protocol tests。"
+      research_required:
+        - status: resolved
+          evidence: "本地确认 ToolRequestUserInput* 在 codex-rs/app-server-protocol/src/protocol/v2/item.rs，item/tool/requestUserInput 在 protocol/common.rs，InitializeCapabilities 在 protocol/v1.rs，当前 RPC 仍为实验性注释。"
+      risks_and_alternatives:
+        - "风险：一次性替换 answers: Vec<String> 会破坏 TUI 和 app-server response 映射；采用兼容字段/转换层。"
+        - "风险：把 native Ask 能力挂在 experimentalApi 会误判 UI 支持；单独 capability。"
+        - "替代方案：新建 ask_user 工具族；已拒绝，因为现有 request_user_input 栈完整。"
+      validation_path:
+        owner: test
+        commands:
+          - "just write-app-server-schema"
+          - "just write-app-server-schema --experimental"
+          - "just test -p codex-app-server-protocol"
+        pass_signal: "serde/schema/TS fixtures 包含新 experimental Ask 字段和 native Ask capability，旧 payload 兼容测试通过。"
+        fail_signal: "schema 丢字段、experimental gating 错误、旧 request_user_input payload 无法反序列化或转换。"
+      audit_focus:
+        - "确认 app-server v2 仍标记 experimental，没有误稳定化。"
+        - "确认 native Ask UI support 与 experimentalApi 分离。"
+        - "确认结构化答案不会丢失 option id/order/freeText/secret 语义。"
+
+    - id: M2
+      name: "Core Ask 工具语义与模型契约"
+      goal: "让 root agent 在普通交互 turn/default bypass 中使用 Ask，并支持问题+简述+回答模块、多题型 normalization、secret 策略和模型防滥用说明。"
+      implementation_scope:
+        - "更新 request_user_input tool schema：支持 request summary、question kind、per-question description、single/multi/short/free/ranking。"
+        - "移除必须每题 options 非空的限制，按题型验证必需字段。"
+        - "不增加每 turn 或每次问题数硬限制；通过工具说明约束仅在合适时询问。"
+        - "维持 root-thread-only，Subagent 请求必须经 root session。"
+        - "确保 default bypass/ordinary interactive mode 可用；UI-less/unattended 情况必须 fallback 或明确失败，不能永久等待。"
+        - "定义 secret 输出给模型和用户可见记录的边界：真实值只在必要路径返回，用户可见记录圆点掩码。"
+      test_spec:
+        - "request_user_input_spec tests 覆盖各题型 schema/normalization。"
+        - "core session tests 覆盖 default mode 可用、root-only、pending turn 不触发额外 continuation。"
+        - "secret answer masking 的用户可见输出在后续 TUI/history 中联测。"
+      expected_outputs:
+        - "更新后的 core tool spec 和 normalization。"
+        - "默认 bypass 可用的 Ask 工具行为。"
+        - "模型说明中包含合适使用、非硬限制和 fallback 约束。"
+      technical_solution: "保留 RequestUserInputHandler 的 session.request_user_input 等待模型，改造 spec/normalization 和 available mode 配置；按 QuestionKind 校验参数，不再用 options 存在性推断题型。工具说明把 Ask 定位为通用协作原语，包括 Confirm Gate、验收和普通澄清。"
+      technical_route:
+        - "修改 codex-rs/core/src/tools/handlers/request_user_input_spec.rs 的 JSON schema 和 description。"
+        - "重写 normalize_request_user_input_args：按 kind 校验 options/freeText/ranking，保留兼容 default kind。"
+        - "检查 tool registry/config feature，确保 DefaultModeRequestUserInput 或等价默认路径在 VSP 下可用。"
+        - "保留 RequestUserInputHandler root-thread-only 检查，补充测试覆盖 subagent 拒绝。"
+        - "更新 core/session tests 中 request_user_input 事件和 answer 的新 shape。"
+      research_required:
+        - status: resolved
+          evidence: "request_user_input_spec.rs 当前强制 options 非空并自动 is_other=true；handler.rs 当前 root-thread-only 并检查 collaboration mode；core session 已有 pending_request_user_input_does_not_spawn_extra_goal_continuation 测试。"
+      risks_and_alternatives:
+        - "风险：模型滥用 Ask；不做硬限制，但在工具说明中要求只有缺信息且影响任务时使用。"
+        - "风险：普通模式可用范围过宽；保留 root-only 和 UI-less fallback/失败策略。"
+        - "替代方案：Plan mode 专用 Ask；已被用户明确拒绝。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-core request_user_input"
+          - "just test -p codex-core pending_request_user_input_does_not_spawn_extra_goal_continuation"
+        pass_signal: "各题型 normalization 正确，default bypass/root-only 行为符合预期，pending Ask 不触发额外 continuation。"
+        fail_signal: "free_text/ranking 被旧 options 校验拒绝，或 subagent 能直接弹 Ask。"
+      audit_focus:
+        - "确认没有加用户不想要的 per-turn/question 硬限制。"
+        - "确认 Ask 工具说明不会鼓励无意义追问。"
+        - "确认 UI-less 场景不永久等待。"
+
+    - id: M3
+      name: "TUI Ask 多题型与隐私展示"
+      goal: "扩展现有 bottom_pane request_user_input overlay，原生支持多选、短答/自由文本、order-only ranking、request/question 说明和 secret 圆点掩码。"
+      implementation_scope:
+        - "复用 codex-rs/tui/src/bottom_pane/request_user_input/，不要把交互逻辑塞进 chatwidget.rs。"
+        - "支持 single_choice、multi_choice、short_answer/free_text、order-only ranking。"
+        - "显示 request-level summary 和 per-question description。"
+        - "ranking 支持键盘调整顺序，答案返回 option id 顺序。"
+        - "secret/private 输入和结果展示使用圆点掩码；history/transcript/log 用户可见内容不明文显示。"
+        - "保留队列、多问题、未答确认、freeform 输入和 notes 行为的兼容。"
+      test_spec:
+        - "TUI snapshot 覆盖 request summary、per-question description、多选、短答、ranking、secret 掩码、窄屏 wrapping。"
+        - "overlay 状态机测试覆盖 multi-select toggle、ranking reorder、submit answer shape。"
+        - "history cell 测试覆盖 secret 答案圆点掩码。"
+      expected_outputs:
+        - "扩展后的 RequestUserInputOverlay。"
+        - "更新后的 RequestUserInputResultCell。"
+        - "TUI snapshots 和输入状态测试。"
+      technical_solution: "在现有 overlay 状态机中引入 per-question answer mode：single 使用现有 options_state，multi 用 selected option set，ranking 用 ordered option ids，free/short 用 composer draft；render 层显示 summary/description 和题型对应 footer hints。secret masking 放在 history/result rendering 和可见日志边界。"
+      technical_route:
+        - "拆分 AnswerState，使其能表达 single/multi/ranking/free_text，而不是只保存一个 selected_idx + notes。"
+        - "扩展 keyboard handling：multi 使用 Space/Enter toggle，ranking 使用 move up/down 或专用快捷键。"
+        - "更新 render.rs/layout.rs：summary、description、kind-specific footer、窄屏 wrapping。"
+        - "更新 submit_answers 生成结构化 ToolRequestUserInputResponse，同时保留 legacy answers。"
+        - "更新 history_cell/request_user_input.rs，对 secret 输出圆点掩码。"
+        - "添加/更新 insta snapshots。"
+      research_required:
+        - status: resolved
+          evidence: "现有 overlay 在 mod.rs 中维护 AnswerState、options_state、composer draft、queue 和 submit_answers；render.rs 已有 desired_height 和 wrapping；snapshots 目录已有多问题/freeform/options 覆盖。"
+      risks_and_alternatives:
+        - "风险：ranking 键位和列表导航冲突；在 footer hints 和测试中固定键位。"
+        - "风险：多选/notes/freeform 同屏导致窄屏拥挤；使用题型专属布局，必要时将说明和答案区分行。"
+        - "风险：secret 明文通过 history cell 泄露；在 result cell 和 raw_lines 双路径测试。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui"
+          - "cargo insta pending-snapshots -p codex-tui"
+        pass_signal: "新增题型交互和 snapshot 通过，secret 在可见输出中为圆点，ranking 返回稳定顺序。"
+        fail_signal: "answer shape 不含 option id/order，secret 明文出现在 history/snapshot，窄屏重叠。"
+      audit_focus:
+        - "确认 TUI 逻辑未膨胀 chatwidget.rs。"
+        - "确认所有 visible/raw history 路径都应用 secret 掩码。"
+        - "确认 ranking 是 order-only，没有引入 deferred notes 范围外功能。"
+
+    - id: M4
+      name: "Pending Ask resume 与 unsupported-client fallback"
+      goal: "保证 pending Ask 跨设备 resume 能恢复 native UI；当客户端不支持 native Ask UI 时降级为普通编号聊天问题，绝不卡死。"
+      implementation_scope:
+        - "持久化 pending Ask metadata：call_id、turn_id、question ids/kinds/options、request summary、fallback mapping。"
+        - "使用 durable structured events + thread-level current-state snapshot 恢复 pending Ask。"
+        - "根据 native Ask client capability 决定 replay overlay 还是生成 numbered chat fallback。"
+        - "fallback 普通聊天模板包含编号、题型、选项 id/label、回答格式示例。"
+        - "解析 fallback 用户回复为结构化 Ask answer；解析失败时普通对话追问澄清。"
+        - "真实跨设备 resume 是 C3 验收门；本地测试只证明机制，不替代人工最终验收。"
+      test_spec:
+        - "pending_interactive_replay tests 覆盖 pending Ask snapshot 保留、resolved Ask 清除、多 Ask FIFO。"
+        - "app-server/TUI tests 覆盖支持 native Ask UI 时 replay request。"
+        - "fallback tests 覆盖 unsupported client 生成模板、保存映射、解析编号回复。"
+        - "验收报告必须包含用户真实换电脑 resume 测试结果。"
+      expected_outputs:
+        - "pending Ask durable/snapshot state。"
+        - "native Ask capability 分支逻辑。"
+        - "unsupported-client numbered chat fallback。"
+      technical_solution: "在现有 pending_interactive_replay 过滤机制基础上补齐元数据和 capability 分支；TUI/native client 继续走 ServerRequest::ToolRequestUserInput，unsupported client 走普通 assistant message + mapping context。原 turn 若无法直接恢复，应明确降级并把答案作为新 turn 上下文继续。"
+      technical_route:
+        - "扩展 codex-rs/tui/src/app/pending_interactive_replay.rs 的 PendingInteractiveRequest::RequestUserInput，保存足够 question metadata。"
+        - "在 app-server thread/connection state 中保存 native Ask capability，用于 server request delivery/replay 判断。"
+        - "实现 fallback prompt builder，使用 Deep Plan 确认的编号模板。"
+        - "实现 fallback answer parser 或 model handoff path，保留 call/question/option 映射。"
+        - "补充 tests：pending replay、unsupported fallback、resolved clearing、multi-prompt FIFO。"
+      research_required:
+        - status: resolved
+          evidence: "pending_interactive_replay.rs 当前已跟踪 request_user_input_call_ids 和 pending_requests_by_request_id，但只保存 turn_id/item_id；app_server_requests.rs 和 bespoke_event_handling.rs 已有 ToolRequestUserInput request/response 路径。"
+      risks_and_alternatives:
+        - "风险：原 turn 的 oneshot receiver 已不存在时无法恢复同一工具调用；fallback 必须能显式降级为普通对话继续。"
+        - "风险：fallback 文本回复解析不稳定；使用严格编号格式和 option letter -> option id 映射，解析失败追问。"
+        - "风险：跨设备真实场景本地无法完全证明；保留人工验收门。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui pending_interactive_replay"
+          - "just test -p codex-app-server"
+          - "just test -p codex-core request_user_input"
+        pass_signal: "本地 tests 覆盖 replay/fallback/clearing；最终 C3 仍等待用户真实跨设备 resume 通过。"
+        fail_signal: "unsupported client 仍等待 native UI、pending Ask replay 丢题目 metadata、resolved Ask 重复弹出。"
+      audit_focus:
+        - "确认没有 deadlock path。"
+        - "确认 native capability 判断不等同 experimentalApi。"
+        - "确认真实跨设备验收失败时不能接受 Cycle，只能 extend 回修。"
+
+    - id: M5
+      name: "Plan/SubPlan structured state 与 app-server v2 暴露"
+      goal: "把现有 update_plan 演进为兼容 flat checklist 的结构化 Plan/SubPlan 工具，并通过 app-server v2 暴露 canonical state 给 TUI 和未来客户端。"
+      implementation_scope:
+        - "扩展 codex_protocol::plan_tool，支持 plan id/title、root items、stable item ids、status、summary、一层 SubPlan。"
+        - "保留旧 flat checklist UpdatePlanArgs 兼容；旧调用可映射成 root plan items。"
+        - "状态 canonical source 是 structured Plan/SubPlan state，不从 proposed-plan Markdown 或 history cell 解析。"
+        - "Plan state 通过 durable events + thread-level snapshot 支持 resume。"
+        - "新增/扩展 app-server v2 notification 或 read method，暴露 structured Plan/SubPlan state。"
+        - "Plan mode proposed markdown 只作为 proposal/history；只有显式工具更新进入 persistent panel state。"
+      test_spec:
+        - "protocol/core tests 覆盖旧 flat update_plan 和新 structured update_plan 反序列化/事件发送。"
+        - "app-server protocol tests 覆盖 TurnPlanUpdated 或新 PlanState notification schema。"
+        - "resume/snapshot tests 覆盖当前 Plan state 恢复。"
+      expected_outputs:
+        - "结构化 Plan/SubPlan 协议类型。"
+        - "兼容旧 update_plan 的 core handler。"
+        - "app-server v2 structured plan state 暴露。"
+      technical_solution: "以 update_plan 为唯一模型工具入口，新增 structured payload 字段并保留 plan: Vec<step/status> legacy。handler 将两种输入归一化成 canonical PlanState，发送新的结构化 EventMsg/notification；app-server v2 提供 experimental structured plan notification/read surface，供 TUI 和未来 VSCode/GUI 消费。"
+      technical_route:
+        - "扩展 codex-rs/protocol/src/plan_tool.rs：PlanState、PlanNode、SubPlan、status enum、legacy UpdatePlanArgs 兼容。"
+        - "修改 codex-rs/core/src/tools/handlers/plan_spec.rs schema，支持 structured fields，同时保留 legacy plan。"
+        - "修改 plan.rs parse/handle：归一化 legacy/structured，发送结构化 plan event，并继续支持现有 history cell。"
+        - "在 app-server-protocol v2 增加 structured plan notification/read payload，遵守 experimental 字段规则。"
+        - "修改 app-server bespoke_event_handling.rs 的 PlanUpdate 映射，输出 structured state。"
+        - "设计 thread-level current Plan snapshot 存储位置，供 M6 TUI 面板和 resume 使用。"
+      research_required:
+        - status: resolved
+          evidence: "现有 plan_tool.rs 只有 StepStatus/PlanItemArg/UpdatePlanArgs；plan.rs 禁止 Plan mode 使用并发送 EventMsg::PlanUpdate；app-server turn.rs 只有 TurnPlanUpdatedNotification 的 flat TurnPlanStep。"
+      risks_and_alternatives:
+        - "风险：同时存在 proposed-plan markdown 和 update_plan state 导致分叉；明确 structured state 是 panel/source of truth。"
+        - "风险：旧 callers 被 deny_unknown_fields 破坏；保留 legacy shape 并谨慎处理 serde。"
+        - "替代方案：新增 plan_state 工具；已拒绝，因为用户希望改造旧 update_plan。"
+      validation_path:
+        owner: test
+        commands:
+          - "just write-app-server-schema --experimental"
+          - "just test -p codex-app-server-protocol"
+          - "just test -p codex-core update_plan"
+        pass_signal: "旧 flat update_plan 仍可用，新 structured plan/subplan 可通过 app-server v2 暴露并恢复。"
+        fail_signal: "旧 update_plan 失败、Plan mode markdown 被误当 canonical state、app-server schema 缺少 SubPlan。"
+      audit_focus:
+        - "确认 update_plan 没有被平行新工具替代。"
+        - "确认 SubPlan 只实现一层，不引入任意图依赖。"
+        - "确认 app-server v2 暴露满足未来客户端，不只 TUI 内部状态。"
+
+    - id: M6
+      name: "TUI 常驻 Plan/SubPlan 面板"
+      goal: "在 TUI 输入框上方右侧常驻显示 structured Plan/SubPlan state，Default idle 折叠为一行摘要并支持快捷键展开。"
+      implementation_scope:
+        - "新增独立 TUI Plan panel 模块，避免扩展 chatwidget.rs。"
+        - "宽屏：输入框上方右侧显示当前 root plan 和一层 SubPlan。"
+        - "Default idle：折叠为当前 root item、active SubPlan 标题和 completed/total 进度。"
+        - "提供快捷键在折叠态展开详情。"
+        - "窄屏使用一行/紧凑 fallback，避免挤压 composer 和 bottom pane overlay。"
+        - "面板只读；不支持手动编辑，Plan 修改由 LLM update_plan 工具负责。"
+        - "保留 history plan cells，但常驻面板使用 structured state，不解析 Markdown。"
+      test_spec:
+        - "TUI snapshots 覆盖无 plan、root-only、一层 SubPlan、Default idle collapsed、快捷键展开、窄屏。"
+        - "状态同步测试覆盖 update_plan event 后 panel 更新和 resume snapshot 恢复。"
+        - "布局测试覆盖 request_user_input overlay 与 Plan panel 不重叠。"
+      expected_outputs:
+        - "TUI Plan/SubPlan panel module。"
+        - "快捷键展开/折叠行为。"
+        - "Panel snapshot coverage。"
+      technical_solution: "将 structured PlanState 作为 TUI app/chat state 的一部分，由 app-server TurnPlanUpdated/PlanState notification 更新；bottom pane/composer 上方布局新增右侧 panel 区域，idle collapsed 仅是 visual state，不改变 canonical PlanState。"
+      technical_route:
+        - "新增 codex-rs/tui/src/.../plan_panel 模块，定义 state、render、layout 和 key handling。"
+        - "在 chatwidget protocol notification path 接收 structured plan update，更新 panel state。"
+        - "在 bottom pane/composer 上方插入 panel 渲染区域，设置宽/窄断点和最大高度。"
+        - "接入快捷键，在 Default idle 折叠态临时展开详情。"
+        - "添加 snapshots 和状态同步测试。"
+      research_required:
+        - status: resolved
+          evidence: "现有 plan UI 在 history_cell/plans.rs；bottom_pane/mod.rs 已承载 request_user_input overlay；C2 已新增 Subagent 常驻卡片经验，应避免 chatwidget.rs 膨胀。"
+      risks_and_alternatives:
+        - "风险：常驻 panel 挤压输入区；使用 responsive constraints 和 Default idle collapsed。"
+        - "风险：与 Ask overlay 同时出现导致重叠；overlay 优先，panel 降级/隐藏或占独立区域。"
+        - "风险：手动展开快捷键冲突；复用现有 keymap 注册和 help hints。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui"
+          - "cargo insta pending-snapshots -p codex-tui"
+        pass_signal: "panel 在宽/窄/idle/expanded 下无重叠，快捷键可展开，SubPlan 展示正确。"
+        fail_signal: "composer 被挤压、Ask overlay 被遮挡、panel 从 markdown/history 解析状态。"
+      audit_focus:
+        - "确认 no manual edit。"
+        - "确认 Default idle 折叠仍可快捷键展开。"
+        - "确认 panel state 来自 structured PlanState，不来自 history cell。"
+
+    - id: M7
+      name: "集成隐私回归与真实跨设备验收"
+      goal: "把 Ask、fallback、Plan/SubPlan、TUI panel 和 app-server state 串成可交付闭环，并完成最终隐私与跨设备验收。"
+      implementation_scope:
+        - "统一运行 format、fix、focused tests、schema flow 和 TUI snapshot flow。"
+        - "检查 secret/private answer 不在 history/transcript/logs/summaries 明文泄露。"
+        - "检查 app-server experimental schema、native Ask capability 和 PlanState exposure 一致。"
+        - "做本地端到端 smoke：发 Ask、回答 multi/free/ranking、更新 Plan/SubPlan、resume snapshot replay、unsupported fallback。"
+        - "最终等待用户真实换电脑 resume pending Ask 测试；失败则在 C3 内 extend milestone 回修。"
+      test_spec:
+        - "运行 M1-M6 聚焦测试集合。"
+        - "运行 just fmt 和 scoped just fix。"
+        - "审查 cargo insta pending snapshots。"
+        - "人工验收记录必须包含真实跨设备 resume 结果。"
+      expected_outputs:
+        - "C3 集成回归报告。"
+        - "隐私/secret 防泄露检查结果。"
+        - "真实跨设备 resume 验收记录或 extend milestone 回修记录。"
+      technical_solution: "把前六个垂直切片汇总验证，并将用户真实跨设备 resume 作为 manual acceptance gate。M7 不新增核心功能，除非集成发现必须修复的问题。"
+      technical_route:
+        - "运行 schema generation/tests，确认没有未接受 fixture drift。"
+        - "运行 codex-core/codex-tui/codex-app-server-protocol focused tests。"
+        - "运行 TUI snapshots pending/accept 流程。"
+        - "用本地 smoke 验证 Ask UI、fallback、Plan panel 和 PlanState notification。"
+        - "准备用户换电脑 resume 验收步骤，记录结果。"
+        - "如果真实跨设备 resume 失败，创建 plan-extend milestone 并回修，Cycle 不进入 accepted。"
+      research_required:
+        - status: resolved
+          evidence: "用户明确要求最终验收前必须真实换电脑测试；本地测试可作为实现验证但不能替代最终 acceptance。"
+      risks_and_alternatives:
+        - "风险：本地 tests 通过但真实跨设备 resume 失败；Cycle acceptance gate 阻止通过并允许 extend milestone。"
+        - "风险：隐私泄露只在 transcript/raw_lines 路径出现；审计必须检查 visible 和 raw outputs。"
+        - "替代方案：把跨设备测试推后续 Cycle；已被用户拒绝。"
+      validation_path:
+        owner: test
+        commands:
+          - "just fmt"
+          - "just write-app-server-schema --experimental"
+          - "just test -p codex-app-server-protocol"
+          - "just test -p codex-core"
+          - "just test -p codex-tui"
+          - "cargo insta pending-snapshots -p codex-tui"
+        manual_acceptance:
+          owner: user
+          scenario: "在一台电脑发起 pending Ask，换另一台电脑 resume，同一 pending Ask 能重新弹 native Ask UI；不支持 native Ask UI 的客户端走普通编号聊天 fallback。"
+        pass_signal: "自动验证通过，secret 无泄露，用户真实跨设备 resume 和 fallback 验收通过。"
+        fail_signal: "任何自动验证失败、secret 明文泄露、真实跨设备 resume 失败或 fallback 卡死。"
+      audit_focus:
+        - "确认测试证据真实且没有由 implement worker 自证。"
+        - "确认所有 secret/private 输出路径被掩码。"
+        - "确认最终 acceptance 未绕过真实跨设备 resume。"

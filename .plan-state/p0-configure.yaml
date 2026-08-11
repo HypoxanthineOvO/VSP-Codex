@@ -1,0 +1,54 @@
+cycle: C4
+phase: p0_configure
+status: completed
+recorded_at: "2026-05-27T17:05:53+08:00"
+source_resolution:
+  output_language:
+    value: zh-CN
+    source: project_config
+  plan_mode:
+    value: interactive
+    source: global_config
+  interaction_depth:
+    value: medium
+    source: global_config
+  min_rounds:
+    value: 3
+    source: global_config
+  preset:
+    value: tdd
+    source: cycle_explicit
+  workflow_kind:
+    value: build
+    source: cycle_explicit
+  worker_separation:
+    mode: strict
+    source: project_config
+    codex_execution_subworkers_authorized: true
+    authorized_scopes:
+      - /hw:start
+      - /hw:resume
+    required_roles:
+      - test
+      - implement
+      - audit
+  automation:
+    level: balanced
+    source: project_config
+  pr_remote_write:
+    value: not_configured_for_planning
+    source: built_in_default
+  full_regression:
+    value: ask_before_full_suite
+    source: repository_instructions
+  analysis_boundaries:
+    code_changes: confirm
+    restart_services: confirm
+    install_system_dependencies: ask
+    network_remote_resources: ask
+    destructive_or_external_side_effects: ask
+    source: global_config
+notes:
+  - "P1 Discover must run interactively for at least 3 question rounds."
+  - "P1 -> P2 requires an explicit user signal such as '够了', '开始吧', or '可以了'."
+  - "Codex execution subworker authorization is already persisted for /hw:start and /hw:resume with strict separation."

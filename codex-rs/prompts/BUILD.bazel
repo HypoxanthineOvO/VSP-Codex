@@ -1,0 +1,13 @@
+load("//:defs.bzl", "codex_rust_crate")
+
+codex_rust_crate(
+    name = "prompts",
+    compile_data = glob(["templates/**"]),
+    crate_name = "codex_prompts",
+)
+
+filegroup(
+    name = "goal-templates",
+    srcs = glob(["templates/goals/*.md"]),
+    visibility = ["//visibility:public"],
+)

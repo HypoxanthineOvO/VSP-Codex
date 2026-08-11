@@ -1,0 +1,149 @@
+pipeline:
+  name: "Ask User Tools 与 Plan 常驻窗口"
+  status: completed
+  prompts_total: 13
+  prompts_completed: 10
+  started: "2026-05-26T18:23:47+08:00"
+  finished: "2026-05-27T16:35:00+08:00"
+
+last_heartbeat: "2026-05-27T16:35:00+08:00"
+
+current:
+  phase: completed
+  prompt_index: 7
+  prompt_file: .pipeline/prompts/007-integration-privacy-cross-device-acceptance.md
+  prompt_name: "集成隐私回归与真实跨设备验收"
+  step: cycle_accepted_and_closed
+  step_index: 0
+  revision_input: ".pipeline/acceptance/cycle-C3-rejection-20260526T214830+0800.yaml"
+
+milestones:
+  - id: M1
+    title: "Ask 协议模型与 app-server experimental schema"
+    status: completed
+    prompt_file: .pipeline/prompts/001-ask-protocol-app-server-schema.md
+    reports:
+      - .pipeline/reports/001-ask-protocol-app-server-schema.md
+  - id: M2
+    title: "Core Ask 工具语义与模型契约"
+    status: completed
+    prompt_file: .pipeline/prompts/002-core-ask-tool-semantics.md
+    reports:
+      - .pipeline/reports/002-core-ask-tool-semantics.md
+  - id: M3
+    title: "TUI Ask 多题型与隐私展示"
+    status: completed
+    prompt_file: .pipeline/prompts/003-tui-ask-multikind-privacy.md
+    reports:
+      - .pipeline/reports/003-tui-ask-multikind-privacy.md
+  - id: M4
+    title: "Pending Ask resume 与 unsupported-client fallback"
+    status: completed
+    prompt_file: .pipeline/prompts/004-pending-ask-resume-fallback.md
+    reports:
+      - .pipeline/reports/004-pending-ask-resume-fallback.md
+  - id: M5
+    title: "Plan/SubPlan structured state 与 app-server v2 暴露"
+    status: completed
+    prompt_file: .pipeline/prompts/005-plan-subplan-state-app-server.md
+    reports:
+      - .pipeline/reports/005-plan-subplan-state-app-server.md
+  - id: M6
+    title: "TUI 常驻 Plan/SubPlan 面板"
+    status: completed
+    prompt_file: .pipeline/prompts/006-tui-persistent-plan-panel.md
+    reports:
+      - .pipeline/reports/006-tui-persistent-plan-panel.md
+  - id: M7
+    title: "集成隐私回归与真实跨设备验收"
+    status: pending_acceptance
+    prompt_file: .pipeline/prompts/007-integration-privacy-cross-device-acceptance.md
+    reports:
+      - .pipeline/reports/007-integration-privacy-cross-device-acceptance.md
+    blocker: "Ask UI 本机重启复验已通过；仍等待用户真实换电脑/跨设备 pending Ask resume 验收。"
+  - id: M8
+    title: "request_user_input 普通会话可用性修复"
+    status: completed
+    prompt_file: .pipeline/reports/008-request-user-input-default-runtime-fix.md
+    reports:
+      - .pipeline/reports/008-request-user-input-default-runtime-fix.md
+    note: "重启后 request_user_input 在 Default 模式已可调用；后续 native Ask UI fallback 问题由 M9 修复。"
+  - id: M9
+    title: "TUI native Ask UI capability 修复"
+    status: completed
+    prompt_file: .pipeline/reports/008-request-user-input-default-runtime-fix.md
+    reports:
+      - .pipeline/reports/008-request-user-input-default-runtime-fix.md
+    note: "真实重启后 request_user_input 已显示 TUI 原生 Ask UI；用户选择 native_ask_ui，M9 通过。"
+  - id: M10
+    title: "Plan 长上下文/压缩后的更新提醒"
+    status: completed
+    prompt_file: .pipeline/prompts/010-plan-update-gate.md
+    reports:
+      - .pipeline/reports/010-plan-update-gate.md
+    started: "2026-05-27T00:30:07+08:00"
+    completed: "2026-05-27T01:05:20+08:00"
+    note: "已完成：core 侧 Plan freshness 状态覆盖 resume/fork/compact/tool burst；stale 后注入一次 update_plan 提醒，fresh update_plan 清除提醒。"
+  - id: M11
+    title: "Ask UI 卡片式体验重构与本地化"
+    status: completed
+    prompt_file: .pipeline/prompts/011-ask-ui-card-experience.md
+    reports:
+      - .pipeline/reports/011-ask-ui-card-experience.md
+    started: "2026-05-27T01:05:20+08:00"
+    completed: "2026-05-27T12:58:37+08:00"
+    note: "已完成 zh-CN Ask 卡片式渲染、中文 chrome、Other 中文化、未答确认中文面板和 focused snapshot/test 验证；仍需真实 TUI 手动体验验收。"
+  - id: M12
+    title: "Subagent 与 Plan UI 一致性修复"
+    status: completed
+    prompt_file: .pipeline/prompts/012-subagent-plan-ui-consistency.md
+    reports:
+      - .pipeline/reports/012-subagent-plan-ui-consistency.md
+    started: "2026-05-27T13:25:38+08:00"
+    completed: "2026-05-27T13:38:47+08:00"
+    note: "已完成：Subagent spawn/active list/detail 昵称+角色显示一致性，以及 Plan all-completed collapsed summary。focused tests、snapshot hygiene、fmt、fix、vsp-codex build 和 audit 均通过。"
+  - id: M13
+    title: "Subagent 昵称候选池配置化"
+    status: completed
+    prompt_file: .pipeline/prompts/013-subagent-nickname-candidates-config.md
+    reports:
+      - .pipeline/reports/013-subagent-nickname-candidates-config.md
+    started: "2026-05-27T13:56:00+08:00"
+    completed: "2026-05-27T16:27:38+08:00"
+    note: "已完成：Subagent nickname candidates 支持顶层/role-level 配置、中文 Unicode 名字、schema 暴露、core spawn 与 TUI fallback 优先级一致；公共默认池改为中国古代人物名。"
+
+history:
+  completed_prompts:
+    - .pipeline/prompts/001-ask-protocol-app-server-schema.md
+    - .pipeline/prompts/002-core-ask-tool-semantics.md
+    - .pipeline/prompts/003-tui-ask-multikind-privacy.md
+    - .pipeline/prompts/004-pending-ask-resume-fallback.md
+    - .pipeline/prompts/005-plan-subplan-state-app-server.md
+    - .pipeline/prompts/006-tui-persistent-plan-panel.md
+    - .pipeline/prompts/010-plan-update-gate.md
+    - .pipeline/prompts/011-ask-ui-card-experience.md
+    - .pipeline/prompts/012-subagent-plan-ui-consistency.md
+    - .pipeline/prompts/013-subagent-nickname-candidates-config.md
+
+deep_plan:
+  active_package: ".pipeline/deep-plans/DP001-ask-user-tools"
+  status: converted
+  target_depth: implementation-ready
+  updated_at: "2026-05-26T18:00:00+08:00"
+
+plan:
+  phase: pending_acceptance
+  p0_configure: completed
+  p1_discover: completed
+  p2_decompose: confirmed
+  p3_generate: completed
+  p4_confirm: completed
+
+acceptance:
+  scope: cycle
+  state: accepted
+  cycle_id: C3
+  feedback_ref: ".pipeline/acceptance/cycle-C3-rejection-20260526T214830+0800.yaml"
+  updated_at: "2026-05-27T16:35:00+08:00"
+  accepted_at: "2026-05-27T16:35:00+08:00"
+  note: "User explicitly requested accepting and closing C3; M7 cross-device pending Ask resume gate is treated as accepted for close."

@@ -1,0 +1,87 @@
+{
+  "cycle": "C9",
+  "milestone": "M8",
+  "worker": "test",
+  "created_at_local": "2026-06-26T15:49:30+08:00",
+  "verdict": "PASS",
+  "scenario": "current-source built CLI app-server path initializes StateRuntime and SQLite log layer with isolated CODEX_HOME/CODEX_SQLITE_HOME; --listen off avoids network/provider traffic and exits after initialization error path",
+  "command": "CODEX_HOME=/tmp/c9-m8-sqlite-smoke.2QsbHk/codex-home CODEX_SQLITE_HOME=/tmp/c9-m8-sqlite-smoke.2QsbHk/sqlite-home RUST_LOG=trace timeout -s INT 5s codex-rs/target/debug/vsp-codex app-server --listen off",
+  "cwd": "/home/heyx/Codex-VSP",
+  "binary": "codex-rs/target/debug/vsp-codex",
+  "binary_build": {
+    "command": "cargo build --manifest-path codex-rs/Cargo.toml -p codex-cli --bin vsp-codex",
+    "result": "PASS",
+    "duration_observed": "1m07s",
+    "version_output_after_build": "vsp-codex 0.140.0-vsp.8"
+  },
+  "isolation": {
+    "run_root": "/tmp/c9-m8-sqlite-smoke.2QsbHk",
+    "codex_home": "/tmp/c9-m8-sqlite-smoke.2QsbHk/codex-home",
+    "sqlite_home": "/tmp/c9-m8-sqlite-smoke.2QsbHk/sqlite-home"
+  },
+  "exit": {
+    "code": 1,
+    "duration_ms": 210,
+    "expected_exit": "non-zero is acceptable for --listen off because no transport is configured after initialization; smoke pass is based on SQLite DB creation/query and noisy target rejection"
+  },
+  "files": {
+    "logs_db": "/tmp/c9-m8-sqlite-smoke.2QsbHk/sqlite-home/logs_2.sqlite",
+    "logs_wal": "/tmp/c9-m8-sqlite-smoke.2QsbHk/sqlite-home/logs_2.sqlite-wal",
+    "before": {
+      "logs_db_bytes": 0,
+      "logs_wal_bytes": 0
+    },
+    "after": {
+      "logs_db_bytes": 49152,
+      "logs_wal_bytes": 0
+    },
+    "delta": {
+      "logs_db_bytes": 49152,
+      "logs_wal_bytes": 0
+    }
+  },
+  "sqlite_queries": {
+    "status": "ok",
+    "total_rows": 0,
+    "noisy_target_total": 0,
+    "target_counts": [],
+    "noisy_target_counts": [],
+    "noisy_targets_checked": [
+      "log",
+      "codex_otel.log_only",
+      "codex_otel.trace_safe"
+    ],
+    "stderr": "sqlite-target.err: \nsqlite-noisy.err: \nsqlite-total.err: "
+  },
+  "stdout_preview": "",
+  "stderr_preview": "2026-06-26T07:49:29.110871Z ERROR codex_app_server: Project-local config, hooks, and exec policies are disabled in the following folders until the project is trusted, but skills still load.\n    1. /home/heyx/Codex-VSP/.codex\n       To load project-local config, hooks, and exec policies, add /home/heyx/Codex-VSP as a trusted project in /tmp/c9-m8-sqlite-smoke.2QsbHk/codex-home/config.toml.\n\nError: no transport configured; use --listen or enable remote control\n",
+  "unit_validation": {
+    "command": "cargo test --manifest-path codex-rs/Cargo.toml -p codex-state filter -- --nocapture",
+    "result": "PASS",
+    "summary": "8 passed; 0 failed; includes default_filter_disables_persistent_log_bridge_targets, sqlite_sink_drops_tracing_log_bridge_events_even_without_outer_filter, sqlite_sink_drops_low_level_opentelemetry_sdk_logs"
+  },
+  "discarded_attempts": [
+    {
+      "command": "CODEX_HOME=/tmp/c9-m8-sqlite-smoke.DvDFcG/codex-home CODEX_SQLITE_HOME=/tmp/c9-m8-sqlite-smoke.DvDFcG/sqlite-home RUST_LOG=trace timeout -s INT 5s codex-rs/target/debug/vsp-codex remote-control --json",
+      "result": "FAIL/BLOCKED",
+      "reason": "existing debug binary was stale v0.140.0-vsp.0 and VSP official-service guard exited before app-server/SQLite initialization; no logs_2.sqlite was created"
+    },
+    {
+      "command": "CODEX_HOME=/tmp/c9-m8-sqlite-smoke-apptest.J9OdrZ/codex-home CODEX_SQLITE_HOME=/tmp/c9-m8-sqlite-smoke-apptest.J9OdrZ/sqlite-home RUST_LOG=trace timeout -s INT 20s cargo run --manifest-path codex-rs/Cargo.toml -p codex-cli --bin vsp-codex -- app-server --listen off",
+      "result": "DISCARDED",
+      "reason": "timeout was consumed by compilation before runtime started, so it did not produce runtime SQLite evidence"
+    },
+    {
+      "command": "CODEX_HOME=/tmp/c9-m8-sqlite-smoke.TLJyjo/codex-home CODEX_SQLITE_HOME=/tmp/c9-m8-sqlite-smoke.TLJyjo/sqlite-home RUST_LOG=trace timeout -s INT 8s cargo run --manifest-path codex-rs/Cargo.toml -p codex-cli --bin vsp-codex -- app-server --listen off",
+      "result": "DISCARDED",
+      "reason": "second cargo run still spent the window compiling codex-core and produced no runtime SQLite evidence"
+    }
+  ],
+  "pseudo_test_rejection": "Evidence comes from executing the current built vsp-codex app-server path and querying the generated SQLite database; no rows or sizes were fabricated. A smoke that fails to create logs_2.sqlite is treated as FAIL/BLOCKED rather than pass.",
+  "pass_criteria": {
+    "logs_db_created": true,
+    "wal_not_growing_after_exit": true,
+    "noisy_target_total": 0,
+    "unit_validation": "PASS"
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "field": "session_meta.id",
+    "class": "safe"
+  },
+  {
+    "field": "session_meta.timestamp",
+    "class": "safe"
+  },
+  {
+    "field": "session_meta.cwd",
+    "class": "safe"
+  },
+  {
+    "field": "session_meta.source",
+    "class": "safe"
+  },
+  {
+    "field": "session_index.thread_name",
+    "class": "safe"
+  },
+  {
+    "field": "official_export.sanitized_artifact_path",
+    "class": "safe"
+  },
+  {
+    "field": "session_meta.model_provider",
+    "class": "private"
+  },
+  {
+    "field": "config.model_providers.vsp.base_url",
+    "class": "private"
+  },
+  {
+    "field": "config.model_providers.vsp.env_key",
+    "class": "private"
+  },
+  {
+    "field": "auth.openai_api_key",
+    "class": "secret"
+  },
+  {
+    "field": "auth.refresh_token",
+    "class": "secret"
+  },
+  {
+    "field": "environment.OPENAI_API_KEY",
+    "class": "secret"
+  },
+  {
+    "field": "workflow.pipeline.state.current_step",
+    "class": "private"
+  },
+  {
+    "field": "workflow.pipeline.continuation.safe_resume_command",
+    "class": "private"
+  },
+  {
+    "field": "rollout_trace.parent_trace_id",
+    "class": "private"
+  },
+  {
+    "field": "rollout_trace.span_attributes.authorization",
+    "class": "secret"
+  }
+]

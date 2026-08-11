@@ -1,0 +1,20 @@
+---
+source: tui/src/chatwidget/tests/status_surface_previews.rs
+expression: terminal_title_popup_snapshot(&mut chat)
+---
+  配 置  Terminal Title
+  选 择  terminal title 中 显 示 的 项 目 。
+
+  Type to search
+  >
+› [x] thread-title   当 前  thread 标 题 ； 未 命 名 时 显 示  thread 标 识
+  [x] git-branch     当 前  Git branch（ 不 可 用 时 省 略 ）
+  [x] task-progress  update_plan 的 最 新 任 务 进 度 （ 可 用 前 省 略 ）
+  [ ] app-name       Codex app name
+  [ ] project-name   项 目 名 （ 缺 省 使 用 当 前 目 录 名 ）
+  [ ] current-dir    当 前 工 作 目 录
+  [ ] activity       工 作 中 显 示  spinner， 阻 塞 时 显 示  action-required 信 息 。
+  [ ] run-state      简 洁  session 运 行 状 态 文 本 （ Ready、 Working、 Thinking）
+
+  thread title | feat/awesome-feature | Tasks 0/0
+  Press space to toggle; ←/→ to move; enter to confirm and close; esc to close

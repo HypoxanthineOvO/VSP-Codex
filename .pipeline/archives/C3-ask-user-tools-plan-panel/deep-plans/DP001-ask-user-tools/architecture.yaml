@@ -1,0 +1,162 @@
+architecture:
+  title: "Ask User Tools 与 Plan 常驻窗口"
+  status: architecture_ready
+  components:
+    - id: model_tool_spec
+      name: "Model-visible ask user tool spec"
+      current_files:
+        - "codex-rs/core/src/tools/handlers/request_user_input_spec.rs"
+      responsibilities:
+        - "Expose tool schema and usage guidance to the model."
+        - "Constrain when asking the user is appropriate."
+        - "Normalize or reject unsupported question shapes."
+    - id: core_handler
+      name: "Core request handler"
+      current_files:
+        - "codex-rs/core/src/tools/handlers/request_user_input.rs"
+        - "codex-rs/core/src/session/mod.rs"
+        - "codex-rs/core/src/state/turn.rs"
+      responsibilities:
+        - "Validate root-thread and collaboration-mode availability."
+        - "Emit RequestUserInput events and wait for response."
+        - "Handle cancellation and pending turn state."
+    - id: protocol_types
+      name: "Protocol and app-server v2 types"
+      current_files:
+        - "codex-rs/protocol/src/request_user_input.rs"
+        - "codex-rs/app-server-protocol/src/protocol/v2/item.rs"
+        - "codex-rs/app-server-protocol/src/protocol/common.rs"
+      responsibilities:
+        - "Define experimental C3 question and answer wire shapes."
+        - "Export TypeScript types for future GUI/VSCode clients."
+        - "Preserve compatibility with current experimental RPC where possible."
+        - "Keep Ask fields experimental in C3 while adding explicit question kinds, structured answers, and native Ask capability semantics."
+    - id: app_server_bridge
+      name: "App-server bridge"
+      current_files:
+        - "codex-rs/app-server/src/bespoke_event_handling.rs"
+        - "codex-rs/tui/src/app/app_server_requests.rs"
+      responsibilities:
+        - "Map core events to app-server requests."
+        - "Map client responses back to core operations."
+        - "Handle interrupted, stale, or cancelled requests."
+    - id: tui_overlay
+      name: "TUI request-user-input overlay"
+      current_files:
+        - "codex-rs/tui/src/bottom_pane/request_user_input/mod.rs"
+        - "codex-rs/tui/src/bottom_pane/request_user_input/render.rs"
+        - "codex-rs/tui/src/history_cell/request_user_input.rs"
+      responsibilities:
+        - "Render and collect answers for supported question kinds."
+        - "Support keyboard-first interaction, narrow layouts, and snapshots."
+        - "Render completed answers without leaking secrets."
+    - id: future_clients
+      name: "VSCode/GUI clients"
+      current_files:
+        - "Not implemented in this repo scope yet."
+      responsibilities:
+        - "Render app-server v2 request shapes natively."
+        - "Return structured answer payloads without depending on TUI behavior."
+        - "Declare whether native Ask UI is supported for resumed pending prompts through a capability separate from experimentalApi."
+    - id: pending_ask_replay
+      name: "Pending Ask replay and fallback"
+      current_files:
+        - "codex-rs/tui/src/app/pending_interactive_replay.rs"
+        - "codex-rs/tui/src/app/app_server_requests.rs"
+        - "codex-rs/core/src/state/turn.rs"
+      responsibilities:
+        - "Persist pending Ask metadata in durable structured events and a thread-level current-state snapshot."
+        - "Detect whether the current client supports native Ask UI using an explicit client capability."
+        - "Fallback to ordinary numbered chat questions when native Ask UI is unsupported."
+    - id: update_plan_tool
+      name: "Existing update_plan tool"
+      current_files:
+        - "codex-rs/protocol/src/plan_tool.rs"
+        - "codex-rs/core/src/tools/handlers/plan.rs"
+        - "codex-rs/core/src/tools/handlers/plan_spec.rs"
+      responsibilities:
+        - "Currently exposes a flat checklist tool outside Plan mode."
+        - "Emits EventMsg::PlanUpdate for history rendering and title progress."
+        - "Can serve as a compatibility layer but is not rich enough for SubPlan."
+    - id: plan_mode_stream
+      name: "Plan mode proposed-plan stream"
+      current_files:
+        - "codex-rs/core/src/session/turn.rs"
+        - "codex-rs/protocol/src/items.rs"
+        - "codex-rs/protocol/src/protocol.rs"
+      responsibilities:
+        - "Extract proposed plan markdown from Plan mode assistant text."
+        - "Emit PlanItem and PlanDelta for history display."
+        - "Remain a proposal/history path unless promoted to structured state."
+    - id: structured_plan_state
+      name: "Structured Plan/SubPlan state"
+      current_files:
+        - "New or extended protocol/core module to be designed in C3."
+      responsibilities:
+        - "Hold canonical root plan and bounded SubPlan tree."
+        - "Provide a model-facing update interface by evolving update_plan with backward-compatible flat checklist support."
+        - "Support app-server and TUI consumers without markdown parsing."
+        - "Persist current state as both replayable events and a thread-level snapshot for resume."
+    - id: persistent_plan_panel
+      name: "Persistent TUI Plan/SubPlan panel"
+      current_files:
+        - "New TUI module; likely under bottom_pane or a nearby plan panel module."
+      responsibilities:
+        - "Render structured plan state above the input box on the right when space allows."
+        - "Provide compact/narrow fallback states and collapse only in Default idle."
+        - "Show current root item, active SubPlan title when present, and completed/total progress in collapsed Default-idle state."
+        - "Stay synchronized with update events without scrolling history."
+  edges:
+    - from: model_tool_spec
+      to: core_handler
+      relationship: "Model calls request_user_input with JSON arguments accepted by the handler."
+    - from: core_handler
+      to: protocol_types
+      relationship: "Core emits RequestUserInputEvent using protocol types."
+    - from: protocol_types
+      to: app_server_bridge
+      relationship: "App-server converts protocol events to v2 request/response RPC."
+    - from: app_server_bridge
+      to: tui_overlay
+      relationship: "TUI receives ToolRequestUserInputParams and returns ToolRequestUserInputResponse."
+    - from: protocol_types
+      to: future_clients
+      relationship: "Future clients render the same v2 payloads."
+    - from: protocol_types
+      to: pending_ask_replay
+      relationship: "Pending Ask metadata must include question ids, kinds, options, and fallback text."
+    - from: pending_ask_replay
+      to: tui_overlay
+      relationship: "If the resumed client supports native Ask UI, replay the original overlay."
+    - from: pending_ask_replay
+      to: future_clients
+      relationship: "If the resumed client does not support native Ask UI, provide a normal-chat fallback instead of leaving the tool call waiting."
+    - from: tui_overlay
+      to: core_handler
+      relationship: "Answer response resolves pending core tool call through Op::UserInputAnswer."
+    - from: update_plan_tool
+      to: structured_plan_state
+      relationship: "Compatibility path may translate flat checklist updates into structured root plan state."
+    - from: plan_mode_stream
+      to: structured_plan_state
+      relationship: "Proposed plan markdown may seed structured state only through explicit model/tool confirmation, not implicit parsing."
+    - from: structured_plan_state
+      to: persistent_plan_panel
+      relationship: "Panel renders canonical Plan/SubPlan state."
+    - from: structured_plan_state
+      to: future_clients
+      relationship: "Future clients can render the same structured plan state via app-server protocol."
+  assumptions:
+    - "C3 should not introduce a second independent ask-user mechanism while request_user_input exists."
+    - "New question kinds should be explicit in protocol rather than inferred from missing options."
+    - "TUI implementation should stay in bottom_pane/request_user_input rather than adding more standalone logic to chatwidget.rs."
+    - "Plan/SubPlan persistent panel should use structured state, not history cell rendering as its data source."
+    - "SubPlan should start as a bounded tree rather than graph dependencies."
+    - "Pending Ask replay/fallback is a hard C3 requirement and must be covered by tests."
+    - "C3 keeps Ask app-server payloads experimental while making their semantics concrete enough for future stabilization."
+    - "experimentalApi is not sufficient to infer native Ask UI support."
+    - "Default-idle Plan panel collapse is visual compaction only; structured state remains live."
+  unresolved:
+    - "Exact field names for the experimental native Ask client capability."
+    - "Exact Rust/TS wire compatibility shape for preserving old ToolRequestUserInputQuestion and ToolRequestUserInputAnswer clients."
+    - "Exact TUI responsive breakpoints for the Plan panel."

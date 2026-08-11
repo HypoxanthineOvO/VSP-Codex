@@ -1,0 +1,14 @@
+---
+source: tui/src/chatwidget/command_palette.rs
+expression: workflow_names
+---
+/hw:guide
+/hw:init
+/hw:goal
+/hw:plan
+/hw:cycle
+/hw:maintain
+/hw:experiment
+/hw:resume
+/hw:accept
+/hw:reject

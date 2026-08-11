@@ -1,0 +1,9 @@
+START 2026-05-24T19:48:18+08:00
+error: unexpected argument '-p' found
+
+Usage: cargo insta pending-snapshots [OPTIONS]
+
+For more information, try '--help'.
+END 2026-05-24T19:48:18+08:00
+DURATION_SECONDS 0
+STATUS 2

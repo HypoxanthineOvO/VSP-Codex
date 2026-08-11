@@ -1,0 +1,78 @@
+id: C9-DECISION-official-session-compatibility-boundary-20260607
+schema_version: 1
+type: chat
+source:
+  session_id: C9-session-compatibility-audit
+created_at: "2026-06-07T17:35:00+08:00"
+summary: VSP sessions must remain official-compatible; raw official session migration requires explicit user authorization and backups.
+details:
+  decision:
+    - title: Default to not mutating official session files
+      text: Existing files under `$HOME/.codex/sessions` are treated as official-owned data. VSP may read them and may share the directory through `$HOME/.vsp-codex/sessions`, but compatibility fixes should normally be in readers, writers, launch wrappers, or sanitized export paths.
+    - title: Authorized migration must be narrow and backed up
+      text: If the user explicitly authorizes editing existing official sessions, only the incompatible compatibility field should be changed, every affected file must be backed up first, and the migration must be followed by a provider distribution scan and JSONL parse validation.
+    - title: Persist only official-compatible session metadata
+      text: VSP-specific provider config, workflow state, auth material, environment, and trace details must not be written into raw `session_meta`. VSP provider selection should be omitted from persisted session metadata or represented only through fields official Codex already tolerates.
+    - title: Extra information must be invisible to official consumers
+      text: If VSP needs extra metadata, it must live outside raw shared rollout files or pass through a sanitized allowlist export. Official discovery currently treats provider, workflow, auth, environment, and trace fields as private or secret.
+  session_audit:
+    shared_sessions_root: "`$HOME/.vsp-codex/sessions` resolves to `$HOME/.codex/sessions`"
+    rollout_file_count: 2086
+    session_meta_line_count: 2473
+    provider_distribution:
+      OpenAI: 2347
+      missing_or_null: 86
+      TTAPI-Codex: 34
+      vsp: 6
+    high_risk_private_fields_in_session_meta: 0
+    legacy_vsp_provider_note: "Initial 2026-06-07 normal-tree audit found six v0.134.0-vsp.1 session_meta lines with `model_provider: vsp` and 34 `TTAPI-Codex` lines; final full-tree scan also found three `TTAPI-Codex` files under `$HOME/.codex/sessions/.trash`. After explicit user authorization, provider compatibility migration removed legacy `vsp` and `TTAPI-Codex` fields from affected session_meta records."
+  authorized_migration:
+    timestamp: "2026-06-07T17:47:32+08:00"
+    backup_root: "$HOME/.codex/session-provider-backups/20260607T174417+0800"
+    affected_files: 43
+    changed_field: "payload.model_provider"
+    action: "Removed legacy non-official provider ids `vsp` and `TTAPI-Codex` from session_meta payloads so official Codex falls back to its configured provider."
+    final_provider_distribution:
+      OpenAI: 2347
+      missing_or_null: 129
+      TTAPI-Codex: 0
+      vsp: 0
+    validation:
+      - "No `model_provider` values of `vsp` or `TTAPI-Codex` remain under `$HOME/.codex/sessions`."
+      - "All 43 affected JSONL files parsed successfully with jq after migration."
+  authorized_state_db_backfill:
+    timestamp: "2026-06-07T17:55:03+08:00"
+    backup_root: "$HOME/.codex/session-provider-backups/20260607T174417+0800/sqlite"
+    affected_rows: 4
+    changed_field: "threads.model_provider"
+    action: "Updated official `$HOME/.codex/state_5.sqlite` rows with empty `model_provider` to `OpenAI`; these cached rows can still drive official app-server resume/list behavior even after JSONL session_meta is clean."
+    final_official_state_db_distribution:
+      OpenAI: 1829
+      empty: 0
+    validation:
+      - "`pragma integrity_check` returned `ok` for `$HOME/.codex/state_5.sqlite` after the update."
+      - "Official state DB provider distribution is now `OpenAI` 1829 and empty 0."
+      - "VSP state DB had no empty provider rows: `vsp` 268, `OpenAI` 107."
+  compatibility_boundary:
+    - Raw sessions shared with official must avoid VSP-only provider IDs and VSP-private fields.
+    - Official-facing export should keep only safe fields such as `id`, `timestamp`, `cwd`, `originator`, `cli_version`, `source`, `title`, `name`, and `summary`.
+    - Unknown-field tolerance is not enough as a design guarantee; raw shared data should be clean even if current serde readers ignore unknown fields.
+    - Editing historical shared sessions is allowed only after explicit user authorization, with backups and post-migration validation.
+    - JSONL cleanup is not sufficient when app-server uses SQLite thread metadata; provider compatibility scans must include `$HOME/.codex/state_5.sqlite` and `$HOME/.vsp-codex/state_5.sqlite`.
+tags:
+  - c9
+  - official-codex
+  - sessions
+  - compatibility
+  - privacy
+categories:
+  - decisions
+  - pitfalls
+  - config-notes
+  - references
+refs:
+  files:
+    - codex-rs/protocol/src/protocol.rs
+    - codex-rs/rollout/src/recorder.rs
+    - codex-rs/rollout/src/official_codex_discovery.rs
+    - codex-rs/rollout/tests/official_codex_discovery.rs

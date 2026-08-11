@@ -1,0 +1,21 @@
+---
+source: tui/src/bottom_pane/status_line_setup.rs
+expression: "render_lines(&view, 72)"
+---
+
+  配 置  Status Line
+  选 择  status line 中 显 示 的 项 目 。
+
+  Type to search
+  >
+› [x] Use theme colors      使 用 当 前  /theme 的 颜 色
+  ───────────────────────
+  [x] model                 当 前  model 名 称
+  [x] current-dir           当 前 工 作 目 录
+  [x] git-branch            当 前  Git branch（ 不 可 用 时 省 略 ）
+  [ ] model-with-reasoning  当 前  model 名 称 和  reasoning level
+  [ ] project-name          项 目 名 （ 不 可 用 时 省 略 ）
+  [ ] pull-request-number   当 前  branch 的  open pull request 编 号 （ 不 …
+
+  gpt-5-codex · ~/codex-rs · jif/statusline-preview
+  Press space to toggle; ←/→ to move; enter to confirm and close; esc to

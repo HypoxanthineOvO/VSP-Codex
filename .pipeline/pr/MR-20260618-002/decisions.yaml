@@ -1,0 +1,16 @@
+remote_write_gate: confirm
+allowed_without_confirmation:
+- inspect
+- review
+- local_archive_write
+requires_confirmation:
+- push
+- merge
+- close
+- reviewer_write
+- label_write
+- target_branch_write
+current_recommendation: close_as_obsolete
+final_status: obsolete_after_v0_140_hotfix
+remote_writes_performed: false
+hotfix_note: Not absorbed; docs now point at v0.140.0-vsp.0 with hotfix checksum.

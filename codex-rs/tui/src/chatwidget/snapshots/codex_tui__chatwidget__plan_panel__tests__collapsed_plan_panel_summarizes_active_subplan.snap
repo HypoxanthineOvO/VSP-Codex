@@ -1,0 +1,6 @@
+---
+source: tui/src/chatwidget/plan_panel.rs
+expression: "render_panel(&panel, 52).join(\"\\n\")"
+---
+• C3 Ask Tools: Persistent Plan panel / Render
+  right-side persistent panel (2/4)

@@ -1,0 +1,278 @@
+START 2026-05-24T19:56:56+08:00
+RUST_MIN_STACK=8388608 cargo nextest run --no-fail-fast "$@"
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling globset v0.4.18
+   Compiling test-case-core v3.3.1
+   Compiling futures-util v0.3.31
+   Compiling opentelemetry v0.31.0
+   Compiling lalrpop v0.19.12
+   Compiling tracing-subscriber v0.3.22
+   Compiling tree-sitter v0.25.10
+   Compiling rustyline v14.0.0
+   Compiling codex-install-context v0.0.0 (/home/heyx/Codex-VSP/codex-rs/install-context)
+   Compiling rama-utils v0.3.0-alpha.4
+   Compiling codex-utils-pty v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/pty)
+   Compiling tokio-rustls v0.26.4
+   Compiling tungstenite v0.27.0 (https://github.com/openai-oss-forks/tungstenite-rs?rev=9200079d3b54a1ff51072e24d81fd354f085156f#9200079d)
+   Compiling test-case-macros v3.3.1
+   Compiling tracing-opentelemetry v0.32.1
+   Compiling test-case v3.3.1
+   Compiling tokio-util v0.7.18
+   Compiling futures-executor v0.3.31
+   Compiling hickory-proto v0.25.2
+   Compiling tower v0.5.3
+   Compiling tokio-tungstenite v0.28.0 (https://github.com/openai-oss-forks/tokio-tungstenite?rev=132f5b39c862e3a970f731d709608b3e6276d5f6#132f5b39)
+   Compiling futures v0.3.31
+   Compiling serial_test v3.3.1
+   Compiling tower-http v0.6.8
+   Compiling rama-core v0.3.0-alpha.4
+   Compiling h2 v0.4.13
+   Compiling codex-async-utils v0.0.0 (/home/heyx/Codex-VSP/codex-rs/async-utils)
+   Compiling rmcp v0.15.0
+   Compiling hickory-resolver v0.25.2
+   Compiling rama-http-types v0.3.0-alpha.4
+   Compiling starlark_syntax v0.13.0
+   Compiling hyper v1.8.1
+   Compiling rama-net v0.3.0-alpha.4
+   Compiling hyper-util v0.1.20
+   Compiling hyper-tls v0.6.0
+   Compiling hyper-rustls v0.27.7
+   Compiling axum v0.8.8
+   Compiling wiremock v0.6.5
+   Compiling reqwest v0.12.28
+   Compiling codex-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-client)
+   Compiling rama-http-headers v0.3.0-alpha.4
+   Compiling rama-dns v0.3.0-alpha.4
+   Compiling rama-unix v0.3.0-alpha.4
+   Compiling rama-udp v0.3.0-alpha.4
+   Compiling rama-tls-rustls v0.3.0-alpha.4
+   Compiling rama-http v0.3.0-alpha.4
+   Compiling rama-tcp v0.3.0-alpha.4
+   Compiling rama-socks5 v0.3.0-alpha.4
+   Compiling rama-http-core v0.3.0-alpha.4
+   Compiling starlark v0.13.0
+   Compiling rama-http-backend v0.3.0-alpha.4
+   Compiling codex-network-proxy v0.0.0 (/home/heyx/Codex-VSP/codex-rs/network-proxy)
+   Compiling codex-execpolicy v0.0.0 (/home/heyx/Codex-VSP/codex-rs/execpolicy)
+   Compiling codex-protocol v0.0.0 (/home/heyx/Codex-VSP/codex-rs/protocol)
+   Compiling codex-shell-command v0.0.0 (/home/heyx/Codex-VSP/codex-rs/shell-command)
+   Compiling codex-sandboxing v0.0.0 (/home/heyx/Codex-VSP/codex-rs/sandboxing)
+   Compiling codex-file-system v0.0.0 (/home/heyx/Codex-VSP/codex-rs/file-system)
+   Compiling codex-api v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-api)
+   Compiling codex-shell-escalation v0.0.0 (/home/heyx/Codex-VSP/codex-rs/shell-escalation)
+   Compiling codex-linux-sandbox v0.0.0 (/home/heyx/Codex-VSP/codex-rs/linux-sandbox)
+   Compiling codex-app-server-protocol v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-protocol)
+   Compiling codex-exec-server v0.0.0 (/home/heyx/Codex-VSP/codex-rs/exec-server)
+   Compiling codex-apply-patch v0.0.0 (/home/heyx/Codex-VSP/codex-rs/apply-patch)
+   Compiling codex-arg0 v0.0.0 (/home/heyx/Codex-VSP/codex-rs/arg0)
+   Compiling codex-test-binary-support v0.0.0 (/home/heyx/Codex-VSP/codex-rs/test-binary-support)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 09s
+────────────
+ Nextest run ID f03cfd07-550c-492a-9377-97ed4aa6149c with nextest profile: default
+    Starting 185 tests across 10 binaries
+        PASS [   0.016s] (  1/185) codex-exec-server connection::tests::websocket_connection_accepts_binary_jsonrpc_message
+        PASS [   0.016s] (  2/185) codex-exec-server environment::tests::environment_manager_default_environment_caches_environment
+        PASS [   0.017s] (  3/185) codex-exec-server environment::tests::create_local_environment_does_not_connect
+        PASS [   0.017s] (  4/185) codex-exec-server environment::tests::environment_manager_builds_from_snapshot
+        PASS [   0.017s] (  5/185) codex-exec-server environment::tests::default_environment_has_ready_local_executor
+        PASS [   0.017s] (  6/185) codex-exec-server environment::tests::environment_manager_disables_provider_default
+        PASS [   0.017s] (  7/185) codex-exec-server environment::tests::environment_manager_rejects_empty_environment_id
+        PASS [   0.018s] (  8/185) codex-exec-server client::tests::transport_disconnect_fails_sessions_and_rejects_new_sessions
+        PASS [   0.018s] (  9/185) codex-exec-server environment::tests::environment_manager_includes_local_for_default_provider_without_url
+        PASS [   0.018s] ( 10/185) codex-exec-server environment::tests::disabled_environment_manager_has_no_default_or_local_environment
+        PASS [   0.019s] ( 11/185) codex-exec-server client::tests::connect_for_transport_initializes_stdio_command
+        PASS [   0.019s] ( 12/185) codex-exec-server environment::tests::environment_manager_carries_local_runtime_paths
+        PASS [   0.020s] ( 13/185) codex-exec-server client::tests::process_events_are_delivered_in_seq_order_when_notifications_are_reordered
+        PASS [   0.020s] ( 14/185) codex-exec-server environment::tests::environment_manager_normalizes_empty_url
+        PASS [   0.022s] ( 15/185) codex-exec-server connection::tests::websocket_connection_reports_server_close
+        PASS [   0.022s] ( 16/185) codex-exec-server client::tests::remote_websocket_client_replaces_disconnected_client_with_fresh_session
+        PASS [   0.024s] ( 17/185) codex-exec-server client::tests::connect_stdio_command_initializes_json_rpc_client
+        PASS [   0.050s] ( 18/185) codex-exec-server connection::tests::websocket_connection_sends_configured_ping
+        PASS [   0.051s] ( 19/185) codex-exec-server environment::tests::environment_manager_upserts_named_remote_environment
+        PASS [   0.052s] ( 20/185) codex-exec-server environment::tests::test_environment_rejects_sandboxed_filesystem_without_runtime_paths
+        PASS [   0.014s] ( 21/185) codex-exec-server environment_toml::tests::toml_provider_parses_configured_transport_timeouts
+        PASS [   0.056s] ( 22/185) codex-exec-server environment::tests::environment_manager_rejects_provider_supplied_local_environment
+        PASS [   0.056s] ( 23/185) codex-exec-server environment_toml::tests::environment_provider_from_codex_home_falls_back_when_file_is_missing
+        PASS [   0.017s] ( 24/185) codex-exec-server environment_toml::tests::toml_provider_rejects_unknown_default
+        PASS [   0.017s] ( 25/185) codex-exec-server environment_toml::tests::toml_provider_rejects_local_default_when_local_is_disabled
+        PASS [   0.057s] ( 26/185) codex-exec-server environment_provider::tests::default_provider_requests_local_environment_when_url_is_missing
+        PASS [   0.057s] ( 27/185) codex-exec-server environment::tests::get_environment_returns_none_for_unknown_id
+        PASS [   0.057s] ( 28/185) codex-exec-server environment::tests::environment_manager_snapshot_without_local_environment_disables_local_default
+        PASS [   0.018s] ( 29/185) codex-exec-server environment_toml::tests::toml_provider_rejects_malformed_websocket_url
+        PASS [   0.019s] ( 30/185) codex-exec-server environment_toml::tests::toml_provider_default_none_disables_default
+        PASS [   0.018s] ( 31/185) codex-exec-server protocol::tests::http_request_timeout_treats_omitted_and_null_as_no_timeout
+        PASS [   0.059s] ( 32/185) codex-exec-server environment_provider::tests::default_provider_adds_remote_environment_for_websocket_url
+        PASS [   0.019s] ( 33/185) codex-exec-server server::transport::transport_tests::parse_listen_url_accepts_default_websocket_url
+        PASS [   0.020s] ( 34/185) codex-exec-server environment_toml::tests::toml_provider_rejects_overlong_id
+        PASS [   0.059s] ( 35/185) codex-exec-server environment::tests::environment_manager_rejects_empty_remote_environment_url
+        PASS [   0.020s] ( 36/185) codex-exec-server environment_toml::tests::toml_provider_rejects_invalid_environments
+        PASS [   0.059s] ( 37/185) codex-exec-server environment::tests::environment_manager_reports_remote_url
+        PASS [   0.061s] ( 38/185) codex-exec-server environment::tests::environment_manager_rejects_unknown_provider_default
+        PASS [   0.022s] ( 39/185) codex-exec-server environment_toml::tests::toml_provider_rejects_relative_stdio_cwd_without_config_dir
+        PASS [   0.062s] ( 40/185) codex-exec-server environment_toml::tests::toml_provider_can_disable_local_environment
+        PASS [   0.062s] ( 41/185) codex-exec-server environment_provider::tests::default_provider_omits_local_environment_for_none_value
+        PASS [   0.023s] ( 42/185) codex-exec-server remote::tests::debug_output_redacts_auth_provider
+        PASS [   0.063s] ( 43/185) codex-exec-server environment_toml::tests::environment_provider_from_codex_home_uses_present_environments_file
+        PASS [   0.024s] ( 44/185) codex-exec-server fs_sandbox::tests::helper_permissions_include_linux_sandbox_alias_parent
+        PASS [   0.024s] ( 45/185) codex-exec-server remote_file_system::tests::transport_errors_map_to_broken_pipe
+        PASS [   0.064s] ( 46/185) codex-exec-server environment::tests::environment_manager_uses_explicit_provider_default
+        PASS [   0.020s] ( 47/185) codex-exec-server::file_system file_system_sandboxed_write_allows_explicit_alias_roots::local
+        PASS [   0.026s] ( 48/185) codex-exec-server environment_toml::tests::load_environments_toml_rejects_unknown_fields
+        PASS [   0.065s] ( 49/185) codex-exec-server connection::tests::websocket_connection_keeps_outbound_message_while_send_is_backpressured
+        PASS [   0.026s] ( 50/185) codex-exec-server local_file_system::tests::resolve_existing_path_handles_symlink_parent_dotdot_escape
+        PASS [   0.027s] ( 51/185) codex-exec-server process::tests::event_history_replay_is_bounded_by_retained_bytes
+        PASS [   0.070s] ( 52/185) codex-exec-server environment_provider::tests::default_provider_normalizes_exec_server_url
+        PASS [   0.070s] ( 53/185) codex-exec-server environment::tests::environment_manager_omits_default_provider_local_lookup_when_default_disabled
+        PASS [   0.070s] ( 54/185) codex-exec-server environment_toml::tests::load_environments_toml_reads_root_environment_list
+        PASS [   0.070s] ( 55/185) codex-exec-server environment_provider::tests::default_provider_requests_local_environment_when_url_is_empty
+        PASS [   0.031s] ( 56/185) codex-exec-server environment_toml::tests::toml_provider_default_omitted_selects_local
+        PASS [   0.031s] ( 57/185) codex-exec-server environment_toml::tests::toml_provider_includes_local_and_adds_configured_environments
+        PASS [   0.031s] ( 58/185) codex-exec-server environment_toml::tests::toml_provider_rejects_duplicate_ids
+        PASS [   0.075s] ( 59/185) codex-exec-server connection::tests::websocket_connection_ignores_server_pong
+        PASS [   0.063s] ( 60/185) codex-exec-server local_process::tests::closed_process_is_evicted_after_retention
+        PASS [   0.063s] ( 61/185) codex-exec-server local_process::tests::exited_process_retains_late_output_past_retention
+        PASS [   0.063s] ( 62/185) codex-exec-server server::transport::transport_tests::parse_listen_url_rejects_invalid_websocket_url
+        PASS [   0.062s] ( 63/185) codex-exec-server fs_sandbox::tests::sandbox_cwd_uses_context_cwd
+        PASS [   0.062s] ( 64/185) codex-exec-server fs_sandbox::tests::helper_permissions_enable_minimal_reads_for_restricted_profile_with_writes
+        PASS [   0.063s] ( 65/185) codex-exec-server server::transport::transport_tests::parse_listen_url_rejects_unsupported_url
+        PASS [   0.063s] ( 66/185) codex-exec-server local_process::tests::child_env_defaults_to_exact_env
+        PASS [   0.063s] ( 67/185) codex-exec-server fs_sandbox::tests::helper_env_carries_only_allowlisted_runtime_vars
+        PASS [   0.063s] ( 68/185) codex-exec-server fs_sandbox::tests::helper_permissions_enable_minimal_reads_for_restricted_profile
+        PASS [   0.064s] ( 69/185) codex-exec-server server::transport::transport_tests::parse_listen_url_accepts_websocket_url
+        PASS [   0.063s] ( 70/185) codex-exec-server server::transport::transport_tests::parse_listen_url_accepts_stdio_url
+        PASS [   0.063s] ( 71/185) codex-exec-server fs_helper::tests::helper_requests_use_fs_method_names
+        PASS [   0.063s] ( 72/185) codex-exec-server fs_sandbox::tests::sandbox_cwd_rejects_cwd_dependent_profile_without_context_cwd
+        PASS [   0.063s] ( 73/185) codex-exec-server fs_sandbox::tests::sandbox_exec_request_carries_helper_env
+        PASS [   0.060s] ( 74/185) codex-exec-server::file_system file_system_sandboxed_write_allows_explicit_alias_roots::remote
+        PASS [   0.066s] ( 75/185) codex-exec-server remote::tests::register_environment_posts_with_auth_provider_headers
+        PASS [   0.065s] ( 76/185) codex-exec-server relay::tests::harness_connection_reports_text_frames_as_malformed
+        PASS [   0.106s] ( 77/185) codex-exec-server client::tests::wake_notifications_do_not_block_other_sessions
+        PASS [   0.062s] ( 78/185) codex-exec-server::file_system sandbox_context_from_profile_preserves_workspace_write_read_only_subpaths
+        PASS [   0.067s] ( 79/185) codex-exec-server relay::tests::harness_connection_reports_server_close
+        PASS [   0.084s] ( 80/185) codex-exec-server::file_system file_system_write_file_reports_missing_parent::local
+        PASS [   0.111s] ( 81/185) codex-exec-server fs_sandbox::tests::helper_permissions_include_helper_read_root_without_additional_permissions
+        PASS [   0.112s] ( 82/185) codex-exec-server server::handler::tests::terminate_reports_false_after_process_exit
+        PASS [   0.153s] ( 83/185) codex-exec-server client::tests::malformed_stdio_message_terminates_spawned_process
+        PASS [   0.113s] ( 84/185) codex-exec-server::file_system file_system_get_metadata_returns_expected_fields::local
+        PASS [   0.108s] ( 85/185) codex-exec-server::http_client http_response_body_stream_fails_when_transport_disconnects
+        PASS [   0.108s] ( 86/185) codex-exec-server::http_client http_request_forces_buffered_request_params
+        PASS [   0.113s] ( 87/185) codex-exec-server::file_system file_system_copy_preserves_symlinks_in_recursive_copy::local
+        PASS [   0.113s] ( 88/185) codex-exec-server::file_system file_system_copy_rejects_standalone_fifo_source::local
+        PASS [   0.121s] ( 89/185) codex-exec-server::http_client http_response_body_stream_ignores_late_deltas_after_cancelled_request
+        PASS [   0.127s] ( 90/185) codex-exec-server::exec_process exec_process_retains_output_after_exit_until_streams_close::local
+        PASS [   0.126s] ( 91/185) codex-exec-server server::processor::tests::transport_disconnect_detaches_session_during_in_flight_read
+        PASS [   0.127s] ( 92/185) codex-exec-server relay::tests::harness_connection_keeps_outbound_frame_while_send_is_backpressured
+        PASS [   0.143s] ( 93/185) codex-exec-server::http_client http_response_body_stream_reports_disconnect_when_queue_is_full
+        PASS [   0.144s] ( 94/185) codex-exec-server::http_client http_response_body_stream_reports_backpressure_truncation
+        PASS [   0.120s] ( 95/185) codex-exec-server server::transport::transport_tests::parse_listen_url_accepts_stdio
+        PASS [   0.120s] ( 96/185) codex-exec-server local_process::tests::child_env_applies_policy_then_overlay
+        PASS [   0.120s] ( 97/185) codex-exec-server fs_sandbox::tests::helper_permissions_preserve_existing_writes
+        PASS [   0.120s] ( 98/185) codex-exec-server remote_file_system::tests::remote_sandbox_context_preserves_required_cwd
+        PASS [   0.120s] ( 99/185) codex-exec-server fs_sandbox::tests::helper_env_preserves_path_for_system_bwrap_discovery_without_leaking_secrets
+        PASS [   0.120s] (100/185) codex-exec-server environment_toml::tests::toml_provider_without_local_and_default_omitted_disables_default
+        PASS [   0.120s] (101/185) codex-exec-server environment_toml::tests::toml_provider_resolves_relative_stdio_cwd_from_config_dir
+        PASS [   0.120s] (102/185) codex-exec-server relay::tests::harness_connection_receives_relay_data
+        PASS [   0.121s] (103/185) codex-exec-server server::transport::transport_tests::stdio_listen_transport_serves_initialize
+        PASS [   0.191s] (104/185) codex-exec-server client::tests::dropping_stdio_client_terminates_spawned_process
+        PASS [   0.121s] (105/185) codex-exec-server rpc::tests::rpc_client_matches_out_of_order_responses_by_request_id
+        PASS [   0.146s] (106/185) codex-exec-server::http_client http_response_body_stream_drops_queued_terminal_before_next_generated_id
+        PASS [   0.121s] (107/185) codex-exec-server server::handler::tests::active_session_resume_is_rejected
+        PASS [   0.121s] (108/185) codex-exec-server remote_file_system::tests::remote_sandbox_context_drops_unused_cwd
+        PASS [   0.122s] (109/185) codex-exec-server server::file_system_handler::tests::no_platform_sandbox_policies_do_not_require_configured_sandbox_helper
+        PASS [   0.125s] (110/185) codex-exec-server::file_system file_system_copy_rejects_copying_directory_into_descendant::local
+        PASS [   0.155s] (111/185) codex-exec-server::file_system file_system_copy_rejects_directory_without_recursive::local
+        PASS [   0.126s] (112/185) codex-exec-server::file_system file_system_methods_cover_surface_area::local
+        PASS [   0.149s] (113/185) codex-exec-server::http_client http_response_body_stream_uses_generated_ids_and_receives_ordered_deltas
+        PASS [   0.126s] (114/185) codex-exec-server::exec_process exec_process_starts_and_exits::local
+        PASS [   0.127s] (115/185) codex-exec-server::exec_process exec_process_replays_events_after_close::local
+        PASS [   0.128s] (116/185) codex-exec-server::file_system file_system_copy_ignores_unknown_special_files_in_recursive_copy::local
+        PASS [   0.150s] (117/185) codex-exec-server::http_client http_response_body_stream_ignores_late_deltas_after_drop
+        PASS [   0.248s] (118/185) codex-exec-server server::handler::tests::duplicate_process_ids_allow_only_one_successful_start
+        PASS [   0.259s] (119/185) codex-exec-server::exec_process exec_process_streams_output::local
+        PASS [   0.282s] (120/185) codex-exec-server::relay multiplexed_remote_environment_routes_independent_virtual_streams
+        PASS [   0.311s] (121/185) codex-exec-server::exec_process exec_process_preserves_queued_events_before_subscribe::local
+        PASS [   0.334s] (122/185) codex-exec-server server::handler::tests::output_and_exit_are_retained_after_notification_receiver_closes
+        PASS [   0.335s] (123/185) codex-exec-server::exec_process exec_process_pushes_events::local
+        PASS [   0.339s] (124/185) codex-exec-server::exec_process exec_process_rejects_write_without_pipe_stdin::local
+        PASS [   0.327s] (125/185) codex-exec-server::exec_process exec_process_write_then_read::local
+        PASS [   0.328s] (126/185) codex-exec-server::exec_process exec_process_write_then_read_without_tty::local
+        PASS [   0.529s] (127/185) codex-exec-server::file_system file_system_copy_preserves_symlinks_in_recursive_copy::remote
+        PASS [   0.535s] (128/185) codex-exec-server::exec_process remote_exec_process_reports_transport_disconnect
+        PASS [   0.537s] (129/185) codex-exec-server::websocket exec_server_reports_malformed_websocket_json_and_keeps_running
+        PASS [   0.542s] (130/185) codex-exec-server::file_system file_system_methods_cover_surface_area::remote
+        PASS [   0.545s] (131/185) codex-exec-server::initialize exec_server_accepts_initialize
+        PASS [   0.539s] (132/185) codex-exec-server::websocket exec_server_accepts_binary_websocket_json
+        PASS [   0.567s] (133/185) codex-exec-server::file_system file_system_write_file_reports_missing_parent::remote
+        PASS [   0.594s] (134/185) codex-exec-server::exec_process exec_process_starts_and_exits::remote
+        PASS [   0.606s] (135/185) codex-exec-server::file_system file_system_get_metadata_returns_expected_fields::remote
+        PASS [   0.612s] (136/185) codex-exec-server::file_system file_system_copy_ignores_unknown_special_files_in_recursive_copy::remote
+        PASS [   0.609s] (137/185) codex-exec-server::file_system sandboxed_file_system_helper_finds_bwrap_on_preserved_path
+        PASS [   0.610s] (138/185) codex-exec-server::health exec_server_serves_readyz_alongside_websocket_endpoint
+        PASS [   0.617s] (139/185) codex-exec-server::file_system file_system_copy_rejects_copying_directory_into_descendant::remote
+        PASS [   0.618s] (140/185) codex-exec-server::file_system file_system_copy_rejects_directory_without_recursive::remote
+        PASS [   0.615s] (141/185) codex-exec-server::process exec_server_defaults_omitted_pipe_stdin_to_closed_stdin
+        PASS [   0.615s] (142/185) codex-exec-server::process exec_server_starts_process_over_websocket
+        PASS [   0.593s] (143/185) codex-exec-server::file_system file_system_copy_rejects_standalone_fifo_source::remote
+        PASS [   0.721s] (144/185) codex-exec-server server::handler::tests::long_poll_read_fails_after_session_resume
+        PASS [   0.911s] (145/185) codex-exec-server::http_request exec_server_http_request_buffers_response_body
+        PASS [   0.890s] (146/185) codex-exec-server::exec_process exec_process_replays_events_after_close::remote
+        PASS [   1.030s] (147/185) codex-exec-server::http_request exec_server_http_request_streams_response_body_notifications
+        PASS [   1.006s] (148/185) codex-exec-server::process exec_server_resumes_detached_session_without_killing_processes
+        PASS [   1.049s] (149/185) codex-exec-server::http_request exec_server_http_request_rejects_duplicate_stream_request_ids
+        PASS [   1.026s] (150/185) codex-exec-server::exec_process exec_process_streams_output::remote
+        PASS [   1.087s] (151/185) codex-exec-server::exec_process exec_process_write_then_read::remote
+        PASS [   1.083s] (152/185) codex-exec-server::file_system file_system_read_directory_rejects_symlink_escape::local
+        PASS [   1.086s] (153/185) codex-exec-server::exec_process exec_process_preserves_queued_events_before_subscribe::remote
+        PASS [   1.059s] (154/185) codex-exec-server::exec_process exec_process_write_then_read_without_tty::remote
+        PASS [   1.088s] (155/185) codex-exec-server::exec_process exec_process_pushes_events::remote
+        PASS [   1.059s] (156/185) codex-exec-server::exec_process exec_process_rejects_write_without_pipe_stdin::remote
+        PASS [   1.083s] (157/185) codex-exec-server::http_request exec_server_http_request_honors_optional_timeout
+        PASS [   1.069s] (158/185) codex-exec-server::exec_process exec_process_retains_output_after_exit_until_streams_close::remote
+        PASS [   1.816s] (159/185) codex-exec-server::file_system file_system_copy_rejects_symlink_escape_source::local
+        PASS [   1.821s] (160/185) codex-exec-server::file_system file_system_sandboxed_read_allows_readable_root::local
+        PASS [   1.935s] (161/185) codex-exec-server::file_system file_system_sandboxed_read_rejects_symlink_parent_dotdot_escape::local
+        PASS [   1.936s] (162/185) codex-exec-server::file_system file_system_sandboxed_write_rejects_unwritable_path::local
+        PASS [   1.997s] (163/185) codex-exec-server::file_system file_system_sandboxed_read_rejects_symlink_escape::local
+        PASS [   2.051s] (164/185) codex-exec-server::file_system file_system_read_directory_rejects_symlink_escape::remote
+        PASS [   2.138s] (165/185) codex-exec-server::file_system file_system_sandboxed_write_rejects_symlink_escape::local
+        PASS [   2.138s] (166/185) codex-exec-server::file_system file_system_sandboxed_write_allows_additional_write_root::local
+        PASS [   2.163s] (167/185) codex-exec-server::file_system file_system_copy_rejects_symlink_escape_destination::local
+        PASS [   2.215s] (168/185) codex-exec-server::file_system file_system_sandboxed_write_preserves_existing_hard_link::local
+        PASS [   2.242s] (169/185) codex-exec-server::file_system file_system_create_directory_rejects_symlink_escape::local
+        PASS [   2.242s] (170/185) codex-exec-server::file_system file_system_copy_preserves_symlink_source::local
+        PASS [   2.246s] (171/185) codex-exec-server::file_system file_system_remove_rejects_symlink_escape::local
+        PASS [   2.323s] (172/185) codex-exec-server::file_system file_system_remove_removes_symlink_not_target::local
+        PASS [   2.368s] (173/185) codex-exec-server::file_system file_system_sandboxed_read_rejects_symlink_parent_dotdot_escape::remote
+        PASS [   2.437s] (174/185) codex-exec-server::file_system file_system_sandboxed_read_rejects_symlink_escape::remote
+        PASS [   2.485s] (175/185) codex-exec-server::file_system file_system_sandboxed_write_preserves_existing_hard_link::remote
+        PASS [   2.485s] (176/185) codex-exec-server::file_system file_system_sandboxed_write_rejects_unwritable_path::remote
+        PASS [   2.488s] (177/185) codex-exec-server::file_system file_system_sandboxed_read_allows_readable_root::remote
+        PASS [   2.607s] (178/185) codex-exec-server::file_system file_system_create_directory_rejects_symlink_escape::remote
+        PASS [   2.623s] (179/185) codex-exec-server::file_system file_system_sandboxed_write_rejects_symlink_escape::remote
+        PASS [   2.634s] (180/185) codex-exec-server::file_system file_system_remove_rejects_symlink_escape::remote
+        PASS [   2.648s] (181/185) codex-exec-server::file_system file_system_copy_preserves_symlink_source::remote
+        PASS [   2.643s] (182/185) codex-exec-server::file_system file_system_remove_removes_symlink_not_target::remote
+        PASS [   2.622s] (183/185) codex-exec-server::file_system file_system_copy_rejects_symlink_escape_source::remote
+        PASS [   2.660s] (184/185) codex-exec-server::file_system file_system_copy_rejects_symlink_escape_destination::remote
+        PASS [   2.657s] (185/185) codex-exec-server::file_system file_system_sandboxed_write_allows_additional_write_root::remote
+────────────
+     Summary [   2.704s] 185 tests run: 185 passed, 0 skipped
+just bench-smoke
+just bench -- --test
+cargo bench --workspace --bench '*' "$@"
+    Finished `bench` profile [optimized] target(s) in 0.54s
+     Running benches/prompt_images.rs (target/release/deps/prompt_images-4624ed2fe8de2cc5)
+prompt_images
+├─ large_jpeg_photo_fresh_attachment
+├─ large_png_screenshot_fresh_attachment
+├─ small_png_screenshot_fresh_attachment
+╰─ small_png_screenshot_repeated_attachment
+
+END 2026-05-24T19:58:11+08:00
+DURATION_SECONDS 75
+STATUS 0

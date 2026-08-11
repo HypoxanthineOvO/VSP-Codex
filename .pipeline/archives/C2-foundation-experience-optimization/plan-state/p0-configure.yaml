@@ -1,0 +1,28 @@
+p0_configure:
+  cycle: C2
+  source: project_config
+  recorded_at: "2026-05-25T22:30:12+08:00"
+  automation:
+    level: balanced
+  execution:
+    mode: self
+    worker_separation:
+      mode: strict
+      codex_execution_subworkers_authorized: true
+      authorized_scopes:
+        - /hw:start
+        - /hw:resume
+      required_roles:
+        - test
+        - implement
+        - audit
+  evaluation:
+    checks:
+      - tests_pass
+      - no_regressions
+      - matches_plan
+      - code_quality
+  output:
+    language: zh-CN
+    timezone: Asia/Shanghai
+  note: "Reused persisted project configuration for C2 planning before P1 Discover."

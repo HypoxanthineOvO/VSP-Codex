@@ -1,0 +1,18 @@
+---
+source: tui/src/status/tests.rs
+expression: sanitized
+---
+/status
+
+╭───────────────────────────────────────────────────────────────────────╮
+│  >_ VSP Codex (v0.134.0-vsp.3)                                        │
+│                                                                       │
+│  Model:            gpt-5.1-codex-max (reasoning none, summaries auto) │
+│  Directory: [[workspace]]                                             │
+│  Permissions:      Workspace (Approve for me)                         │
+│  Agents.md:        <none>                                             │
+│                                                                       │
+│  Token usage:      0 total  (0 input + 0 output)                      │
+│  Context window:   0/272K 0%                                          │
+│  Limits:           data not available yet                             │
+╰───────────────────────────────────────────────────────────────────────╯

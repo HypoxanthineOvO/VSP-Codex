@@ -1,0 +1,129 @@
+cycle: C7
+title: Experience Optimization And Bugfix Sweep
+status: proposed
+source_seed: .pipeline/plan-state/c7-experience-bugfix-seed.md
+checkpoint: .pipeline/plan-state/c7-p2-decompose.md
+milestones:
+  - id: M1
+    name: Resume And Scrollback Stability
+    issues: [1, 2]
+    goal: Stabilize long-session resume flicker and scrolled-up terminal anchoring.
+    dependencies: []
+    validation:
+      - cargo test -p codex-tui resize_reflow -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - duplicate startup reflow suppression
+      - real resize behavior preserved
+      - manual terminal acceptance evidence
+  - id: M2
+    name: Subagent Identity, Role Policy, And Name Leases
+    issues: [3, 6]
+    goal: Use stable human names for Subagents and make role plus reasoning effort composable.
+    dependencies: []
+    validation:
+      - cargo test -p codex-tui multi_agents active_subagents -- --nocapture
+      - cargo test -p codex-core subagent_notifications -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - no UUID primary labels when fallback names exist
+      - explicit reasoning effort preserved unless role locks it
+      - user nicknames override channel defaults
+  - id: M3
+    name: Tool And Collaboration Output Rendering Boundaries
+    issues: [4]
+    goal: Stop blind duplicate translation of tool/status output and clarify tool cards.
+    dependencies: [M2]
+    validation:
+      - cargo test -p codex-tui history_cell hypo_translate -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - technical literals remain exact
+      - lifecycle rows are not append-translated
+      - intended assistant prose translation still works
+  - id: M4
+    name: Subagent Prompt And Report Viewer
+    issues: [5]
+    goal: Provide Markdown-rendered original and translated Subagent prompt/report inspection.
+    dependencies: [M2, M3]
+    validation:
+      - cargo test -p codex-tui multi_agents markdown_render -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - prompt/report content is only exposed in intended viewer surfaces
+      - translation is labeled and original remains available
+      - narrow terminal rendering is stable
+  - id: M5
+    name: Structured Interaction Gates And Authorization Cards
+    issues: [10]
+    goal: Force required Workflow decisions through request_user_input cards and define confirmation/authorization card behavior.
+    dependencies: []
+    validation:
+      - cargo test -p codex-core request_user_input workflow_routing -- --nocapture
+      - cargo test -p codex-tui request_user_input approval_overlay -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - no approval or permission enforcement bypass
+      - required Workflow decisions use structured cards when available
+      - confirmation and permission wording remain distinct
+      - ordinary chats are not over-questioned
+  - id: M6
+    name: Workflow Plan/SubPlan Live Surface
+    issues: [7]
+    carry_over:
+      - full TUI command palette wiring for /hw:*
+      - deprecated turn_context.cwd warning cleanup
+    goal: Make update_plan proactive and structured as Cycle/Milestone/SubPlan live UI.
+    dependencies: [M5]
+    validation:
+      - cargo test -p codex-core plan_update_gate workflow_routing -- --nocapture
+      - cargo test -p codex-tui plan_panel workflow_slash_routing -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - root Plan and current SubPlan counts are separate
+      - Plan confirmations use Request Input cards when required
+      - Workflow plan updates do not spam ordinary chats
+      - /hw:* entries do not misroute non-Workflow commands
+  - id: M7
+    name: VSP Release Channels, Naming Metadata, And Updater
+    issues: [3, 8]
+    goal: Add VSP release manifest/update prompt/one-key standalone updater and channel metadata.
+    dependencies: [M2, M5]
+    scope_limits:
+      - no silent auto-update by default
+      - no private GitLab token support unless explicitly added later
+    validation:
+      - cargo test -p codex-tui updates update_prompt update_action -- --nocapture
+      - cargo test -p codex-cli update -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - no official OpenAI update endpoints in VSP mode
+      - update prompt is a clear confirmation card
+      - checksum failure does not switch current
+      - VSCode cliExecutable remains valid after update
+  - id: M8
+    name: Appearance Entry Point And Final UX Polish
+    issues: [9]
+    goal: Merge Theme entry points at the user-facing layer and finish C7 docs/regression polish.
+    dependencies: [M3, M4, M6]
+    validation:
+      - cargo test -p codex-tui theme ui_theme command_palette -- --nocapture
+      - cargo fmt --check
+      - git diff --check
+    audit_focus:
+      - existing [tui].theme and [tui].ui_theme configs remain compatible
+      - appearance panel is clear in narrow terminals
+      - docs match implemented behavior
+worker_separation:
+  mode: strict
+  required_roles: [test, implement, audit]
+p3_requirements:
+  prompt_audit_by_subagent: true
+  stop_after_generation_for_user_confirmation: true

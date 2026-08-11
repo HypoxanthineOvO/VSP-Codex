@@ -1,0 +1,17 @@
+---
+source: tui/src/bottom_pane/request_user_input/mod.rs
+expression: rendered
+---
+                                                                                        
+  还 有 未 回 答 的 问 题                                                                       
+  未 答  2 题                                                                              
+  以 下 问 题 将 提 交 空 答 案 ：                                                                 
+  • 部 署 范 围                                                                             
+  • 补 充 说 明                                                                             
+                                                                                        
+  › 1. 返 回 修 改         回 到 第 一 个 未 回 答 的 问 题 。                                          
+    2. 继 续 提 交 空 答 案   明 确 提 交 这 些 空 答 案 。                                              
+                                                                                        
+                                                                                        
+                                                                                        
+  回 车 确 认  | Esc 返 回

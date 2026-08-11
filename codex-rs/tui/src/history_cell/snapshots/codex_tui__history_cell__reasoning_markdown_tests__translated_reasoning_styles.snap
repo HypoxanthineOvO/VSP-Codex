@@ -1,0 +1,16 @@
+---
+source: tui/src/history_cell/reasoning_markdown_tests.rs
+expression: cell.display_lines(80)
+---
+[
+    Line::from_iter([
+        Span::from("• ").dim(),
+        Span::from("Translated ").dark_gray().dim().italic().not_bold(),
+        Span::from("strong").dark_gray().dim().italic().not_bold(),
+        Span::from(" and ").dark_gray().dim().italic().not_bold(),
+        Span::from("docs").dark_gray().dim().italic().not_bold(),
+        Span::from(" (").dark_gray().dim().italic().not_bold(),
+        Span::from("https://example.com/docs").dark_gray().dim().italic().underlined().not_bold(),
+        Span::from(")").dark_gray().dim().italic().not_bold(),
+    ]),
+]

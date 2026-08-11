@@ -1,0 +1,285 @@
+p2_decompose:
+  cycle: C2
+  status: generated
+  generated_at: "2026-05-25T23:28:45+08:00"
+  feature: "基础体验优化"
+  source: ".pipeline/plan-state/p1-discover.yaml"
+  checkpoint_policy:
+    next_phase_requires_user_confirmation: false
+    generated_prompts: true
+    generated_architecture_files: true
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+  global_validation:
+    format:
+      - "just fmt"
+      - "just fix -p <changed-crate>"
+    focused_tests:
+      - "just test -p codex-cli"
+      - "just test -p codex-core"
+      - "just test -p codex-tui"
+    snapshot_flow:
+      - "just test -p codex-tui"
+      - "cargo insta pending-snapshots -p codex-tui"
+      - "cargo insta accept -p codex-tui"
+    full_suite_policy: "如改动 core/shared 面过大，先征得用户同意再运行完整 just test。"
+  milestones:
+    - id: M1
+      name: "默认 YOLO 与底栏 Context"
+      goal: "所有 vsp-codex 入口默认无审批全权限运行，并在底部状态栏右侧显示 Context Window 百分比。"
+      implementation_scope:
+        - "vsp-codex TUI 和 vsp-codex exec 的默认 approval_policy=never。"
+        - "vsp-codex TUI 和 vsp-codex exec 的默认 sandbox/permission profile=danger-full-access。"
+        - "复用现有 footer/status line 右侧 indicator，默认显示 Context x%。"
+        - "保留用户显式配置覆盖能力；不改官方兼容入口的非 VSP 行为，除非入口实际共用不可分。"
+      test_spec:
+        - "CLI 配置解析测试覆盖 vsp-codex 和 vsp-codex exec 默认 YOLO。"
+        - "TUI footer/status line snapshot 覆盖 Context 右侧展示、窄宽度退化和未知值隐藏。"
+        - "实际运行 smoke：在临时仓库执行 vsp-codex exec 的无审批 shell 场景。"
+      expected_outputs:
+        - "默认运行策略改动。"
+        - "Context Window 默认底栏展示。"
+        - "聚焦测试与 snapshot 更新。"
+      technical_solution: "在 CLI/TUI 入口层注入 VSP 默认运行策略，避免要求用户传 --dangerously-bypass-approvals-and-sandbox；Context 显示走现有 status line/footer 的 ContextRemaining/ContextUsed 数据源。"
+      technical_route:
+        - "定位 vsp-codex CLI 参数解析和 exec/TUI 共用配置构造路径。"
+        - "添加 VSP-only 默认值注入点，优先级低于用户显式配置/参数。"
+        - "调整 footer/status line 默认项或右侧 indicator 组合，显示 Context x%。"
+        - "更新 CLI 与 TUI snapshot 测试。"
+      research_required:
+        - status: resolved
+          evidence: "codex-rs/cli/src/main.rs 已有 dangerously bypass 映射；codex-rs/tui/src/bottom_pane/footer.rs 已有右侧 indicator；status_line_setup 已有 Context 项。"
+      risks_and_alternatives:
+        - "风险：把默认 YOLO 注入到共享路径可能影响非 VSP 入口；替代方案是在 vsp-codex 命令分支注入。"
+        - "风险：Context 与 mode/IDE indicator 抢右侧空间；替代方案是窄屏仅保留 Context，隐藏低优先级 indicator。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-cli"
+          - "just test -p codex-tui"
+          - "just exec -- true"
+        pass_signal: "默认策略测试通过，footer snapshot 显示 Context x%，exec smoke 无审批完成。"
+        fail_signal: "仍要求审批/沙箱受限，或右侧 Context 丢失/重叠。"
+      audit_focus:
+        - "确认默认 YOLO 只作用于 VSP 入口。"
+        - "确认显式用户配置仍可覆盖。"
+        - "确认底栏窄宽度无文字重叠。"
+
+    - id: M2
+      name: "Subagent 核心策略"
+      goal: "移除 Subagent 明确授权软限制，设置 32 上限，支持中文昵称池和默认派任务式上下文。"
+      implementation_scope:
+        - "改写 spawn_agent 工具说明：默认允许并鼓励适合任务主动使用 Subagent。"
+        - "移除 only if user explicitly asks 的模型行为限制。"
+        - "multi_agent_v2 默认最多 32 个 Subagent。"
+        - "默认 fork 策略改为派任务式，不复制完整历史；full-history 作为显式选项保留。"
+        - "允许中文 nickname_candidates，并配置用户提供的名字池。"
+        - "保留 model/reasoning_effort/service_tier override 能力。"
+      test_spec:
+        - "multi_agents_spec 测试不再包含显式授权限制，并包含鼓励主动使用的指导。"
+        - "config 测试覆盖 max_concurrent_threads_per_session 映射到 32 个 Subagent。"
+        - "agent_roles 测试覆盖中文昵称、重复名、空名校验。"
+        - "spawn 测试覆盖默认非 full-history 时可指定 role/model/reasoning。"
+      expected_outputs:
+        - "Subagent 核心行为和配置默认值更新。"
+        - "中文名字池进入 VSP 默认配置或内建默认。"
+        - "核心单元测试更新。"
+      technical_solution: "在 core 工具说明、multi_agent_v2 默认配置和 agent role nickname 校验处做最小改动；把派任务式上下文设为默认，以绕开 full-history override 限制。"
+      technical_route:
+        - "修改 multi_agents_spec 的默认 usage hint。"
+        - "调整 MultiAgentV2Config 默认上限或 VSP 配置层默认值。"
+        - "放宽 normalize_agent_role_nickname_candidates，支持 CJK 字符并继续拒绝空白/重复/控制字符。"
+        - "更新 spawn v2 默认 fork_turns 解析或工具说明，使默认不是 all。"
+        - "写入或生成 VSP 默认中文名字池。"
+        - "如改 ConfigToml/schema，运行 just write-config-schema。"
+      research_required:
+        - status: resolved
+          evidence: "P1 已确认限制位置：multi_agents_spec、ConfigBuilder agent_max_threads、AgentRegistry reserve_spawn_slot、agent_roles nickname 校验、spawn v2 fork_mode。"
+      risks_and_alternatives:
+        - "风险：直接改 upstream 默认会增加合并冲突；替代方案是 VSP 默认配置层覆盖。"
+        - "风险：中文昵称宽度影响 TUI；在 M3 做显示侧宽度测试。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-core"
+          - "just test -p codex-tui"
+        pass_signal: "工具说明、配置、中文昵称、spawn override 行为测试均通过。"
+        fail_signal: "模型说明仍含显式授权限制，中文昵称被拒绝，或默认 spawn 仍禁止 model/reasoning。"
+      audit_focus:
+        - "确认没有保留显式授权软限制。"
+        - "确认上限是 32 个 Subagent 而不是 32 总线程误差。"
+        - "确认 full-history 显式模式仍可用且语义清楚。"
+
+    - id: M3
+      name: "Subagent 常驻卡片与键盘查看"
+      goal: "在 TUI 中展示活跃 Subagent 卡片，并支持键盘查看 Subagent 命令、返回内容和状态详情。"
+      implementation_scope:
+        - "底部运行区域新增 Subagent 常驻卡片/面板。"
+        - "展示格式：姓名 · 模型 reasoning · Role · 状态 · 耗时。"
+        - "只显示活跃或未 close 的 Subagent；close 后从卡片移除。"
+        - "复用 agent_navigation、multi_agents 元数据和 CollabAgentSpawnEndEvent。"
+        - "添加键盘交互查看 Subagent 详情，复用或扩展 /subagents 选择器。"
+      test_spec:
+        - "TUI snapshot 覆盖无 Subagent、单个、多個、窄屏压缩、close 后消失。"
+        - "事件测试覆盖 spawn/wait/close 状态流。"
+        - "键盘测试覆盖选择 Subagent、打开详情、返回主会话。"
+      expected_outputs:
+        - "Subagent 常驻卡片。"
+        - "Subagent 详情交互界面。"
+        - "TUI snapshot 更新。"
+      technical_solution: "新增独立 TUI 模块承载 Subagent panel，避免扩展 chatwidget.rs；状态来源复用现有 agent_navigation 和 collab event，显示层用 unicode-width 保证中文宽度。"
+      technical_route:
+        - "定义 SubagentPanelState 和渲染模块。"
+        - "在 collab spawn/wait/close 事件处理处更新 panel state。"
+        - "将 panel 插入 bottom_pane status/composer 上方合适位置。"
+        - "扩展 /subagents 或新增详情视图，展示 transcript 摘要和原始/翻译切换占位。"
+        - "写 snapshot 和键盘交互测试。"
+      research_required:
+        - status: resolved
+          evidence: "P1 已确认现有 TUI 数据点：multi_agents.rs、agent_navigation.rs、session_lifecycle.rs、CollabAgentSpawnEndEvent。"
+      risks_and_alternatives:
+        - "风险：bottom pane 高度波动影响输入区；替代方案是只在任务运行时显示并限制最大行数。"
+        - "风险：Subagent transcript 详情和主 transcript 数据同步复杂；先展示事件摘要，完整内容按现有 thread navigation 读取。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui"
+          - "cargo insta pending-snapshots -p codex-tui"
+        pass_signal: "Subagent 卡片与详情交互 snapshot 稳定，中文名宽度正常。"
+        fail_signal: "卡片残留 closed agent、内容重叠、键盘无法返回。"
+      audit_focus:
+        - "确认状态单一来源，避免和 /subagents picker 分叉。"
+        - "确认中文宽度和窄屏布局。"
+        - "确认 close 后不再常驻显示。"
+
+    - id: M4
+      name: "Hypo-Translate 运行时翻译"
+      goal: "接入本机 Hypo-Translate，把 reasoning、Subagent 内容和工具摘要翻译为中文，并保留 raw/original 切换。"
+      implementation_scope:
+        - "新增 TUI 翻译客户端，默认 http://127.0.0.1:8998。"
+        - "优先使用 POST /translate/stream，处理 delta/revise/commit/passthrough。"
+        - "不显示、不持久化 source_hidden。"
+        - "服务不可用时显示原文，不阻塞 TUI。"
+        - "翻译范围限定为 reasoning、Subagent transcript、工具摘要/返回内容。"
+        - "提供 raw/original 切换。"
+      test_spec:
+        - "用本地 fake HTTP/SSE 服务测试 streaming 事件解析。"
+        - "测试 source_hidden 被忽略，passthrough 被可见展示并标记 fallback。"
+        - "TUI snapshot 覆盖翻译中、已翻译、服务失败原文降级、raw/original 切换。"
+      expected_outputs:
+        - "Hypo-Translate client 与配置默认值。"
+        - "翻译应用到三类动态内容。"
+        - "失败降级和 raw/original 切换。"
+      technical_solution: "翻译作为 TUI 展示层增强，不写入 rollout hidden source；使用 reqwest streaming + eventsource-stream 或等价 SSE parser，翻译结果作为渲染缓存。"
+      technical_route:
+        - "在 TUI 新增 translation 模块和配置结构。"
+        - "添加 HypoTranslateClient，支持 /health 探测和 /translate/stream。"
+        - "实现 SSE visible event reducer。"
+        - "把 reasoning cell、Subagent detail、工具摘要渲染接入翻译缓存。"
+        - "添加 raw/original 键盘切换。"
+        - "如新增依赖或 feature，更新 Cargo/Bazel lock 并运行 lock check。"
+      research_required:
+        - status: resolved
+          evidence: "/home/heyx/Hypo-Translate/docs/client-integration.md：默认 127.0.0.1:8998，POST /translate/stream，事件 schema 明确。"
+      risks_and_alternatives:
+        - "风险：流式翻译和 TUI 渲染节奏产生抖动；替代方案是先用 /translate 非流式，后续再打开 streaming。"
+        - "风险：网络调用阻塞 UI；必须异步后台任务和超时。"
+        - "风险：依赖变更影响 Bazel；需 lock update/check。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui"
+          - "just test -p codex-core"
+        pass_signal: "fake SSE 测试通过，TUI 可见译文正确，服务失败时原文可见且无阻塞。"
+        fail_signal: "source_hidden 泄露、TUI 卡顿、翻译失败遮蔽原文。"
+      audit_focus:
+        - "确认 hidden/source 原文不持久化。"
+        - "确认只翻译指定三类内容。"
+        - "确认失败降级不会影响主会话。"
+
+    - id: M5
+      name: "MCP 提示迁移与静态汉化"
+      goal: "清理主界面的 MCP 正常启动噪音，并完成高频 TUI/Slash/设置/Error/Warning 汉化。"
+      implementation_scope:
+        - "MCP 正常启动不再占用 Working/status 主提示。"
+        - "MCP 状态保留在 /mcp 或非主界面位置；失败和需要处理的信息仍显式显示。"
+        - "汉化 TUI 高频文案、Slash Command 解释、设置页面、常见 Error/Warning。"
+        - "中文保留关键英文术语：Subagent、Context Window、Provider、MCP、YOLO 等。"
+      test_spec:
+        - "mcp_startup 测试覆盖正常启动静默、失败提示保留。"
+        - "Slash command/settings/error snapshot 更新为中文。"
+        - "TUI 高频路径 snapshot 更新。"
+      expected_outputs:
+        - "MCP 正常启动提示迁移。"
+        - "第一轮静态汉化覆盖高频界面。"
+        - "snapshot 更新。"
+      technical_solution: "MCP 启动状态与普通 Working header 解耦；汉化优先采用局部常量/文案替换而非一次性引入完整 i18n 框架，降低合并成本。"
+      technical_route:
+        - "修改 chatwidget/mcp_startup 状态拥有逻辑，成功启动不设置主 status header。"
+        - "保留失败/取消 warning history cell。"
+        - "按模块批量替换高频 TUI 文案，避免改动低频深层文档。"
+        - "更新 Slash Command 描述和 settings popup 文案。"
+        - "运行并接受 codex-tui snapshots。"
+      research_required:
+        - status: resolved
+          evidence: "P1 已定位 MCP 启动提示在 codex-rs/tui/src/chatwidget/mcp_startup.rs；静态汉化范围由用户确认。"
+      risks_and_alternatives:
+        - "风险：一次汉化过大导致 snapshot 噪音；替代方案是按模块分批提交。"
+        - "风险：过度改动 upstream 文案增加 merge 成本；本 Cycle 先高频路径，不改 docs。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui"
+          - "cargo insta pending-snapshots -p codex-tui"
+        pass_signal: "正常 MCP 启动不再显示 Booting MCP server，失败仍可见；高频中文 snapshot 通过。"
+        fail_signal: "MCP 失败被静默吞掉，或主界面仍显示 context7 启动噪音。"
+      audit_focus:
+        - "确认不删除 MCP/context7 功能。"
+        - "确认失败路径仍可诊断。"
+        - "确认中文术语一致且不破坏布局。"
+
+    - id: M6
+      name: "集成回归与实际验收"
+      goal: "把 C2 所有体验改动跑通到真实二进制和回归测试，形成可交付状态。"
+      implementation_scope:
+        - "统一处理 snapshot、format、clippy/fix 和聚焦测试。"
+        - "实际运行 vsp-codex、vsp-codex exec、/subagents、/mcp、翻译降级场景。"
+        - "检查 CI 配置未因依赖/测试变更漂移。"
+        - "整理验收报告和后续遗留项。"
+      test_spec:
+        - "运行 M1-M5 聚焦测试集合。"
+        - "实际二进制 smoke：任意仓库启动 vsp-codex，默认 YOLO，Context 右侧显示。"
+        - "Hypo-Translate 服务可用时做可选集成探针；不可用时验证原文降级。"
+      expected_outputs:
+        - "C2 回归测试结果。"
+        - "可运行二进制验收说明。"
+        - "CI/依赖状态说明。"
+      technical_solution: "把前五个垂直切片汇总验证，避免把集成问题留到用户手工测试阶段。"
+      technical_route:
+        - "运行 just fmt。"
+        - "按改动 crate 运行 just fix -p。"
+        - "运行聚焦 just test -p。"
+        - "检查 cargo insta pending-snapshots 并接受有意 UI 变化。"
+        - "运行真实 vsp-codex/vsp-codex exec smoke。"
+        - "如依赖变更，运行 just bazel-lock-update 和 just bazel-lock-check。"
+      research_required:
+        - status: resolved
+          evidence: "仓库 justfile 已确认测试、fmt、fix、schema、Bazel lock 命令。"
+      risks_and_alternatives:
+        - "风险：完整 just test 耗时较长；先跑聚焦测试，shared/core 大改后请求用户同意完整回归。"
+        - "风险：真实 TUI 自动化难；结合 snapshot、单元事件测试和人工 smoke。"
+      validation_path:
+        owner: test
+        commands:
+          - "just fmt"
+          - "just test -p codex-cli"
+          - "just test -p codex-core"
+          - "just test -p codex-tui"
+          - "just vsp-codex --version"
+          - "just exec -- true"
+        pass_signal: "聚焦测试通过，真实入口可运行，用户可进入 TUI 验收。"
+        fail_signal: "测试失败、二进制无法启动、默认策略/翻译/卡片任一关键链路不可用。"
+      audit_focus:
+        - "确认各 Milestone 的测试证据真实有效。"
+        - "确认没有泄露 hidden/source 翻译原文。"
+        - "确认 CI 和依赖 lock 状态正确。"

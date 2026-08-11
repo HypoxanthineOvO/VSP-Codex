@@ -1,0 +1,16 @@
+---
+source: tui/src/bottom_pane/request_user_input/mod.rs
+expression: rendered
+---
+                                                                        
+  Question 1/1 (1 unanswered)                                           
+  Choose release settings                                               
+  These answers determine the deployment plan.                          
+  Choose every applicable option.                                       
+  Use the structured answer fields for this question.                   
+                                                                        
+  › [ ] 1. QA    Quality gate                                           
+    [ ] 2. Ops   Runtime gate                                           
+    [ ] 3. Docs  Documentation gate                                     
+                                                                        
+  space to toggle | enter to submit answer | esc to interrupt

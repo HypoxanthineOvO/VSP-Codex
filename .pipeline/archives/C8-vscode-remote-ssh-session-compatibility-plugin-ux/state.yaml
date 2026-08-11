@@ -1,0 +1,155 @@
+pipeline:
+  name: "VSCode Remote SSH Session Compatibility And Plugin UX"
+  status: completed
+  prompts_total: 6
+  prompts_completed: 6
+  started: "2026-05-30T13:37:59+08:00"
+  finished: "2026-05-30T22:44:30+08:00"
+
+last_heartbeat: "2026-05-31T23:07:25+08:00"
+
+current:
+  phase: post_release_fix
+  prompt_index: 6
+  prompt_file: ".pipeline/prompts/c8-006-markdown-workflow-surface-remote-ssh-acceptance.md"
+  prompt_name: "C9 Post-Release Correctness Backfill"
+  step: subagent_names_plan_counter_freshness_backfill_verified
+  step_index: 9
+  previous_milestone_completed: M5
+  follow_up:
+    version: "0.134.0-vsp.7"
+    status: fixed_unreleased
+    summary: "Backfilled missed C7/C9 commitments after user self-check: GitLab/local Subagent defaults now use VSP Lab internal names, Plan/SubPlan counters no longer mix root and subplan totals, structured subplan active work participates in plan freshness, and Hypo-Workflow .pipeline state file changes trigger update_plan reminders."
+    validation:
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui active_subagents_fallback_uses_built_in_role_nickname_candidates -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui workflow_cycle_plan_surface_shows_current_subplan_and_root_progress_separately -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui update_plan_progress_status_surface_uses_split_subplan_and_root_counts -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui progress_label_splits_active_subplan_and_root_counts_for_any_structured_plan -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui progress_label_uses_root_counts_when_no_subplan_is_active -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core built_in_roles_use_vsp_lab_nickname_candidates_for_internal_distribution -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core spawn_thread_subagent_defaults_to_vsp_lab_internal_nickname_pool -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core structured_subplan_active_work_keeps_plan_freshness_trackable -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_state_file_change_marks_active_plan_stale_until_update_plan -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_runtime_guidance_specializes_questions_plan_and_subagents_without_bypassing_gates -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core plan_update_gate -- --nocapture"
+      - "cargo fmt --manifest-path codex-rs/Cargo.toml --check --package codex-core --package codex-tui --package codex-app-server --package codex-install-context --package codex-cli --package codex-linux-sandbox"
+      - "git diff --check"
+  release:
+    version: "0.134.0-vsp.6"
+    status: published_gitlab
+    archive: ".pipeline/release/C8-preview/vsp-codex-preview-linux-x64-gnu-debug.tar.gz"
+    sha256: "666ee5841238914d200a496339d5d103b220fb933484defd3b4299fe959fa3bc"
+    report: ".pipeline/reports/023-release-prep-v0.134.0-vsp.6.md"
+    commit: "2070ca9d2fb678076522b6b4391d0a99d3756cc8"
+    tag: "v0.134.0-vsp.6"
+    gitlab_release: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.6"
+    assets:
+      archive: "https://gitlab.vsplab.cn/heyx/Codex/-/raw/v0.134.0-vsp.6/.pipeline/release/C8-preview/vsp-codex-preview-linux-x64-gnu-debug.tar.gz"
+      sha256: "https://gitlab.vsplab.cn/heyx/Codex/-/raw/v0.134.0-vsp.6/.pipeline/release/C8-preview/vsp-codex-preview-linux-x64-gnu-debug.tar.gz.sha256"
+    github_release: "not_published"
+
+milestones:
+  - id: M1
+    name: "Remote SSH VSCode Integration Probe"
+    prompt: ".pipeline/prompts/c8-001-remote-ssh-vscode-integration-probe.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-05-30T14:30:43+08:00"
+    dependencies: []
+    reviews:
+      test: ".pipeline/reviews/C8/M1/test.md"
+      implement: ".pipeline/reviews/C8/M1/implement.md"
+      audit: ".pipeline/reviews/C8/M1/audit.md"
+  - id: M2
+    name: "VSCode Plugin Protocol Capability Map"
+    prompt: ".pipeline/prompts/c8-002-vscode-plugin-protocol-capability-map.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-05-30T14:49:55+08:00"
+    dependencies: [M1]
+    reviews:
+      test: ".pipeline/reviews/C8/M2/test.md"
+      implement: ".pipeline/reviews/C8/M2/implement.md"
+      audit: ".pipeline/reviews/C8/M2/audit.md"
+  - id: M3
+    name: "Provider And Resume Compatibility Contract"
+    prompt: ".pipeline/prompts/c8-003-provider-resume-compatibility-contract.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-05-30T15:22:46+08:00"
+    dependencies: [M1, M2]
+    reviews:
+      test: ".pipeline/reviews/C8/M3/test.md"
+      implement: ".pipeline/reviews/C8/M3/implement.md"
+      audit: ".pipeline/reviews/C8/M3/audit.md"
+  - id: M4
+    name: "Session Discovery Strategy For Official Codex"
+    prompt: ".pipeline/prompts/c8-004-session-discovery-strategy-official-codex.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-05-30T17:56:52+08:00"
+    dependencies: [M3]
+    reviews:
+      test: ".pipeline/reviews/C8/M4/test.md"
+      implement: ".pipeline/reviews/C8/M4/implement.md"
+      audit: ".pipeline/reviews/C8/M4/audit.md"
+  - id: M5
+    name: "Request Tool And Request Input UX For Plugin"
+    prompt: ".pipeline/prompts/c8-005-request-tool-request-input-plugin-ux.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-05-30T21:49:12+08:00"
+    dependencies: [M2, M3]
+    reviews:
+      test: ".pipeline/reviews/C8/M5/test.md"
+      implement: ".pipeline/reviews/C8/M5/implement.md"
+      audit: ".pipeline/reviews/C8/M5/audit.md"
+  - id: M6
+    name: "Markdown Workflow Surface And Remote SSH Acceptance"
+    prompt: ".pipeline/prompts/c8-006-markdown-workflow-surface-remote-ssh-acceptance.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-05-30T22:44:30+08:00"
+    dependencies: [M1, M2, M3, M4, M5]
+    reviews:
+      test: ".pipeline/reviews/C8/M6/test.md"
+      implement: ".pipeline/reviews/C8/M6/implement.md"
+      audit: ".pipeline/reviews/C8/M6/audit.md"
+
+history:
+  completed_prompts:
+    - ".pipeline/prompts/c8-001-remote-ssh-vscode-integration-probe.md"
+    - ".pipeline/prompts/c8-002-vscode-plugin-protocol-capability-map.md"
+    - ".pipeline/prompts/c8-003-provider-resume-compatibility-contract.md"
+    - ".pipeline/prompts/c8-004-session-discovery-strategy-official-codex.md"
+    - ".pipeline/prompts/c8-005-request-tool-request-input-plugin-ux.md"
+    - ".pipeline/prompts/c8-006-markdown-workflow-surface-remote-ssh-acceptance.md"
+  started_prompts:
+    - ".pipeline/prompts/c8-001-remote-ssh-vscode-integration-probe.md"
+    - ".pipeline/prompts/c8-002-vscode-plugin-protocol-capability-map.md"
+    - ".pipeline/prompts/c8-003-provider-resume-compatibility-contract.md"
+    - ".pipeline/prompts/c8-004-session-discovery-strategy-official-codex.md"
+    - ".pipeline/prompts/c8-005-request-tool-request-input-plugin-ux.md"
+    - ".pipeline/prompts/c8-006-markdown-workflow-surface-remote-ssh-acceptance.md"
+
+cycle:
+  id: C8
+  previous_cycle: C7
+  theme: "VSCode Remote SSH Session Compatibility And Plugin UX"
+
+plan:
+  phase: ready_to_start
+  p0_configure: reused
+  p1_discover: completed
+  p2_decompose: confirmed
+  p3_generate: completed
+  p4_confirm: completed
+  p4_confirmed_at: "2026-05-30T14:15:02+08:00"
+  prompt_audit: completed
+  prompt_audit_report: ".pipeline/reviews/C8/prompt-audit.md"
+
+acceptance:
+  scope: cycle
+  state: completed
+  cycle_id: C8
+  updated_at: "2026-05-30T22:44:30+08:00"

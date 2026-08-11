@@ -1,0 +1,20 @@
+---
+source: tui/src/chatwidget/tests/status_surface_previews.rs
+expression: terminal_title_popup_snapshot(&mut chat)
+---
+  配 置  Terminal Title
+  选 择  terminal title 中 显 示 的 项 目 。
+
+  Type to search
+  >
+› [x] monthly-limit  Remaining usage on the monthly usage limit (omitted when unavailable)
+  [x] weekly-limit   Remaining usage on the weekly usage limit (omitted when unavailable)
+  [ ] app-name       Codex app name
+  [ ] project-name   项 目 名 （ 缺 省 使 用 当 前 目 录 名 ）
+  [ ] current-dir    当 前 工 作 目 录
+  [ ] activity       工 作 中 显 示  spinner， 阻 塞 时 显 示  action-required 信 息 。
+  [ ] run-state      简 洁  session 运 行 状 态 文 本 （ Ready、 Working、 Thinking）
+  [ ] thread-title   当 前  thread 标 题 ； 未 命 名 时 显 示  thread 标 识
+
+  monthly 65% left | weekly 50% left
+  Press space to toggle; ←/→ to move; enter to confirm and close; esc to close

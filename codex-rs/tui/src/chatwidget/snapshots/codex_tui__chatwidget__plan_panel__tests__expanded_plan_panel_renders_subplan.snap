@@ -1,0 +1,13 @@
+---
+source: tui/src/chatwidget/plan_panel.rs
+expression: "render_panel(&panel, 72).join(\"\\n\")"
+---
+• C3 Ask Tools 2/4
+  Ship Ask and persistent plan UI.
+  ✓ Ask protocol
+    Structured answers are available.
+  ● Persistent Plan panel
+    SubPlan: TUI work
+    ✓ Store structured state
+    ● Render right-side persistent panel
+      Default idle collapses to one row.

@@ -1,0 +1,114 @@
+phase: discover
+cycle: C9
+status: completed
+started_at: "2026-06-14T08:52:58+08:00"
+completed_at: "2026-06-14T09:01:34+08:00"
+interaction:
+  mode: interactive
+  min_rounds: 3
+  completed_rounds: 3
+  explicit_end_signal_received: true
+  explicit_end_signal: "我感觉没问题了"
+p0_configure:
+  status: confirmed
+  source: ".pipeline/plan-state/p0-configure.yaml"
+findings:
+  task_category:
+    summary: "Built-in Deep Research capability with strong platform dependency and possible Hypo-Workflow command semantics."
+    user_notes:
+      - "User is unsure whether Deep Research belongs under `/hw`; if it should, corresponding Workflow changes should happen in Hypo-Workflow, while this repo focuses on making Subagent scheduling easier."
+  expected_outcome:
+    raw_reports: true
+    progress_panel: true
+    final_report: "complete and detailed"
+    recursive_exploration: true
+    follow_up_questions: true
+    deepening_research: true
+    user_notes:
+      - "Research should recursively explore findings, e.g. after finding A, continue researching topics behind A."
+  validation_contract:
+    primary_manual_scenario: "Use a concrete topic to manually verify Deep Research can investigate current large-model market latest models, performance, and pricing, then show the result."
+    observable_signals:
+      - "Question Tool clarification happens before execution."
+      - "Multiple Subagents perform scoped research."
+      - "Progress panel exposes active research work."
+      - "Raw reports are preserved."
+      - "A complete detailed synthesized report is produced."
+      - "Recursive exploration and follow-up/deeper research are observable."
+  initial_architecture_assessment:
+    recommendation: "Split responsibilities: Hypo-Workflow owns portable workflow semantics and artifact contract; Codex-VSP owns platform-specific Subagent scheduling, progress UI, recursive execution, and report presentation."
+    rationale:
+      - "Deep Research relies on platform-specific Subagent orchestration and UI surfaces."
+      - "Workflow should avoid embedding Codex-only execution details but can define command/status/output conventions."
+open_questions:
+  - "Which public command or entrypoint should users invoke first?"
+  - "What recursion controls, budget limits, and stop conditions are required?"
+  - "What exact artifact layout should be default under `.pipeline`, and how should custom output paths work?"
+  - "How should Codex upstream update assessment be integrated into this Cycle?"
+code_research:
+  completed_at: "2026-06-14T08:56:26+08:00"
+  evidence:
+    workflow_routing: "codex-rs/tui/src/workflow_slash_routing.rs exposes `/hw:*` routing and command palette helpers, not full command execution semantics."
+    workflow_guidance: "codex-rs/core/src/workflow_routing.rs injects Hypo-Workflow runtime guidance for `.pipeline` projects."
+    subagent_execution: "codex-rs/core/src/codex_delegate.rs provides run_codex_thread_interactive and run_codex_thread_one_shot for subagent-style child Codex threads."
+    app_server_spawn: "codex-rs/app-server/src/extensions.rs wires AgentSpawner to ThreadManager::spawn_subagent."
+    progress_ui: "codex-rs/tui/src/chatwidget/active_subagents.rs renders active Subagents and prompt/report viewer."
+    markdown_surface: "codex-rs/app-server/src/workflow_markdown_surface.rs already renders plan progress, Subagent prompt/report, tool output summary, and Request Input fallback."
+    workflow_files: "codex-rs/core/src/workflow_files.rs provides `.pipeline` state/log/progress and Subagent lifecycle helper APIs."
+  recommendation:
+    summary: "Build Deep Research as a reusable Codex-VSP research engine plus VSP UI/artifact surfaces, and generate a Hypo-Workflow integration proposal instead of making `/hw:research` the only first implementation target."
+    proposed_split:
+      hypo_workflow: "Portable command semantics, phase names, artifact contract, and optional `/hw:research` adapter."
+      codex_vsp: "Subagent scheduling, recursive research execution, progress UI, raw/final reports, follow-up/deepen controls, and local `.pipeline` artifact writer."
+round_2:
+  answered_at: "2026-06-14T08:55:25+08:00"
+  entrypoint_boundary:
+    decision: "research_before_recommendation"
+    user_selected: "Let agent recommend after code investigation."
+    implication: "Discover keeps entrypoint as open until code and Workflow boundary research is complete before Architecture."
+  recursion_budget:
+    max_depth_candidate: 10
+    max_subagents_candidate: 128
+    budget_required: true
+    pruning_required: true
+    pruning_idea: "Stop branches below an importance threshold or prune by ratio."
+    note: "Defaults can be aggressive but must include hard caps and cost/importance controls."
+  artifact_layout:
+    user_delegated_design: true
+    design_goal: "High readability, traceability, raw report preservation, and sensible `.pipeline` default with custom output support."
+round_3:
+  answered_at: "2026-06-14T08:58:33+08:00"
+  execution_experience:
+    question_tool_required: true
+    follow_up_required: true
+    progress_panel_manual_control: true
+    note: "User wants manual control in the progress panel, mandatory Question Tool clarification, and mandatory follow-up support."
+  network_boundary:
+    decision: "real_network_allowed"
+    implication: "Validation may use real network search or official web/API sources, with external-resource boundaries and source evidence."
+  codex_update_scope:
+    goal: "Update the fork base version directly to a suitable upstream Codex version."
+    implication: "C9 includes a high-risk upstream baseline update lane, not only a research report. Planning must include upstream comparison, merge/cherry-pick strategy, conflict handling, full validation, release/version metadata, and user gates before remote side effects."
+  risk_note:
+    - "Deep Research implementation and upstream baseline update are both substantial; Decompose must keep them as separate milestone lanes with explicit validation paths."
+    - "Fetching upstream, merging, pushing, tagging, or publishing are external/remote side effects and require explicit gates during execution."
+git_baseline_research:
+  completed_at: "2026-06-14T08:58:33+08:00"
+  current_branch: "main"
+  current_head_short: "af11d8a308"
+  current_version: "0.134.0-vsp.7.2"
+  latest_local_vsp_tag: "v0.134.0-vsp.7.2"
+  remotes:
+    origin: "git@gitlab.vsplab.cn:heyx/Codex.git"
+    upstream: "https://github.com/openai/codex.git"
+  dirty_worktree: true
+  planning_implications:
+    - "Upstream base update must include a clean-worktree or isolated worktree/branch gate before fetch/merge/cherry-pick."
+    - "Remote fetch, merge, push, tag, and release remain execution-time side effects and need explicit gates."
+    - "Version metadata, README/install docs, release manifest, package build, and GitLab release flow must be part of the update lane if the base version changes."
+scope_resolution:
+  decided_at: "2026-06-14T09:01:34+08:00"
+  c9_primary_delivery: "Complete upstream Codex baseline upgrade."
+  c9_secondary_delivery: "Deep Research design/prototype, not full production delivery."
+  sequencing: "Update base first, then design/prototype Deep Research on top of the updated baseline."
+  dirty_worktree_strategy: "Commit or checkpoint current archive/planning changes before upstream upgrade execution."

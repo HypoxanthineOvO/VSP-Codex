@@ -1,0 +1,30 @@
+p0_configure:
+  status: completed
+  completed_at: "2026-05-26T18:00:00+08:00"
+  source: project_config
+  notes:
+    - "Reused project-level configuration from .pipeline/config.yaml and current C3 cycle metadata."
+    - "Deep Plan DP001 has already resolved product and architecture decisions for Ask User Tools and Plan/SubPlan panel."
+  decisions:
+    workflow_kind: build
+    automation_level: balanced
+    output_language: zh-CN
+    output_timezone: Asia/Shanghai
+    execution_mode: self
+    worker_separation:
+      mode: strict
+      codex_execution_subworkers_authorized: true
+      authorized_scopes:
+        - /hw:start
+        - /hw:resume
+      required_roles:
+        - test
+        - implement
+        - audit
+    acceptance:
+      requires_user_confirmation_before_start: true
+      start_command_is_execution_confirmation: false
+      continuous_execution_after_start: false
+    lifecycle_policy:
+      reject_default_action: needs_revision
+      accept_next_action: start_execution

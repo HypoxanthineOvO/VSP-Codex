@@ -1,0 +1,31 @@
+---
+source: tui/src/chatwidget/tests/app_server.rs
+expression: popup
+---
+Subagents active (1) · Ctrl+O 详 情
+  Robie [explorer] · GPT 5 high · 运 行 中  · 0s
+
+
+  Active Subagents
+  Inspect currently running or waiting subagents.
+
+› 1. Robie [explorer]  id: 019cff70-2599-75e2-af72-b958ce5dc1cd
+                       status: 运 行 中
+                       role: Explorer
+                       model: GPT 5 high
+                       last tool: wait
+                       recent input: Inspect the recent app-server changes
+                       message: Reading protocol fixtures
+
+  Subagent Prompt/Report Viewer
+  Robie [explorer]
+  Prompt  Original / 原 文
+  Inspect the recent app-server changes
+  Prompt  Translated / 翻 译
+  正 在 生 成 机 器 翻 译 …（ 本 地 翻 译 服 务 不 可 用 时 保 持 原 文 ）
+  Report  Original / 原 文
+  Reading protocol fixtures
+  Report  Translated / 翻 译
+  正 在 生 成 机 器 翻 译 …（ 本 地 翻 译 服 务 不 可 用 时 保 持 原 文 ）
+
+  Press enter to confirm or esc to go back

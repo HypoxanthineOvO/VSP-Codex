@@ -1,0 +1,64 @@
+pipeline:
+  name: Deep Research Built-In And Codex Fork Assessment
+  status: executing
+  prompts_total: 6
+  prompts_completed: 5
+  started: "2026-06-14T08:44:37+08:00"
+  finished: null
+current:
+  phase: executing
+  prompt_index: 6
+  prompt_file: .pipeline/prompts/c9-006-deep-research-workflow-requirement-brief.md
+  prompt_name: Deep Research Workflow Requirement Brief
+  step: m6_ready
+  step_index: 1
+last_heartbeat: "2026-06-18T18:57:17+08:00"
+acceptance:
+  scope: cycle
+  state: active
+  cycle_id: C9
+  updated_at: "2026-06-14T15:05:25+08:00"
+milestones:
+  -
+    id: M1
+    name: Checkpoint Current Workflow State And Upgrade Branch
+    status: completed
+  -
+    id: M2
+    name: Upstream Baseline Diff And Merge
+    status: completed
+  -
+    id: M3
+    name: Preserve VSP Runtime Surfaces
+    status: completed
+  -
+    id: M4
+    name: Version Metadata And Release Surface Update
+    status: completed
+  -
+    id: M5
+    name: Broad Regression And GitLab Release
+    status: completed
+  -
+    id: M6
+    name: Deep Research Workflow Requirement Brief
+    status: in_progress
+history:
+  completed_prompts:
+    -
+      prompt: undefined
+      status: undefined
+      score_summary: null
+    -
+      prompt: undefined
+      status: undefined
+      score_summary: null
+    -
+      prompt: undefined
+      status: undefined
+      score_summary: null
+    -
+      prompt: undefined
+      status: undefined
+      score_summary: null
+    - .pipeline/prompts/c9-005-broad-regression-and-gitlab-release.md

@@ -1,0 +1,173 @@
+activation_authorized: false
+cycles:
+  - confidence: high
+    detail_policy: reference-legacy
+    missing: []
+    proposed: .pipeline/cycles/C1-vsp-codex-fork-customization
+    source: .pipeline/archives/C1-vsp-codex-fork-customization
+    source_files: 60
+  - confidence: high
+    detail_policy: reference-legacy
+    missing: []
+    proposed: .pipeline/cycles/C2-foundation-experience-optimization
+    source: .pipeline/archives/C2-foundation-experience-optimization
+    source_files: 37
+  - confidence: high
+    detail_policy: reference-legacy
+    missing: []
+    proposed: .pipeline/cycles/C3-ask-user-tools-plan-panel
+    source: .pipeline/archives/C3-ask-user-tools-plan-panel
+    source_files: 60
+  - confidence: review
+    detail_policy: reference-legacy
+    missing:
+      - knowledge-summary.md
+    proposed: .pipeline/cycles/C4-experience-optimization-release
+    source: .pipeline/archives/C4-experience-optimization-release
+    source_files: 18
+  - confidence: high
+    detail_policy: reference-legacy
+    missing: []
+    proposed: .pipeline/cycles/C5-experience-optimization-continuation
+    source: .pipeline/archives/C5-experience-optimization-continuation
+    source_files: 14
+  - confidence: review
+    detail_policy: reference-legacy
+    missing:
+      - PROGRESS.md
+    proposed: .pipeline/cycles/C6-compact-workflow-runtime-customization
+    source: .pipeline/archives/C6-compact-workflow-runtime-customization
+    source_files: 44
+  - confidence: review
+    detail_policy: reference-legacy
+    missing:
+      - PROGRESS.md
+    proposed: .pipeline/cycles/C7-experience-optimization-bugfix-sweep
+    source: .pipeline/archives/C7-experience-optimization-bugfix-sweep
+    source_files: 62
+  - confidence: high
+    detail_policy: reference-legacy
+    missing: []
+    proposed: .pipeline/cycles/C8-vscode-remote-ssh-session-compatibility-plugin-ux
+    source: .pipeline/archives/C8-vscode-remote-ssh-session-compatibility-plugin-ux
+    source_files: 54
+  - confidence: high
+    detail_policy: reference-legacy
+    missing: []
+    proposed: .pipeline/cycles/C9-deep-research-built-in-and-codex-fork-assessment
+    source: .pipeline/archives/C9-deep-research-built-in-and-codex-fork-assessment
+    source_files: 56
+inventory:
+  archive_files: 405
+  archived_cycles: 9
+  chat_files: 20
+  knowledge_files: 9
+  live_deliveries: 11
+  memory_records: 62
+  patch_files: 3
+  pipeline_files: 1051
+  pr_files: 30
+  top_level_counts:
+    HABITS.md: 1
+    INDEX.md: 1
+    PROGRESS.compact.md: 1
+    PROGRESS.md: 1
+    architecture: 13
+    architecture.md: 1
+    archives: 405
+    chat: 1
+    chats: 20
+    config.yaml: 1
+    cycle.yaml: 1
+    cycles: 4
+    debug: 17
+    derived-health.yaml: 1
+    evidence: 10
+    inbox: 1
+    knowledge: 9
+    log.compact.yaml: 1
+    log.yaml: 1
+    manifest.yaml: 1
+    memory: 88
+    patches: 3
+    patches.compact.md: 1
+    plan-state: 8
+    pr: 30
+    prompts: 5
+    release: 69
+    reports: 7
+    reports.compact.md: 1
+    review-20260531: 5
+    reviews: 31
+    rules.yaml: 1
+    runtime: 305
+    snapshots: 3
+    state.compact.yaml: 1
+    state.yaml: 1
+    tmp: 1
+kind: history-refresh-preview
+legacy_policy: read-only-preserve
+live_deliveries:
+  - id: chat-compatible-backend-deepseek-explorer
+    kind: cycle
+    source: .pipeline/runtime/objects/delivery/chat-compatible-backend-deepseek-explorer
+    status: accepted
+    updated: 2026-07-18T14:24:00+08:00
+  - id: local-compaction-state-continuity
+    kind: cycle
+    source: .pipeline/runtime/objects/delivery/local-compaction-state-continuity
+    status: accepted
+    updated: 2026-08-05T05:39:59.046Z
+  - id: release-workflow-alpha3-vsp-10-alpha1
+    kind: cycle
+    source: .pipeline/runtime/objects/delivery/release-workflow-alpha3-vsp-10-alpha1
+    status: accepted
+    updated: 2026-07-20T10:24:43.163Z
+  - id: vsp-10-alpha2-clean-release
+    kind: cycle
+    source: .pipeline/runtime/objects/delivery/vsp-10-alpha2-clean-release
+    status: cancelled
+    updated: 2026-08-01T05:24:58.335Z
+  - id: vsp-11-alpha4-compaction-release
+    kind: cycle
+    source: .pipeline/runtime/objects/delivery/vsp-11-alpha4-compaction-release
+    status: accepted
+    updated: 2026-08-05T10:06:00.618Z
+  - id: vsp-11-responses-stability
+    kind: goal
+    source: .pipeline/runtime/objects/delivery/vsp-11-responses-stability
+    status: accepted
+    updated: 2026-08-01T13:18:04.303Z
+  - id: vsp-codex-long-term-architecture-audit
+    kind: cycle
+    source: .pipeline/runtime/objects/delivery/vsp-codex-long-term-architecture-audit
+    status: accepted
+    updated: 2026-07-15T11:13:22.091Z
+  - id: vsp-daily-stability-repair
+    kind: goal
+    source: .pipeline/runtime/objects/delivery/vsp-daily-stability-repair
+    status: accepted
+    updated: 2026-07-16T02:20:00+08:00
+  - id: vsp-semantic-worker-routing
+    kind: goal
+    source: .pipeline/runtime/objects/delivery/vsp-semantic-worker-routing
+    status: accepted
+    updated: 2026-07-19T01:18:06.653+08:00
+  - id: vsp-thinking-hooks-repair
+    kind: goal
+    source: .pipeline/runtime/objects/delivery/vsp-thinking-hooks-repair
+    status: accepted
+    updated: 2026-07-19T13:05:44.152+08:00
+  - id: vsp-workspace-mainline-consolidation
+    kind: goal
+    source: .pipeline/runtime/objects/delivery/vsp-workspace-mainline-consolidation
+    status: accepted
+    updated: 2026-08-05T10:28:34.461Z
+status: waiting-review
+uncertainties:
+  - C4-experience-optimization-release 缺少 knowledge-summary.md，预览只能使用其他来源补足。
+  - C6-compact-workflow-runtime-customization 缺少 PROGRESS.md，预览只能使用其他来源补足。
+  - C7-experience-optimization-bugfix-sweep 缺少 PROGRESS.md，预览只能使用其他来源补足。
+  - Live Delivery vsp-10-alpha2-clean-release 状态为 cancelled，激活前必须解决或明确保留。
+  - 9 个旧 Knowledge 文件可能与 Memory Records 重叠，需要人工去重。
+  - 20 个旧 Chat 状态文件没有可靠 Cycle 绑定，不自动归入 Discussion。

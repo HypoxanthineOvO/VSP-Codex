@@ -1,0 +1,162 @@
+tracks:
+  - id: product_scope
+    title: "产品范围"
+    status: decided
+    goal: "明确 Ask User Tools 在 Codex 工作流中的使用场景、默认可用模式和最小闭环。"
+    current_understanding:
+      - "核心需求是让模型在不打断对话结构的情况下生成结构化问题，并等待用户回答。"
+      - "目标客户端包括当前 TUI，以及未来 VSCode 插件和 GUI。"
+      - "当前已有 request_user_input，但形态更像 Plan mode 的短单选问答工具。"
+      - "Ask Tools 不能限制在 Plan mode；用户主要在默认 bypass 工作流中讨论、执行并更新 `.pipeline`。"
+      - "C3 决策：root agent 的普通交互 turn 都可以使用 Ask，包括默认 bypass；无人值守或 UI-less 场景必须 fallback 或显式失败，不能无限等待。"
+    open_questions: []
+    dependencies:
+      - protocol_contract
+      - safety_privacy
+
+  - id: protocol_contract
+    title: "协议契约"
+    status: decided
+    goal: "把问题、答案、校验和展示意图表达成跨客户端稳定的 app-server v2/API 类型。"
+    current_understanding:
+      - "现有 `ToolRequestUserInputQuestion` 没有显式 question kind。"
+      - "现有答案统一是 `answers: Vec<String>`，足以承载 labels，但不足以表达排序、其他文本、secret redaction 和 option ids。"
+      - "v2 payload 需要遵守 camelCase、ts export、optional nullable 等 app-server 规则。"
+    candidate_question_kinds:
+      - single_choice
+      - multi_choice
+      - short_answer
+      - free_text
+      - ranking
+      - confirmation
+    notes:
+      - "多个编号问题逐个简答属于 short_answer/free_text 的多问题组合。"
+      - "ranking 在 C3 必须实现，但只做 order-only；排序答案返回 option id 顺序，不做 per-item notes。"
+      - "app-server v2 Ask API 在 C3 继续保持 experimental；C3 扩展实验字段和 schema，等至少一个非 TUI 客户端真实消费后再考虑稳定。"
+      - "native Ask UI 支持必须是独立 client capability，不能只看 experimentalApi。"
+    open_questions: []
+    dependencies:
+      - future_clients
+      - safety_privacy
+
+  - id: tui_experience
+    title: "TUI 体验"
+    status: decided
+    goal: "复用现有 bottom pane overlay，同时扩展多选、填空、排序等交互，不膨胀 chatwidget.rs。"
+    current_understanding:
+      - "当前 overlay 已支持选项、notes、多问题、未答确认和排队。"
+      - "排序题和多选题需要新的键盘操作与 snapshot 覆盖；C3 必须实现 order-only ranking。"
+      - "题目 UI 不应遮挡任务状态，应继续暂停 composer 并显示等待用户。"
+    risks:
+      - "排序交互如果只靠上下键/enter，容易和列表导航冲突。"
+      - "多选和 notes 同屏会增加窄屏布局压力。"
+    dependencies:
+      - protocol_contract
+
+  - id: future_clients
+    title: "未来客户端"
+    status: decided
+    goal: "确保 VSCode 插件和 GUI 可通过相同 RPC 渲染 native 问答，而不是解析 TUI 文案。"
+    current_understanding:
+      - "app-server v2 的 `item/tool/requestUserInput` 是自然边界。"
+      - "客户端需要知道题型、必填性、选项 id/label/description、默认值、secret 策略和提交/取消语义。"
+      - "C3 不把 Ask API 稳定化；未来 VSCode/GUI 先通过 experimental schema 和 native Ask capability 接入。"
+    dependencies:
+      - protocol_contract
+
+  - id: safety_privacy
+    title: "安全与隐私"
+    status: decided
+    goal: "定义 secret、历史展示、模型输出和 Subagent 路由边界。"
+    current_understanding:
+      - "现有协议已有 `isSecret`，但 C3 需要确认它如何影响 TUI 输入、history cell、transcript、logs 和返回给模型的内容。"
+      - "现有工具禁止非 root agent 直接调用 request_user_input。"
+      - "用户确认 Subagent 不应直接打开用户 Ask prompt。"
+      - "secret/private 答案在用户可见记录、history、transcript、日志、摘要中使用圆点掩码。"
+    open_questions: []
+    dependencies:
+      - product_scope
+      - protocol_contract
+
+  - id: implementation_plan
+    title: "实施计划"
+    status: open
+    goal: "在 readiness 后拆分普通 `/hw:plan` milestones。"
+    candidate_milestones:
+      - "协议模型与 schema 扩展"
+      - "core 工具 spec/normalization/feature gate"
+      - "TUI overlay 多题型交互"
+      - "Plan/SubPlan 结构化协议与工具接口"
+      - "TUI 常驻 Plan 面板布局与状态同步"
+      - "app-server request/response compatibility and tests"
+      - "history/transcript/privacy regression"
+      - "integration smoke and snapshot acceptance"
+    dependencies:
+      - product_scope
+      - protocol_contract
+      - tui_experience
+      - safety_privacy
+      - persistent_plan_panel
+      - plan_protocol_contract
+
+  - id: persistent_plan_panel
+    title: "Plan/SubPlan 常驻面板"
+    status: decided
+    goal: "把 Plan 从历史滚动内容升级为常驻、可扫描、可响应布局的工作状态窗口，优先放在 TUI 输入框上方右侧。"
+    current_understanding:
+      - "当前 proposed plan 和 update_plan 主要作为 history cell 渲染，用户需要滚动历史才能回看。"
+      - "用户明确要求 Plan 显示窗口规范化、常驻化，并位于输入框上方右侧。"
+      - "面板必须和 composer/bottom pane 布局协同，避免挤压输入区或在窄屏重叠。"
+      - "该面板应显示 structured Plan/SubPlan state，而不是解析 Markdown。"
+      - "Plan/SubPlan 面板平时显示，只有 Default idle 折叠。"
+      - "Default-idle 折叠态显示一行摘要：当前 root item、当前 SubPlan 标题（如果有）和 completed/total 进度。"
+      - "C3 首版不支持手动编辑；用户只能查看、展开/折叠和聚焦详情，修改由 LLM 工具负责。"
+    candidate_ui_behavior:
+      - "宽终端：输入框上方右侧显示紧凑 Plan 面板，左侧保留主要状态/活动摘要。"
+      - "中等宽度：显示当前进行中的 root step 和子步骤计数。"
+      - "窄终端：折叠为一行 plan progress，可用快捷键打开详情。"
+    open_questions: []
+    dependencies:
+      - plan_protocol_contract
+      - tui_experience
+
+  - id: plan_protocol_contract
+    title: "Plan/SubPlan 协议契约"
+    status: decided
+    goal: "定义 LLM 可填写的结构化 Plan/SubPlan 接口，支持常驻面板和未来客户端复用。"
+    current_understanding:
+      - "现有 `update_plan` 是 flat checklist，字段只有 step/status/explanation。"
+      - "现有 Plan mode proposed plan 是从 assistant markdown stream 中抽取，不适合作为常驻面板的权威状态。"
+      - "用户倾向改造旧 `update_plan`，而不是新增一个互相割裂的替代工具。"
+      - "目标模型是每个 Milestone/root item 下面一层 SubPlan。"
+      - "C3 决策：保留 flat checklist 兼容层，同时让 update_plan 新接口支持 item id、root item、一层 SubPlan 和 structured current-state snapshot。"
+      - "Plan/Ask 恢复使用 durable structured events + thread-level current-state snapshot。"
+    candidate_model:
+      - "Root plan 包含 plan id、title、items、updated_at。"
+      - "Plan item 包含 id、title、status、summary、optional subplan。"
+      - "SubPlan 初始建议限制为一层 tree；每个 SubPlan item 使用相同 status enum。"
+      - "状态 enum 可沿用 pending/in_progress/completed，并讨论 blocked/skipped 是否 C3 必需。"
+    open_questions: []
+    dependencies:
+      - persistent_plan_panel
+      - future_clients
+
+  - id: resume_fallback
+    title: "跨设备 Resume 与不支持客户端降级"
+    status: decided
+    goal: "确保 pending Ask 不会因为换电脑、resume 或客户端不支持 Ask UI 而卡死。"
+    current_understanding:
+      - "用户明确要求：如果 Codex 在一台电脑上提出 Ask，换另一台电脑 resume 时，应能在新电脑上弹出 Ask 框。"
+      - "如果当前会话端口/客户端不支持 native Ask UI，例如某些 VSCode 插件路径，应降级为常规对话问答。"
+      - "该需求需要协议携带 pending Ask 元数据、客户端能力协商、resume replay 和 fallback 输出策略。"
+      - "native Ask UI 支持由独立 client capability 声明；experimentalApi 只代表愿意接收实验 API，不代表有 UI 能力。"
+      - "fallback 普通聊天模板采用编号问题、题型标签、稳定选项 id/label 和回答格式示例。"
+    candidate_behavior:
+      - "支持 Ask UI 的客户端：resume 后重放 pending Ask overlay，保留原 question id、题型和选项。"
+      - "不支持 Ask UI 的客户端：模型/客户端发出普通编号问题，用户可在聊天里回答，系统把回答用于继续当前任务，不能无限等待原工具响应。"
+      - "如果 pending Ask 已过期或原 turn 不可恢复，应显式告诉用户并重新询问，而不是静默卡住。"
+    open_questions: []
+    dependencies:
+      - protocol_contract
+      - future_clients
+      - tui_experience

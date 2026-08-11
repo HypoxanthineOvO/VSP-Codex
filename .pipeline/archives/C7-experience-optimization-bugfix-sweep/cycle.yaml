@@ -1,0 +1,30 @@
+cycle:
+  number: 7
+  name: "Experience Optimization And Bugfix Sweep"
+  type: feature
+  status: completed
+  started: "2026-05-29T21:17:55+08:00"
+  completed: "2026-05-30T08:54:54+08:00"
+  closed_at: "2026-06-14T08:44:37+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources:
+    - archive
+    - deferred
+  previous_cycle: C6
+  summary: "Completed resume and scrollback stability, Subagent identity and viewer UX, rendering boundaries, structured Workflow interaction gates, Plan/SubPlan live surface, VSP release channels, and appearance entry polish."
+  lessons: "Historical archive metadata was reconstructed from reports, prompts, reviews, architecture notes, and PROGRESS because C7 had not been archived when originally completed."
+  plan:
+    phase: archived_reconstructed
+    prompts_total: 8
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+    blocked_on: null
+  lifecycle_policy:
+    reject:
+      default_action: needs_revision
+    accept:
+      next: follow_up_plan
+  continuations:
+    - "Manual smoke for long-session resume, Subagent prompt/report viewer, Appearance picker, and update confirmation cards."

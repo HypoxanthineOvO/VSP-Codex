@@ -1,0 +1,49 @@
+cycle: C7
+title: Experience Optimization And Bugfix Sweep
+status: generated_pending_prompt_audit
+generated_at: "2026-05-29T21:17:55+08:00"
+source_decompose: .pipeline/plan-state/c7-decompose.yaml
+checkpoint: .pipeline/plan-state/c7-p3-generate.md
+prompt_audit: .pipeline/reviews/C7/prompt-audit.md
+prompts:
+  - id: M1
+    name: Resume And Scrollback Stability
+    file: .pipeline/prompts/c7-001-resume-and-scrollback-stability.md
+  - id: M2
+    name: Subagent Identity, Role Policy, And Name Leases
+    file: .pipeline/prompts/c7-002-subagent-identity-role-policy-name-leases.md
+  - id: M3
+    name: Tool And Collaboration Output Rendering Boundaries
+    file: .pipeline/prompts/c7-003-tool-collaboration-rendering-boundaries.md
+  - id: M4
+    name: Subagent Prompt And Report Viewer
+    file: .pipeline/prompts/c7-004-subagent-prompt-report-viewer.md
+  - id: M5
+    name: Structured Interaction Gates And Authorization Cards
+    file: .pipeline/prompts/c7-005-structured-interaction-gates-authorization-cards.md
+  - id: M6
+    name: Workflow Plan/SubPlan Live Surface
+    file: .pipeline/prompts/c7-006-workflow-plan-subplan-live-surface.md
+  - id: M7
+    name: VSP Release Channels, Naming Metadata, And Updater
+    file: .pipeline/prompts/c7-007-vsp-release-channels-naming-updater.md
+  - id: M8
+    name: Appearance Entry Point And Final UX Polish
+    file: .pipeline/prompts/c7-008-appearance-entry-final-ux-polish.md
+worker_separation:
+  mode: strict
+  required_roles: [test, implement, audit]
+  codex_execution_subworkers_authorized: true
+interaction_cards:
+  required_user_decisions_use_request_user_input: true
+  true_permissions_use_request_permissions_or_approval_overlay: true
+  card_types:
+    - plan_confirmation
+    - phase_transition
+    - scope_selection
+    - revision_rejection
+    - authorization_intent
+    - release_update_confirmation
+p4_gate:
+  require_user_confirmation: true
+  require_prompt_audit: true

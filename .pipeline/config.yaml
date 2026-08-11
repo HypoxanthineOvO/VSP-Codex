@@ -1,0 +1,55 @@
+pipeline:
+  name: "Codex-VSP"
+  source: local
+  output: local
+  prompts_dir: .pipeline/prompts
+  reports_dir: .pipeline/reports
+
+project:
+  root: /home/heyx/Codex-VSP
+  type: rust-node-monorepo
+  primary_language: rust
+  secondary_languages:
+    - javascript
+    - typescript
+    - python
+  package_managers:
+    - cargo
+    - pnpm
+    - uv
+  build_systems:
+    - cargo
+    - bazel
+    - just
+
+default_workflow_kind: build
+
+automation:
+  level: balanced
+
+execution:
+  mode: self
+  steps:
+    preset: tdd
+  worker_separation:
+    mode: strict
+    ask_on_init_or_first_plan: true
+    codex_execution_subworkers_authorized: true
+    authorized_scopes:
+      - /hw:start
+      - /hw:resume
+    required_roles:
+      - test
+      - implement
+      - audit
+
+evaluation:
+  checks:
+    - tests_pass
+    - no_regressions
+    - matches_plan
+    - code_quality
+
+output:
+  language: zh-CN
+  timezone: Asia/Shanghai

@@ -1,0 +1,39 @@
+cycle: C9
+phase: generate
+status: completed_pending_execution_confirmation
+created_at: "2026-06-26T14:23:14+08:00"
+mode: append
+sources:
+  discover: ".plan-state/c9-upstream-alpha25-discover.yaml"
+  technical_stack: ".plan-state/c9-upstream-alpha25-technical-stack.yaml"
+  architecture: ".plan-state/c9-upstream-alpha25-architecture.yaml"
+  decompose: ".plan-state/c9-upstream-alpha25-decompose.yaml"
+generated_prompts:
+  - ".pipeline/prompts/c9-007-conflict-inventory-and-upstream-fix-baseline.md"
+  - ".pipeline/prompts/c9-008-sqlite-logging-convergence-and-runtime-io-smoke.md"
+  - ".pipeline/prompts/c9-009-protocol-contract-and-app-server-bridge-merge.md"
+  - ".pipeline/prompts/c9-010-core-workflow-runtime-and-adapter-preservation.md"
+  - ".pipeline/prompts/c9-011-tui-cli-vscode-and-user-surface-convergence.md"
+  - ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+generated_architecture:
+  - ".pipeline/architecture.md"
+generated_plan_state:
+  - ".plan-state/c9-upstream-alpha25-discover.yaml"
+  - ".plan-state/c9-upstream-alpha25-technical-stack.yaml"
+  - ".plan-state/c9-upstream-alpha25-technical-stack-summary.md"
+  - ".plan-state/c9-upstream-alpha25-architecture.yaml"
+  - ".plan-state/c9-upstream-alpha25-architecture-summary.md"
+  - ".plan-state/c9-upstream-alpha25-decompose.yaml"
+  - ".plan-state/c9-upstream-alpha25-technical-route.md"
+execution_gate:
+  requires_explicit_start_confirmation: true
+  recommended_command_after_confirmation: "/hw:start"
+  note: "Existing C9 execution state was not advanced to M7 during Generate."
+remote_side_effects:
+  gitlab_release_publish_allowed: false
+  push_or_tag_allowed: false
+version_gate:
+  deferred_to: "M12 pre-release confirmation"
+  options:
+    - "v0.140.0-vsp.8"
+    - "v0.140.0-vsp.8.1"

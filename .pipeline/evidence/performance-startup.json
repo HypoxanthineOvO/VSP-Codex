@@ -1,0 +1,72 @@
+{
+  "codexBin": "/home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex",
+  "generatedAt": "2026-05-28T05:13:25.036851+00:00",
+  "repoRoot": "/home/heyx/Codex-VSP",
+  "runId": "e88396bd-aa1d-40bc-bf03-a5581ddd132d",
+  "scenarios": [
+    {
+      "command": [
+        "/home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex",
+        "--no-alt-screen",
+        "--config",
+        "features={}"
+      ],
+      "details": {
+        "exitStatus": 15,
+        "observedBytes": 87,
+        "sample": "\u001b[?2004h\u001b[>4;0m\u001b[>7u\u001b[?1004h\u001b[6n\u001b]10;?\u001b\\\u001b]11;?\u001b\\\u001b[?u\u001b[c\u001b[?2026h\u001b[m\u001b[m\u001b[0m\u001b[?25l\u001b[?2026l",
+        "visibleSample": ""
+      },
+      "durationMs": null,
+      "reason": "only terminal control output observed before timeout",
+      "scenario": "cold_tui_start",
+      "status": "skipped"
+    },
+    {
+      "command": [
+        "/home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex",
+        "app-server",
+        "thread/list"
+      ],
+      "details": {
+        "hasNextCursor": false,
+        "initializeDurationMs": 283,
+        "threadCount": 0
+      },
+      "durationMs": 5,
+      "reason": null,
+      "scenario": "resume_list_first_page",
+      "status": "passed"
+    },
+    {
+      "command": [
+        "/home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex",
+        "app-server",
+        "thread/resume"
+      ],
+      "details": {},
+      "durationMs": null,
+      "reason": "no thread id was supplied and isolated evidence CODEX_HOME did not contain a historical session",
+      "scenario": "open_historical_session",
+      "status": "skipped"
+    },
+    {
+      "command": [
+        "/home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex",
+        "app-server"
+      ],
+      "details": {
+        "responseKeys": [
+          "id",
+          "result"
+        ]
+      },
+      "durationMs": 304,
+      "reason": null,
+      "scenario": "vscode_app_server_initialize",
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "timeoutSeconds": 3.0
+}

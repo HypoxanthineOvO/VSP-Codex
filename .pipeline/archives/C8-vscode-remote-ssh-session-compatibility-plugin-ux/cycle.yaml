@@ -1,0 +1,54 @@
+cycle:
+  number: 8
+  name: "VSCode Remote SSH Session Compatibility And Plugin UX"
+  type: feature
+  status: completed
+  started: "2026-05-30T13:37:59+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources:
+    - archive
+    - knowledge
+    - release
+  previous_cycle: C7
+  summary: "Plan Remote SSH VSCode plugin compatibility for VSP-Codex sessions, provider resume contracts, official Codex session discovery, Request Tool/Input UX, and markdown Workflow surfaces without publishing a release."
+  lessons: null
+  plan:
+    phase: ready_to_start
+    generated_at: "2026-05-30T13:37:59+08:00"
+    prompt_audit_completed_at: "2026-05-30T13:50:47+08:00"
+    confirmed_at: "2026-05-30T14:15:02+08:00"
+    prompts_total: 6
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+    blocked_on: null
+  execution:
+    phase: completed
+    current_milestone: M6
+    current_prompt: ".pipeline/prompts/c8-006-markdown-workflow-surface-remote-ssh-acceptance.md"
+    current_step: completed
+    started_at: "2026-05-30T14:17:54+08:00"
+    completed_at: "2026-05-30T22:44:30+08:00"
+    last_completed_milestone: M6
+    last_completed_at: "2026-05-30T22:44:30+08:00"
+  lifecycle_policy:
+    reject:
+      default_action: needs_revision
+    accept:
+      next: follow_up_plan
+  continuations: []
+  scope:
+    topics:
+      - "Remote SSH VSCode integration probe and settings diagnostics"
+      - "Official VSCode plugin protocol capability mapping"
+      - "Provider and resume compatibility contract"
+      - "Official Codex session discovery strategy"
+      - "Request Tool / Request Input plugin UX without forking the plugin by default"
+      - "Markdown Workflow surface and Remote SSH end-to-end acceptance"
+    initial_notes:
+      - "Remote SSH is the primary environment; VSP-Codex and sessions live on the remote host."
+      - "Manage remote .vscode-server Machine settings first; local VSCode settings are optional regression context."
+      - "Official Codex session interop depth remains research-first until M4 produces a risk-ranked strategy."
+      - "VSCode plugin source is treated as a black-box/VSIX client by default; do not fork or modify plugin code unless P2 evidence proves it is necessary and the user confirms."
+      - "Prompt set must receive Subagent prompt audit before P4 confirmation."

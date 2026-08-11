@@ -1,0 +1,15 @@
+cycle_id: C3
+cycle_number: 3
+cycle_name: "Ask User Tools 与 Plan 常驻窗口"
+state: rejected
+rejected_at: "2026-05-26T21:48:30+08:00"
+trigger: user
+feedback: |
+  用户拒绝 C3。核心原因：用户明确要求 request_user_input/Ask User Tools 在任何时候都应该可以使用，尤其是普通 Default/Bypass 会话中；但重启当前会话后，助手在需要提问时仍然没有使用 Ask Tools，而是解释当前 Default mode 下不能调用 request_user_input。用户认为这证明实现或端到端工具暴露存在问题。
+
+  用户要求回顾该问题：不能只把它解释为旧运行壳或当前模式限制。C3 必须验证真实重启后的普通会话中 Ask 工具可由 Codex 调用并弹出 UI；否则不能验收。
+required_revision:
+  - "审计 request_user_input 在 Default/Bypass 普通会话中的 model-visible tool 暴露链路。"
+  - "补充端到端验证：重启后的真实会话中，Codex 在普通提问场景必须能调用 Ask UI，而不是退回纯文本问题。"
+  - "如果当前平台工具列表仍限制 request_user_input 只能在 Plan mode 使用，需要修复 tool capability export/runtime mode gating，而不是只改仓库内部 schema。"
+  - "新增交互式验证 Milestone，覆盖 Ask 提问、Plan/SubPlan 更新、写计划落盘，并由用户验收。"

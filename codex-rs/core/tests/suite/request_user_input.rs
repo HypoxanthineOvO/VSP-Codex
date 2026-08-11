@@ -1,0 +1,578 @@
+#![allow(clippy::unwrap_used)]
+
+use core_test_support::test_codex::local_selections;
+use std::collections::HashMap;
+use std::future::Future;
+
+use codex_features::Feature;
+use codex_protocol::config_types::CollaborationMode;
+use codex_protocol::config_types::ModeKind;
+use codex_protocol::config_types::Settings;
+use codex_protocol::models::PermissionProfile;
+use codex_protocol::protocol::AskForApproval;
+use codex_protocol::protocol::EventMsg;
+use codex_protocol::protocol::Op;
+use codex_protocol::request_user_input::RequestUserInputAnswer;
+use codex_protocol::request_user_input::RequestUserInputResponse;
+use codex_protocol::user_input::UserInput;
+use core_test_support::TempDirExt;
+use core_test_support::responses;
+use core_test_support::responses::ResponsesRequest;
+use core_test_support::responses::ev_assistant_message;
+use core_test_support::responses::ev_completed;
+use core_test_support::responses::ev_completed_with_tokens;
+use core_test_support::responses::ev_function_call;
+use core_test_support::responses::ev_response_created;
+use core_test_support::responses::sse;
+use core_test_support::responses::start_mock_server;
+use core_test_support::skip_if_no_network;
+use core_test_support::test_codex::TestCodex;
+use core_test_support::test_codex::test_codex;
+use core_test_support::test_codex::turn_permission_fields;
+use core_test_support::wait_for_event;
+use core_test_support::wait_for_event_match;
+use pretty_assertions::assert_eq;
+use serde_json::Value;
+use serde_json::json;
+use tokio::time::Duration;
+use tokio::time::timeout;
+
+const REQUEST_USER_INPUT_TEST_STACK_SIZE_BYTES: usize = 16 * 1024 * 1024;
+
+fn run_request_user_input_runtime_test<F>(future: F) -> anyhow::Result<()>
+where
+    F: Future<Output = anyhow::Result<()>>,
+{
+    let runtime = tokio::runtime::Builder::new_current_thread()
+        .thread_stack_size(REQUEST_USER_INPUT_TEST_STACK_SIZE_BYTES)
+        .enable_all()
+        .build()?;
+    runtime.block_on(future)
+}
+
+fn call_output(req: &ResponsesRequest, call_id: &str) -> String {
+    let raw = req.function_call_output(call_id);
+    assert_eq!(
+        raw.get("call_id").and_then(Value::as_str),
+        Some(call_id),
+        "mismatched call_id in function_call_output"
+    );
+    let (content_opt, _success) = req
+        .function_call_output_content_and_success(call_id)
+        .expect("function_call_output present");
+    content_opt.expect("function_call_output content present")
+}
+
+fn call_output_content_and_success(
+    req: &ResponsesRequest,
+    call_id: &str,
+) -> (String, Option<bool>) {
+    let raw = req.function_call_output(call_id);
+    assert_eq!(
+        raw.get("call_id").and_then(Value::as_str),
+        Some(call_id),
+        "mismatched call_id in function_call_output"
+    );
+    let (content_opt, success) = req
+        .function_call_output_content_and_success(call_id)
+        .expect("function_call_output present");
+    let content = content_opt.expect("function_call_output content present");
+    (content, success)
+}
+
+fn tool_names(body: &Value) -> Vec<String> {
+    body.get("tools")
+        .and_then(Value::as_array)
+        .map(|tools| {
+            tools
+                .iter()
+                .filter_map(|tool| {
+                    tool.get("name")
+                        .or_else(|| tool.get("type"))
+                        .and_then(Value::as_str)
+                        .map(str::to_string)
+                })
+                .collect()
+        })
+        .unwrap_or_default()
+}
+
+#[test]
+fn request_user_input_is_model_visible_in_default_turn() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(request_user_input_is_model_visible_in_default_turn_impl())
+}
+
+async fn request_user_input_is_model_visible_in_default_turn_impl() -> anyhow::Result<()> {
+    skip_if_no_network!(Ok(()));
+
+    let server = start_mock_server().await;
+    let response = sse(vec![
+        ev_response_created("resp-1"),
+        ev_assistant_message("msg-1", "done"),
+        ev_completed("resp-1"),
+    ]);
+    let mock = responses::mount_sse_once(&server, response).await;
+    let test = test_codex().build(&server).await?;
+
+    test.codex
+        .submit(Op::UserInput {
+            items: vec![UserInput::Text {
+                text: "ask me with the native Ask tool if you need a choice".into(),
+                text_elements: Vec::new(),
+            }],
+            additional_context: Default::default(),
+            final_output_json_schema: None,
+            responsesapi_client_metadata: None,
+            thread_settings: codex_protocol::protocol::ThreadSettingsOverrides {
+                collaboration_mode: Some(CollaborationMode {
+                    mode: ModeKind::Default,
+                    settings: Settings {
+                        model: test.session_configured.model.clone(),
+                        reasoning_effort: None,
+                        developer_instructions: None,
+                    },
+                }),
+                ..Default::default()
+            },
+        })
+        .await?;
+
+    wait_for_event(&test.codex, |event| {
+        matches!(event, EventMsg::TurnComplete(_))
+    })
+    .await;
+
+    let body = mock.single_request().body_json();
+    let tools = tool_names(&body);
+    assert!(
+        tools.contains(&"request_user_input".to_string()),
+        "request_user_input must be model-visible in ordinary Default turns; got {tools:?}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn request_user_input_round_trip_resolves_pending() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(request_user_input_round_trip_for_mode(
+        ModeKind::Plan,
+        /*auto_resolution_ms*/ None,
+    ))
+}
+
+#[test]
+fn request_user_input_round_trip_emits_auto_resolution_ms() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(request_user_input_round_trip_for_mode(
+        ModeKind::Plan,
+        Some(60_000),
+    ))
+}
+
+async fn request_user_input_round_trip_for_mode(
+    mode: ModeKind,
+    auto_resolution_ms: Option<u64>,
+) -> anyhow::Result<()> {
+    skip_if_no_network!(Ok(()));
+
+    let server = start_mock_server().await;
+
+    #[allow(clippy::expect_used)]
+    let TestCodex {
+        codex,
+        cwd,
+        session_configured,
+        ..
+    } = test_codex()
+        .with_config(move |config| {
+            if mode == ModeKind::Default {
+                config
+                    .features
+                    .enable(Feature::DefaultModeRequestUserInput)
+                    .expect("test config should allow feature update");
+            }
+        })
+        .build(&server)
+        .await?;
+
+    let call_id = "user-input-call";
+    let mut request_args = json!({
+        "questions": [{
+            "id": "confirm_path",
+            "header": "Confirm",
+            "question": "Proceed with the plan?",
+            "options": [{
+                "label": "Yes (Recommended)",
+                "description": "Continue the current plan."
+            }, {
+                "label": "No",
+                "description": "Stop and revisit the approach."
+            }]
+        }]
+    });
+    if let Some(auto_resolution_ms) = auto_resolution_ms {
+        let request_args = request_args
+            .as_object_mut()
+            .expect("request_user_input args should be a JSON object");
+        request_args.insert("autoResolutionMs".to_string(), json!(auto_resolution_ms));
+    }
+    let request_args = request_args.to_string();
+
+    let first_response = sse(vec![
+        ev_response_created("resp-1"),
+        ev_function_call(call_id, "request_user_input", &request_args),
+        ev_rate_limits(),
+        ev_completed("resp-1"),
+    ]);
+    responses::mount_sse_once(&server, first_response).await;
+
+    let second_response = sse(vec![
+        ev_assistant_message("msg-1", "thanks"),
+        ev_completed("resp-2"),
+    ]);
+    let second_mock = responses::mount_sse_once(&server, second_response).await;
+
+    let (sandbox_policy, permission_profile) =
+        turn_permission_fields(PermissionProfile::Disabled, cwd.path());
+
+    codex
+        .submit(Op::UserInput {
+            items: vec![UserInput::Text {
+                text: "please confirm".into(),
+                text_elements: Vec::new(),
+            }],
+            final_output_json_schema: None,
+            responsesapi_client_metadata: None,
+            additional_context: Default::default(),
+            thread_settings: codex_protocol::protocol::ThreadSettingsOverrides {
+                environments: Some(local_selections(cwd.abs())),
+                approval_policy: Some(AskForApproval::Never),
+                sandbox_policy: Some(sandbox_policy),
+                permission_profile,
+                collaboration_mode: Some(CollaborationMode {
+                    mode,
+                    settings: Settings {
+                        model: session_configured.model.clone(),
+                        reasoning_effort: None,
+                        developer_instructions: None,
+                    },
+                }),
+                ..Default::default()
+            },
+        })
+        .await?;
+
+    let request = wait_for_event_match(&codex, |event| match event {
+        EventMsg::RequestUserInput(request) => Some(request.clone()),
+        _ => None,
+    })
+    .await;
+    assert_eq!(request.call_id, call_id);
+    assert_eq!(request.questions.len(), 1);
+    assert_eq!(request.auto_resolution_ms, auto_resolution_ms);
+    assert_eq!(request.questions[0].is_other, true);
+    assert!(
+        timeout(Duration::from_millis(200), async {
+            loop {
+                let event = codex
+                    .next_event()
+                    .await
+                    .expect("event stream should stay open");
+                if matches!(event.msg, EventMsg::TokenCount(_)) {
+                    return;
+                }
+            }
+        })
+        .await
+        .is_err(),
+        "TokenCount should wait until request_user_input resolves"
+    );
+
+    let mut answers = HashMap::new();
+    answers.insert(
+        "confirm_path".to_string(),
+        RequestUserInputAnswer {
+            selected_option_ids: None,
+            ordered_option_ids: None,
+            free_text: None,
+            legacy_answers: None,
+            answers: vec!["yes".to_string()],
+        },
+    );
+    let response = RequestUserInputResponse { answers };
+    codex
+        .submit(Op::UserInputAnswer {
+            id: request.turn_id.clone(),
+            response,
+        })
+        .await?;
+
+    wait_for_event(&codex, |event| matches!(event, EventMsg::TokenCount(_))).await;
+    wait_for_event(&codex, |event| matches!(event, EventMsg::TurnComplete(_))).await;
+
+    let req = second_mock.single_request();
+    let output_text = call_output(&req, call_id);
+    let output_json: Value = serde_json::from_str(&output_text)?;
+    assert_eq!(
+        output_json,
+        json!({
+            "answers": {
+                "confirm_path": { "answers": ["yes"] }
+            }
+        })
+    );
+
+    Ok(())
+}
+
+fn ev_rate_limits() -> Value {
+    json!({
+        "type": "codex.rate_limits",
+        "plan_type": "plus",
+        "rate_limits": {
+            "allowed": true,
+            "limit_reached": false,
+            "primary": {
+                "used_percent": 42,
+                "window_minutes": 60,
+                "reset_at": 1700000000
+            },
+            "secondary": null
+        },
+        "code_review_rate_limits": null,
+        "credits": null,
+        "promo": null
+    })
+}
+
+#[test]
+fn request_user_input_interrupt_emits_deferred_token_count() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(
+        request_user_input_interrupt_emits_deferred_token_count_impl(),
+    )
+}
+
+async fn request_user_input_interrupt_emits_deferred_token_count_impl() -> anyhow::Result<()> {
+    skip_if_no_network!(Ok(()));
+
+    let server = start_mock_server().await;
+    let TestCodex {
+        codex,
+        cwd,
+        session_configured,
+        ..
+    } = test_codex().build(&server).await?;
+
+    let call_id = "user-input-interrupt";
+    let request_args = json!({
+        "questions": [{
+            "id": "confirm_path",
+            "header": "Confirm",
+            "question": "Proceed with the plan?",
+            "options": [{
+                "label": "Yes (Recommended)",
+                "description": "Continue the current plan."
+            }, {
+                "label": "No",
+                "description": "Stop and revisit the approach."
+            }]
+        }]
+    })
+    .to_string();
+
+    let response = sse(vec![
+        ev_response_created("resp-interrupt"),
+        ev_function_call(call_id, "request_user_input", &request_args),
+        ev_completed_with_tokens("resp-interrupt", /*total_tokens*/ 77),
+    ]);
+    responses::mount_sse_once(&server, response).await;
+
+    let (sandbox_policy, permission_profile) =
+        turn_permission_fields(PermissionProfile::Disabled, cwd.path());
+    codex
+        .submit(Op::UserInput {
+            items: vec![UserInput::Text {
+                text: "please confirm".into(),
+                text_elements: Vec::new(),
+            }],
+            final_output_json_schema: None,
+            responsesapi_client_metadata: None,
+            additional_context: Default::default(),
+            thread_settings: codex_protocol::protocol::ThreadSettingsOverrides {
+                environments: Some(local_selections(cwd.abs())),
+                approval_policy: Some(AskForApproval::Never),
+                sandbox_policy: Some(sandbox_policy),
+                permission_profile,
+                collaboration_mode: Some(CollaborationMode {
+                    mode: ModeKind::Plan,
+                    settings: Settings {
+                        model: session_configured.model,
+                        reasoning_effort: None,
+                        developer_instructions: None,
+                    },
+                }),
+                ..Default::default()
+            },
+        })
+        .await?;
+
+    let request = wait_for_event_match(&codex, |event| match event {
+        EventMsg::RequestUserInput(request) => Some(request.clone()),
+        _ => None,
+    })
+    .await;
+
+    codex.submit(Op::Interrupt).await?;
+
+    let token_count = wait_for_event_match(&codex, |event| match event {
+        EventMsg::TokenCount(token_count) => Some(token_count.clone()),
+        _ => None,
+    })
+    .await;
+    assert_eq!(
+        token_count
+            .info
+            .map(|info| info.total_token_usage.total_tokens),
+        Some(77)
+    );
+    wait_for_event(&codex, |event| matches!(event, EventMsg::TurnAborted(_))).await;
+
+    assert_eq!(request.call_id, call_id);
+    Ok(())
+}
+
+async fn request_user_input_round_trip_for_custom_mode<F>(
+    mode_name: &str,
+    build_mode: F,
+) -> anyhow::Result<()>
+where
+    F: FnOnce(String) -> CollaborationMode,
+{
+    skip_if_no_network!(Ok(()));
+
+    let server = start_mock_server().await;
+
+    let mut builder = test_codex();
+    let TestCodex {
+        codex,
+        cwd,
+        session_configured,
+        ..
+    } = builder.build(&server).await?;
+
+    let mode_slug = mode_name.to_lowercase().replace(' ', "-");
+    let call_id = format!("user-input-{mode_slug}-call");
+    let request_args = json!({
+        "questions": [{
+            "id": "confirm_path",
+            "header": "Confirm",
+            "question": "Proceed with the plan?",
+            "options": [{
+                "label": "Yes (Recommended)",
+                "description": "Continue the current plan."
+            }, {
+                "label": "No",
+                "description": "Stop and revisit the approach."
+            }]
+        }]
+    })
+    .to_string();
+
+    let first_response = sse(vec![
+        ev_response_created("resp-1"),
+        ev_function_call(&call_id, "request_user_input", &request_args),
+        ev_completed("resp-1"),
+    ]);
+    responses::mount_sse_once(&server, first_response).await;
+
+    let session_model = session_configured.model.clone();
+    let collaboration_mode = build_mode(session_model.clone());
+    let (sandbox_policy, permission_profile) =
+        turn_permission_fields(PermissionProfile::Disabled, cwd.path());
+
+    codex
+        .submit(Op::UserInput {
+            items: vec![UserInput::Text {
+                text: "please confirm".into(),
+                text_elements: Vec::new(),
+            }],
+            final_output_json_schema: None,
+            responsesapi_client_metadata: None,
+            additional_context: Default::default(),
+            thread_settings: codex_protocol::protocol::ThreadSettingsOverrides {
+                environments: Some(local_selections(cwd.abs())),
+                approval_policy: Some(AskForApproval::Never),
+                sandbox_policy: Some(sandbox_policy),
+                permission_profile,
+                collaboration_mode: Some(collaboration_mode),
+                ..Default::default()
+            },
+        })
+        .await?;
+
+    let request = wait_for_event_match(&codex, |event| match event {
+        EventMsg::RequestUserInput(request) => Some(request.clone()),
+        _ => None,
+    })
+    .await;
+    assert_eq!(request.call_id, call_id);
+    assert_eq!(request.questions.len(), 1);
+
+    let mut answers = HashMap::new();
+    answers.insert(
+        "confirm_path".to_string(),
+        RequestUserInputAnswer {
+            selected_option_ids: None,
+            ordered_option_ids: None,
+            free_text: None,
+            legacy_answers: None,
+            answers: vec![format!("{mode_name} accepted")],
+        },
+    );
+    codex
+        .submit(Op::UserInputAnswer {
+            id: request.turn_id.clone(),
+            response: RequestUserInputResponse { answers },
+        })
+        .await?;
+    wait_for_event(&codex, |event| matches!(event, EventMsg::TurnComplete(_))).await;
+
+    Ok(())
+}
+
+#[test]
+fn request_user_input_round_trip_in_execute_mode_alias() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(request_user_input_round_trip_for_custom_mode(
+        "Execute",
+        |model| CollaborationMode {
+            mode: ModeKind::Execute,
+            settings: Settings {
+                model,
+                reasoning_effort: None,
+                developer_instructions: None,
+            },
+        },
+    ))
+}
+
+#[test]
+fn request_user_input_round_trip_in_default_mode_with_feature() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(request_user_input_round_trip_for_mode(
+        ModeKind::Default,
+        /*auto_resolution_ms*/ None,
+    ))
+}
+
+#[test]
+fn request_user_input_round_trip_in_pair_mode_alias() -> anyhow::Result<()> {
+    run_request_user_input_runtime_test(request_user_input_round_trip_for_custom_mode(
+        "Pair Programming",
+        |model| CollaborationMode {
+            mode: ModeKind::PairProgramming,
+            settings: Settings {
+                model,
+                reasoning_effort: None,
+                developer_instructions: None,
+            },
+        },
+    ))
+}

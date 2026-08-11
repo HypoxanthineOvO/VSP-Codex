@@ -1,0 +1,63 @@
+{
+  "cycle": "C10",
+  "milestone": "M2",
+  "worker": "test",
+  "created_at_local": "2026-07-02T18:54:16+08:00",
+  "verdict": "PASS",
+  "scenario": "debug vsp-codex app-server initializes SQLite logging with isolated HOME/CODEX_HOME/CODEX_SQLITE_HOME; --listen off may exit non-zero after initialization",
+  "command": "HOME=/tmp/c10-m2-sqlite-smoke.E52PaM/home CODEX_HOME=/tmp/c10-m2-sqlite-smoke.E52PaM/codex-home CODEX_SQLITE_HOME=/tmp/c10-m2-sqlite-smoke.E52PaM/sqlite-home RUST_LOG=trace timeout -s INT 5s /home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex app-server --listen off",
+  "cwd": "/home/heyx/Codex-VSP",
+  "binary": "/home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex",
+  "isolation": {
+    "run_root": "/tmp/c10-m2-sqlite-smoke.E52PaM",
+    "home": "/tmp/c10-m2-sqlite-smoke.E52PaM/home",
+    "codex_home": "/tmp/c10-m2-sqlite-smoke.E52PaM/codex-home",
+    "sqlite_home": "/tmp/c10-m2-sqlite-smoke.E52PaM/sqlite-home"
+  },
+  "exit": {
+    "code": 1,
+    "duration_ms": 212,
+    "expected_exit": "non-zero is acceptable for --listen off because no transport is configured after initialization; pass is based on SQLite DB creation/query and noisy target rejection"
+  },
+  "files": {
+    "logs_db": "/tmp/c10-m2-sqlite-smoke.E52PaM/sqlite-home/logs_2.sqlite",
+    "logs_wal": "/tmp/c10-m2-sqlite-smoke.E52PaM/sqlite-home/logs_2.sqlite-wal",
+    "after": {
+      "logs_db_bytes": 49152,
+      "logs_wal_bytes": 0
+    }
+  },
+  "sqlite_queries": {
+    "status": "ok",
+    "total_rows": 0,
+    "noisy_target_total": 0,
+    "target_counts": [],
+    "tables": [
+      {
+        "name": "_sqlx_migrations"
+      },
+      {
+        "name": "logs"
+      },
+      {
+        "name": "sqlite_sequence"
+      }
+    ],
+    "noisy_targets_checked": [
+      "log",
+      "codex_otel.log_only",
+      "codex_otel.trace_safe"
+    ],
+    "stderr": {
+      "target": "",
+      "noisy": "",
+      "total": ""
+    }
+  },
+  "stdout_tail": "",
+  "stderr_tail": "2026-07-02T10:54:16.251202Z ERROR codex_app_server: Project-local config, hooks, and exec policies are disabled in the following folders until the project is trusted, but skills still load.\n    1. /home/heyx/Codex-VSP/.codex\n       To load project-local config, hooks, and exec policies, add /home/heyx/Codex-VSP as a trusted project in /tmp/c10-m2-sqlite-smoke.E52PaM/codex-home/config.toml.\n\nError: no transport configured; use --listen or enable remote control\n",
+  "pass_criteria": {
+    "logs_db_created": true,
+    "noisy_target_total_is_zero": true
+  }
+}

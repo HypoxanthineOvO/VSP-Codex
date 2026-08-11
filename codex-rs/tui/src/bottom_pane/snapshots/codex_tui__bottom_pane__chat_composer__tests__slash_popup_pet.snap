@@ -1,0 +1,9 @@
+---
+source: tui/src/bottom_pane/chat_composer.rs
+expression: terminal.backend()
+---
+"                                                            "
+"› /pet                                                      "
+"                                                            "
+"                                                            "
+"  /pets  选择或隐藏 terminal pet                            " Hidden by multi-width symbols: [(10, " "), (12, " "), (14, " "), (16, " "), (18, " ")]

@@ -1,0 +1,56 @@
+cycle:
+  number: 3
+  name: "Ask User Tools 与 Plan 常驻窗口"
+  type: feature
+  status: completed
+  started: "2026-05-26T17:11:55+08:00"
+  finished: "2026-05-27T16:35:00+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources: []
+  previous_cycle: C2
+  summary: "Delivered Ask User Tools, pending Ask resume/fallback, Plan/SubPlan structured state and persistent TUI panel, Plan freshness reminders, zh-CN card-style Ask UI, Subagent display consistency, and configurable Subagent nickname pools."
+  lessons: "Native interactive tools require real TUI restart and cross-session validation in addition to schema/unit coverage. Plan freshness must be runtime-enforced after compaction/tool bursts. User-visible UI work needs card hierarchy, localization, and snapshot evidence."
+  deep_plan:
+    package: ".pipeline/deep-plans/DP001-ask-user-tools"
+    status: converted
+    target_depth: implementation-ready
+  plan:
+    phase: extended
+    generated_at: "2026-05-27T13:52:46+08:00"
+    prompts_total: 13
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: false
+    continuous_execution_after_start: false
+    blocked_on: null
+  lifecycle_policy:
+    worker_separation: strict
+    required_roles:
+      - test
+      - implement
+      - audit
+    subworkers_authorized: true
+    reject:
+      default_action: needs_revision
+    accept:
+      next_action: start_execution
+    gates:
+      after_start: milestone
+      stop_only_for:
+        - real_blocker
+        - repeated_validation_failure
+        - missing_external_input
+        - final_user_acceptance
+  acceptance:
+    state: accepted
+    rejected_at: "2026-05-26T21:48:30+08:00"
+    accepted_at: "2026-05-27T16:35:00+08:00"
+    feedback_ref: ".pipeline/acceptance/cycle-C3-rejection-20260526T214830+0800.yaml"
+    revision_report: ".pipeline/reports/008-request-user-input-default-runtime-fix.md"
+    latest_retest: native_ask_ui_retest_passed
+    cross_device_acceptance: user_accepted_for_close
+    followups:
+      - plan_update_reminder_after_compaction
+      - ask_ui_interaction_tuning
+      - subagent_plan_ui_consistency
+      - subagent_nickname_candidates_config

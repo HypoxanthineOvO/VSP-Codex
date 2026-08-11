@@ -1,0 +1,76 @@
+cycle:
+  id: vsp-codex-fork-customization
+  title: "VSP Codex fork customization"
+  workflow_kind: build
+  status: m6_completed_awaiting_review
+  created_at: "2026-05-24T20:16:00+08:00"
+  updated_at: "2026-05-25T13:17:26+08:00"
+
+lifecycle_policy:
+  reject:
+    default_action: needs_revision
+  accept:
+    next: follow_up_plan
+
+execution:
+  worker_separation:
+    mode: strict
+    codex_execution_subworkers_authorized: true
+    authorized_scopes:
+      - /hw:start
+      - /hw:resume
+    required_roles:
+      - test
+      - implement
+      - audit
+
+current_scope:
+  generated_prompts:
+    - .pipeline/prompts/001-test-baseline.md
+    - .pipeline/prompts/002-tui-user-simulation-tests.md
+    - .pipeline/prompts/003-vsp-entrypoint-home.md
+  execution_boundary: "Milestone 6 is locally completed after user confirmation. M6 is limited to VSP branding, official prompt cleanup, and the resume provider-filter compatibility patch while preserving MCP, Skills, Plugins, OpenAI-compatible providers, and exec-server --remote."
+  p3_plan_audit: .pipeline/reviews/001-test-baseline-plan-audit.md
+  m1_report: .pipeline/reports/test-baseline.md
+  m1_audit: .pipeline/reviews/001-test-baseline-audit.md
+  m1_fix_audit: .pipeline/reviews/001-test-baseline-fix-audit.md
+  m2_prompt: .pipeline/prompts/002-tui-user-simulation-tests.md
+  m2_workers:
+    test: "019e5a0b-d30f-7533-b5d4-c5c828c462f1"
+    implement: "019e5a0c-1ac9-74c2-8b8e-74e2c1d62805"
+    audit: "019e5a17-3054-7bf1-85b4-f3bfe2f0f9c7"
+  m2_audit: .pipeline/reviews/002-tui-user-simulation-audit.md
+  gitlab_ci: .gitlab-ci.yml
+  m3_prompt: .pipeline/prompts/003-vsp-entrypoint-home.md
+  m3_workers:
+    test: "019e5a52-4dd3-7173-b8a3-58f707954dad"
+    implement: "019e5a53-7ce4-70a3-beef-15d99319b479"
+    implement_retry: "019e5a5a-e800-74f0-8ae5-2f05251eec0d"
+    implement_entrypoint: "019e5a65-8701-79d2-a46c-ce958cb35d63"
+    implement_import: "019e5a65-875c-7773-b9bc-e8f5ea0f4a5b"
+  m4_workers:
+    test: "019e5b25-6470-78b1-9883-3b5d5364cf7d"
+    implement: "019e5b44-116b-7242-963d-0f91088820d1"
+    audit: "019e5b55-c609-7451-867f-61aa32b3e539"
+  m5_workers:
+    audit: "019e5d3c-71cb-7da1-a3f6-ea6530c79210"
+  m5_review: .pipeline/reviews/005-official-service-entrypoints-audit.md
+  m6_review: .pipeline/reviews/006-vsp-branding-resume.md
+  prompt_patch_queue: .plan-state/prompt-patch-queue.yaml
+
+continuations:
+  - id: m2-tui-user-simulation-tests
+    title: "TUI simulated user regression framework"
+    status: completed_pushed_ci_passed
+  - id: m3-vsp-entrypoint-home
+    title: "vsp-codex entrypoint and ~/.vsp-codex home"
+    status: completed_pushed_ci_passed
+  - id: m4-provider-command
+    title: "Provider config and /provider"
+    status: completed_local_awaiting_review
+  - id: m5-disable-official-services
+    title: "Hide or disable official-service entrypoints"
+    status: completed_local_awaiting_review
+  - id: m6-vsp-branding-prompt-cleanup
+    title: "VSP branding and official prompt cleanup"
+    status: completed_local_awaiting_review

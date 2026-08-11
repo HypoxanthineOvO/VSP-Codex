@@ -1,0 +1,22 @@
+provider: gitlab
+kind: merge_request
+host: gitlab.vsplab.cn
+owner: heyx
+repository: Codex
+number: 1
+id: 4
+url: https://gitlab.vsplab.cn/heyx/Codex/-/merge_requests/1
+title: Fix VSP archive installer staging move
+state: opened
+source_branch: fix/install-archive-metadata-dir
+target_branch: main
+author: lichf
+sha: fc36c272fd09e8a4285f25338f04e48e0c83f144
+created_at: '2026-06-05T10:50:00.272Z'
+updated_at: '2026-06-05T10:50:01.588Z'
+status_snapshot:
+  detailed_merge_status: checking
+  has_conflicts: false
+  blocking_discussions_resolved: true
+  pipelines_count: 2
+archive_created_at: '2026-06-18T19:05:00+08:00'

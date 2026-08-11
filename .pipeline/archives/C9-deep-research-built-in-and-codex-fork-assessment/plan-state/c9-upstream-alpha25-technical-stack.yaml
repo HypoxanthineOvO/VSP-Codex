@@ -1,0 +1,101 @@
+cycle: C9
+phase: technical_stack
+status: confirmed
+created_at: "2026-06-26T14:07:58+08:00"
+discover_source: ".plan-state/c9-upstream-alpha25-discover.yaml"
+summary: "Technical stack checkpoint for syncing Codex-VSP toward upstream rust-v0.143.0-alpha.25 while preserving the VSP 0.140.0-vsp.8 series and validating SQLite persistent-log write behavior."
+repository:
+  type: rust-node-monorepo
+  primary_language: rust
+  secondary_languages:
+    - javascript
+    - typescript
+    - python
+  upstream_target_ref: rust-v0.143.0-alpha.25
+  current_branch: c9-upstream-0.143.0-alpha.25-vsp8
+toolchain:
+  rust:
+    workspace_manifest: codex-rs/Cargo.toml
+    workspace_version_current: "0.140.0-vsp.8"
+    ci_toolchain_observed: "1.93.0"
+    test_runner:
+      - cargo test
+      - cargo nextest
+    build_systems:
+      - cargo
+      - bazel
+      - just
+  node:
+    package_manager: "pnpm@10.33.0"
+    node_requirement: ">=22"
+    root_package_json: package.json
+    use: "repo formatting and JavaScript/plugin maintenance"
+  python:
+    use:
+      - release package builder
+      - CI/docs checks
+      - release/performance evidence scripts
+    important_scripts:
+      - scripts/build_vsp_preview_release.py
+      - scripts/build_codex_package.py
+      - scripts/check_ci_docs.py
+      - scripts/collect_performance_evidence.py
+release_surface:
+  local_package_builder: scripts/build_vsp_preview_release.py
+  builder_version_source: codex-rs/Cargo.toml
+  release_output_pattern: ".pipeline/release/v<workspace-version>/"
+  current_release_dir: ".pipeline/release/v0.140.0-vsp.8/"
+  gitlab_release_remote_write: "requires later explicit confirmation"
+  public_version_policy:
+    series: "0.140.0-vsp.8"
+    patch_allowed: "0.140.0-vsp.8.1"
+    final_tag_requires_confirmation: true
+implementation_substrate:
+  merge_strategy: incremental_merge_with_conflict_groups
+  preserve_rule: "Prefer official alpha.25 implementation when it is equivalent to VSP behavior; preserve VSP only for missing or intentionally different capabilities."
+  conflict_domains_for_architecture:
+    - "state/log_db and persistent SQLite logging"
+    - "app-server protocol and request_user_input/Question Tool surfaces"
+    - "core workflow context, plan freshness, goals, and multi-agent routing"
+    - "TUI workflow cards, plan panels, status surfaces, snapshots, and VSP provider UX"
+    - "CLI entrypoint, VSCode/Remote integration, update commands, installer behavior"
+    - "plugin/marketplace and OpenCode/Hypo-Workflow adapters"
+    - "release packaging, docs, and GitLab CI"
+validation_stack:
+  required_floor: full_release_dry_run
+  formatting:
+    - "cargo fmt --manifest-path codex-rs/Cargo.toml --all -- --check"
+    - "pnpm format"
+    - "python3 scripts/check_ci_docs.py"
+    - "git diff --check"
+  targeted_rust_checks:
+    - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-state filter -- --nocapture"
+    - "cargo check --manifest-path codex-rs/Cargo.toml -p codex-state -p codex-app-server -p codex-app-server-protocol -p codex-core -p codex-cli -p codex-tui"
+  broad_regression_candidates:
+    - "just test"
+    - "cargo nextest run --manifest-path codex-rs/Cargo.toml --no-fail-fast -p codex-state -p codex-app-server -p codex-app-server-protocol -p codex-core -p codex-cli -p codex-tui"
+    - "cargo nextest run --manifest-path codex-rs/Cargo.toml --no-fail-fast -p codex-tui"
+    - "cargo bench --manifest-path codex-rs/Cargo.toml --workspace --bench '*' -- --test"
+  sqlite_runtime_io_smoke:
+    required: true
+    planned_shape: "Run a bounded VSP Codex TUI/app-server scenario with isolated CODEX_HOME and CODEX_SQLITE_HOME, then measure logs_2.sqlite and logs_2.sqlite-wal growth and inspect persisted log targets."
+    pass_signal: "No sustained growth from log bridge or codex_otel noisy targets; rows for log, codex_otel.log_only, and codex_otel.trace_safe are absent or filtered."
+    needs_helper_or_manual_script: true
+  release_dry_run:
+    - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+    - "python3 scripts/build_vsp_preview_release.py --entrypoint-bin codex-rs/target/release/vsp-codex --force"
+    - "Verify archive, sha256, vsp-release-manifest.json, install docs, and release notes before any GitLab write."
+research_required:
+  - item: "Official alpha.25 equivalence for each VSP feature surface"
+    status: "defer_to_architecture"
+    reason: "Needs component-by-component comparison against upstream code before deciding preserve versus replace."
+  - item: "Exact SQLite runtime I/O threshold"
+    status: "open"
+    reason: "Discover requires real I/O observation, but the exact scenario duration and byte-growth threshold need Architecture/Decompose design."
+  - item: "GitLab release mechanics"
+    status: "known_boundary"
+    reason: "Local release dry run is allowed; actual remote release/asset update requires later explicit confirmation."
+non_goals:
+  - "Do not publish or push remote release artifacts during Plan."
+  - "Do not silently drop VSP features without an equivalence decision."
+  - "Do not replace the full release dry run with static log filter tests only."

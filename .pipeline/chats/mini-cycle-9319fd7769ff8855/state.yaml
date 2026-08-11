@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: ca148bee-a41f-4ff7-9f2b-418d3f811ba0
+topic_summary: 在 goal 里再加一个目标：刚才那个 TUI 提示还是不对，现在它好像被改成了一个 Remote 弹窗，我希望的是Ctrl+单击之后直接在 VSCode 里打开而不是外部打开
+turn_count: 15

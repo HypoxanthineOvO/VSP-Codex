@@ -1,0 +1,45 @@
+status: active
+updated_at: "2026-05-25T14:12:00+08:00"
+next_action: "Pause for user review of M6. If accepted, plan or start the next follow-up milestone."
+reason: "M6 branding and prompt cleanup is implemented and locally verified. Resume now shows shared sessions regardless of legacy provider metadata, visible startup/status/session/plugin/app-link surfaces use VSP or generic wording, official startup NUX/tooltips/model migration prompts are disabled under VSP, /provider now hides built-in official/local providers, and vsp-codex reports version 0.134.0-vsp.1."
+safe_resume_command: "/hw:resume"
+context:
+  current_cycle: vsp-codex-fork-customization
+  active_milestone: null
+  completed_milestone: M6
+  key_reports:
+    - .pipeline/reports/test-baseline.md
+    - .pipeline/reviews/001-test-baseline-audit.md
+    - .pipeline/reviews/001-test-baseline-fix-audit.md
+    - .plan-state/prompt-patch-queue.yaml
+    - .pipeline/prompts/002-tui-user-simulation-tests.md
+    - .pipeline/reviews/002-tui-user-simulation-implement.md
+    - .pipeline/reviews/002-tui-user-simulation-test.md
+    - .pipeline/reviews/002-tui-user-simulation-audit.md
+    - .pipeline/reviews/003-vsp-entrypoint-home-implement.md
+    - .pipeline/reviews/003-vsp-entrypoint-home-test.md
+    - .gitlab-ci.yml
+    - codex-rs/tui/src/vsp_provider.rs
+    - codex-rs/tui/src/chatwidget/provider_popups.rs
+    - codex-rs/app-server/tests/suite/v2/thread_settings_update.rs
+    - .pipeline/reviews/005-official-service-entrypoints-audit.md
+    - codex-rs/cli/src/main.rs
+    - codex-rs/cli/src/doctor/updates.rs
+    - codex-rs/tui/src/slash_command.rs
+    - codex-rs/tui/src/chatwidget/slash_dispatch.rs
+    - codex-rs/tui/src/status/card.rs
+    - .pipeline/reviews/006-vsp-branding-resume.md
+    - .pipeline/reviews/006-provider-version-patch.md
+    - codex-rs/tui/src/resume_picker.rs
+    - codex-rs/tui/src/history_cell/session.rs
+    - codex-rs/tui/src/onboarding/welcome.rs
+    - codex-rs/tui/src/chatwidget/plugins.rs
+    - codex-rs/tui/src/bottom_pane/app_link_view.rs
+  blocking_decisions:
+    - "Do not share VSP config/auth with official Codex. Share only sessions/skills/plugins assets unless a later explicit decision changes this."
+    - "When sharing sessions, avoid blindly sharing sqlite runtime DBs unless locking and concurrent official/VSP process behavior are understood."
+    - "M4 keeps MCP, Skills, Plugins, and OpenAI-compatible BaseURL/API Key providers. Official Cloud/OAuth/Remote cleanup remains M5."
+    - "VSP Provider initialization is required when the vsp provider is missing or incomplete, even if another provider is selected."
+    - "M5 gates official-service entrypoints instead of deleting their internals to keep future official upstream merges cheaper."
+    - "exec-server --remote remains available by explicit user decision; app-server remote-control and CLI cloud/login/update entrypoints are disabled."
+    - "Plain vsp-codex resume remains cwd-scoped; use vsp-codex resume --all to browse all shared sessions."

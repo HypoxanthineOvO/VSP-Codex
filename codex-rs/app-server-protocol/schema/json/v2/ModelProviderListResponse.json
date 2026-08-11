@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ModelProvider": {
+      "properties": {
+        "baseUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "credentialAvailable": {
+          "type": "boolean"
+        },
+        "credentialEnvKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "isAddon": {
+          "type": "boolean"
+        },
+        "models": {
+          "items": {
+            "$ref": "#/definitions/ModelProviderModel"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "credentialAvailable",
+        "id",
+        "isAddon",
+        "models",
+        "name"
+      ],
+      "type": "object"
+    },
+    "ModelProviderModel": {
+      "properties": {
+        "contextWindow": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "defaultReasoningEffort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ReasoningEffort"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "effectiveContextWindowPercent": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "supportedReasoningEfforts": {
+          "items": {
+            "$ref": "#/definitions/ReasoningEffort"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "contextWindow",
+        "displayName",
+        "effectiveContextWindowPercent",
+        "id",
+        "supportedReasoningEfforts"
+      ],
+      "type": "object"
+    },
+    "ReasoningEffort": {
+      "description": "A non-empty reasoning effort value advertised by the model.",
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "properties": {
+    "baseProviderId": {
+      "type": "string"
+    },
+    "currentProviderId": {
+      "type": "string"
+    },
+    "data": {
+      "items": {
+        "$ref": "#/definitions/ModelProvider"
+      },
+      "type": "array"
+    },
+    "nextCursor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "baseProviderId",
+    "currentProviderId",
+    "data"
+  ],
+  "title": "ModelProviderListResponse",
+  "type": "object"
+}

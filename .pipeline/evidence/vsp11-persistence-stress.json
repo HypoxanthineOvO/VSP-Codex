@@ -1,0 +1,411 @@
+{
+  "aggregate": {
+    "compatibilityReadLatencyMs": {
+      "count": 2400,
+      "max": 176,
+      "min": 65,
+      "p50": 93,
+      "p95": 101,
+      "p99": 147
+    },
+    "maxRssDeltaKiB": 0,
+    "metadataWriteLatencyMs": {
+      "count": 240,
+      "max": 89,
+      "min": 17,
+      "p50": 25,
+      "p95": 54,
+      "p99": 70
+    },
+    "stateReadLatencyMs": {
+      "count": 2400,
+      "max": 25,
+      "min": 0,
+      "p50": 1,
+      "p95": 2,
+      "p99": 12
+    },
+    "threadStartLatencyMs": {
+      "count": 240,
+      "max": 121,
+      "min": 56,
+      "p50": 70,
+      "p95": 103,
+      "p99": 118
+    },
+    "writeLatencyMs": {
+      "count": 240,
+      "max": 170,
+      "min": 73,
+      "p50": 96,
+      "p95": 142,
+      "p99": 156
+    }
+  },
+  "codexBin": "/tmp/vsp11-cargo-target/release/vsp-codex",
+  "generatedAt": "2026-08-01T12:22:50.925578+00:00",
+  "idleFileSizes": {
+    "after": {
+      "logs_2.sqlite": 49152,
+      "logs_2.sqlite-shm": 32768,
+      "logs_2.sqlite-wal": 436752,
+      "state_5.sqlite": 430080,
+      "state_5.sqlite-shm": 32768,
+      "state_5.sqlite-wal": 4494952
+    },
+    "before": {
+      "logs_2.sqlite": 49152,
+      "logs_2.sqlite-shm": 32768,
+      "logs_2.sqlite-wal": 436752,
+      "state_5.sqlite": 430080,
+      "state_5.sqlite-shm": 32768,
+      "state_5.sqlite-wal": 4494952
+    },
+    "growth": {
+      "logs_2.sqlite": 0,
+      "logs_2.sqlite-shm": 0,
+      "logs_2.sqlite-wal": 0,
+      "state_5.sqlite": 0,
+      "state_5.sqlite-shm": 0,
+      "state_5.sqlite-wal": 0
+    }
+  },
+  "lockErrors": [],
+  "parameters": {
+    "idleSeconds": 10.0,
+    "postStartDelayMs": 0,
+    "processes": 6,
+    "readIterationsPerProcess": 400,
+    "sharedCodexHome": true,
+    "timeoutSeconds": 20.0,
+    "writeIterationsPerProcess": 40
+  },
+  "runId": "37e22fe8-0f98-41a1-8715-4a4177d64f33",
+  "schemaVersion": 1,
+  "sqlite": {
+    "logs_2": {
+      "bytes": 49152,
+      "exists": true,
+      "freelistCount": 0,
+      "journalMode": "wal",
+      "pageCount": 12,
+      "quickCheck": "ok",
+      "rowCount": 24
+    },
+    "state_5": {
+      "bytes": 430080,
+      "exists": true,
+      "freelistCount": 0,
+      "journalMode": "wal",
+      "pageCount": 106,
+      "quickCheck": "ok",
+      "rowCount": 240
+    }
+  },
+  "status": "passed",
+  "stderrTailByWorker": {
+    "0": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/vsp-persistence-stress-nlwpxwcm\"))\n2026-08-01T12:21:58.099339Z  WARN codex_core_skills::loader: ignoring interface.default_prompt: exceeds maximum length of 1024 characters\n2026-08-01T12:22:03.279636Z  WARN codex_core_plugins::startup_remote_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins\n2026-08-01T12:22:09.123517Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:09.126253Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n",
+    "1": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/vsp-persistence-stress-nlwpxwcm\"))\n2026-08-01T12:21:58.101041Z  WARN codex_core_skills::loader: ignoring interface.default_prompt: exceeds maximum length of 1024 characters\n2026-08-01T12:22:03.312773Z  WARN codex_core_plugins::startup_remote_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins\n2026-08-01T12:22:04.396545Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:04.399431Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n",
+    "2": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/vsp-persistence-stress-nlwpxwcm\"))\n2026-08-01T12:21:58.097526Z  WARN codex_core_skills::loader: ignoring interface.default_prompt: exceeds maximum length of 1024 characters\n2026-08-01T12:22:03.284168Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:03.287271Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:03.309878Z  WARN codex_core_plugins::startup_remote_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins\n",
+    "3": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/vsp-persistence-stress-nlwpxwcm\"))\n2026-08-01T12:21:58.097489Z  WARN codex_core_skills::loader: ignoring interface.default_prompt: exceeds maximum length of 1024 characters\n2026-08-01T12:22:03.275399Z  WARN codex_core_plugins::startup_remote_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins\n2026-08-01T12:22:05.502215Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:05.505017Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n",
+    "4": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/vsp-persistence-stress-nlwpxwcm\"))\n2026-08-01T12:21:58.100980Z  WARN codex_core_skills::loader: ignoring interface.default_prompt: exceeds maximum length of 1024 characters\n2026-08-01T12:22:03.315330Z  WARN codex_core_plugins::startup_remote_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins\n2026-08-01T12:22:07.816210Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:07.818973Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n",
+    "5": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/vsp-persistence-stress-nlwpxwcm\"))\n2026-08-01T12:21:58.101760Z  WARN codex_core_skills::loader: ignoring interface.default_prompt: exceeds maximum length of 1024 characters\n2026-08-01T12:22:03.315059Z  WARN codex_core_plugins::startup_remote_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins\n2026-08-01T12:22:06.709569Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n2026-08-01T12:22:06.712381Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///tmp/vsp-persistence-stress-nlwpxwcm/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json\n"
+  },
+  "workerErrors": [],
+  "workers": [
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 167,
+        "min": 70,
+        "p50": 94,
+        "p95": 101,
+        "p99": 146
+      },
+      "error": null,
+      "initializeMs": 328,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 70,
+        "min": 17,
+        "p50": 25,
+        "p95": 60,
+        "p99": 63
+      },
+      "pid": 3905126,
+      "rssAfterReadsKiB": 67584,
+      "rssBeforeReadsKiB": 67584,
+      "rssDeltaKiB": 0,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 21,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 5
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 119,
+        "min": 57,
+        "p50": 70,
+        "p95": 100,
+        "p99": 107
+      },
+      "worker": 0,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 141,
+        "min": 74,
+        "p50": 96,
+        "p95": 136,
+        "p99": 138
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 175,
+        "min": 79,
+        "p50": 94,
+        "p95": 102,
+        "p99": 142
+      },
+      "error": null,
+      "initializeMs": 258,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 64,
+        "min": 17,
+        "p50": 26,
+        "p95": 56,
+        "p99": 58
+      },
+      "pid": 3905128,
+      "rssAfterReadsKiB": 73728,
+      "rssBeforeReadsKiB": 73728,
+      "rssDeltaKiB": 0,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 25,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 3
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 113,
+        "min": 58,
+        "p50": 71,
+        "p95": 101,
+        "p99": 103
+      },
+      "worker": 1,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 144,
+        "min": 76,
+        "p50": 98,
+        "p95": 138,
+        "p99": 143
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 174,
+        "min": 73,
+        "p50": 90,
+        "p95": 100,
+        "p99": 153
+      },
+      "error": null,
+      "initializeMs": 239,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 54,
+        "min": 17,
+        "p50": 25,
+        "p95": 50,
+        "p99": 53
+      },
+      "pid": 3905130,
+      "rssAfterReadsKiB": 67584,
+      "rssBeforeReadsKiB": 67584,
+      "rssDeltaKiB": 0,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 21,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 15
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 120,
+        "min": 57,
+        "p50": 69,
+        "p95": 97,
+        "p99": 98
+      },
+      "worker": 2,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 152,
+        "min": 75,
+        "p50": 95,
+        "p95": 124,
+        "p99": 148
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 174,
+        "min": 72,
+        "p50": 93,
+        "p95": 101,
+        "p99": 151
+      },
+      "error": null,
+      "initializeMs": 252,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 67,
+        "min": 17,
+        "p50": 24,
+        "p95": 45,
+        "p99": 55
+      },
+      "pid": 3905132,
+      "rssAfterReadsKiB": 64512,
+      "rssBeforeReadsKiB": 64512,
+      "rssDeltaKiB": 0,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 19,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 5
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 118,
+        "min": 57,
+        "p50": 69,
+        "p95": 104,
+        "p99": 113
+      },
+      "worker": 3,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 156,
+        "min": 75,
+        "p50": 94,
+        "p95": 137,
+        "p99": 151
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 174,
+        "min": 75,
+        "p50": 90,
+        "p95": 99,
+        "p99": 144
+      },
+      "error": null,
+      "initializeMs": 302,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 89,
+        "min": 17,
+        "p50": 24,
+        "p95": 70,
+        "p99": 80
+      },
+      "pid": 3905134,
+      "rssAfterReadsKiB": 70656,
+      "rssBeforeReadsKiB": 70656,
+      "rssDeltaKiB": 0,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 23,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 5
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 105,
+        "min": 56,
+        "p50": 69,
+        "p95": 99,
+        "p99": 102
+      },
+      "worker": 4,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 166,
+        "min": 76,
+        "p50": 94,
+        "p95": 155,
+        "p99": 166
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 176,
+        "min": 65,
+        "p50": 93,
+        "p95": 100,
+        "p99": 143
+      },
+      "error": null,
+      "initializeMs": 272,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 51,
+        "min": 17,
+        "p50": 24,
+        "p95": 50,
+        "p99": 50
+      },
+      "pid": 3905136,
+      "rssAfterReadsKiB": 67584,
+      "rssBeforeReadsKiB": 67584,
+      "rssDeltaKiB": 0,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 20,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 12
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 121,
+        "min": 56,
+        "p50": 70,
+        "p95": 105,
+        "p99": 108
+      },
+      "worker": 5,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 170,
+        "min": 73,
+        "p50": 95,
+        "p95": 142,
+        "p99": 142
+      }
+    }
+  ]
+}

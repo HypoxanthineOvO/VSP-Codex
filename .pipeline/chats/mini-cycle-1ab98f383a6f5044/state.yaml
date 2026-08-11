@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019ec4a7-3676-7093-b447-3cff65f292b7
+topic_summary: <subagent_notification> {"agent_path":"019ec4f1-2e44-7a91-9646-3ac6daeab560","status":{"completed":"完成 C9 M2 只读审计，报告已写入：\n\n[.pipeline/reviews/C9/M2/audit.md](/home/heyx/Codex-VSP/.pipeline/reviews/C9/M2/audit.md)\n\n结论是 `pass_with_risks`：未发现未解决 merge conflict；严格冲突标记扫描无命中；`git diff --check` 通过；`cargo fmt --manifest-path codex-rs/Cargo.toml --all --check` 通过，仅有稳定版 rustfmt 对 `imports_granularity` 的 warning。主编译没有重跑，沿用 `.pipeline/PROGRESS.md` / `.pipeline/log.yaml` 中记录的 `cargo check --manifest-path codex-rs/Cargo.toml -p codex-cli --bin vsp-codex` 通过且仅 warning 的证据，作为 M2 structural compile evidence 足够。\n\n未修改源码，未提交，未 push/tag/release，未删除 `.pipeline/.lock`。报告也明确记录了关键风险：TUI `/realtime` 当前降级为 `Realtime voice is not available in this build.`，M3/M5 不能把 realtime voice 当作已恢复功能验收。"}} </subagent_notification>
+turn_count: 11

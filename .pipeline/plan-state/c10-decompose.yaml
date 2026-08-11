@@ -1,0 +1,33 @@
+phase: decompose_and_generate
+cycle: C10
+status: confirmed
+created_at: "2026-07-02T16:03:40+08:00"
+confirmed_at: "2026-07-02T16:40:00+08:00"
+discover_ref: ".pipeline/plan-state/c10-discover.yaml"
+milestones:
+  - id: M1
+    name: "Stage-1 Merge To Upstream rust-v0.143.0-alpha.25"
+    prompt: ".pipeline/prompts/c10-001-stage1-merge-upstream-alpha25.md"
+  - id: M2
+    name: "Stage-1 Contract Validation And Schema Regeneration"
+    prompt: ".pipeline/prompts/c10-002-stage1-contract-validation-and-schema-regeneration.md"
+  - id: M3
+    name: "Stage-2 Merge To rust-v0.143.0-alpha.33 And VSP Surface Recheck"
+    prompt: ".pipeline/prompts/c10-003-stage2-merge-alpha33-and-vsp-surface-recheck.md"
+  - id: M4
+    name: "Client Connectivity Adaptation And Drift Regression"
+    prompt: ".pipeline/prompts/c10-004-client-connectivity-adaptation-and-drift-regression.md"
+  - id: M5
+    name: "Version 0.143.0-vsp.9 Release And Distribution"
+    prompt: ".pipeline/prompts/c10-005-version-vsp9-release-and-distribution.md"
+notes:
+  - "All milestones carry technical_solution, technical_route, research_required, risks_and_alternatives, validation_path, audit_focus inside generated prompts."
+  - "Strict worker separation with pre-assigned test/implement/audit subworkers in every prompt."
+  - "Two research_required items are execution-time evaluations with stop-and-ask fallback: M3 multi-agent v2 / Rendezvous impact, M4 newest extension call surface."
+  - "M5 contains the hard GitLab release gate; no remote mutation before explicit user approval."
+checkpoints:
+  discover: "3 rounds + explicit end signal (2026-07-02)"
+  technical_stack: "confirmed"
+  architecture: "confirmed; architecture.md baseline replaced with C10 version"
+  decompose: "confirmed (5 milestones, strict serial M1->M5)"
+  generate: "completed; awaiting final execution confirmation gate"

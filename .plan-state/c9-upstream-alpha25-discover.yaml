@@ -1,0 +1,102 @@
+cycle: C9
+phase: discover
+status: completed
+created_at: "2026-06-26T14:07:58+08:00"
+source: "hypo-workflow:plan"
+interaction:
+  mode: interactive
+  min_rounds_required: 3
+  rounds_completed: 3
+  explicit_end_signal_received: true
+  explicit_end_signal: "够了，进入 Technical Stack"
+  question_tool_used: true
+p0_configure:
+  source: project_config
+  automation_level: balanced
+  output_language: zh-CN
+  timezone: Asia/Shanghai
+  worker_separation:
+    mode: strict
+    codex_execution_subworkers_authorized: true
+    authorized_scopes:
+      - /hw:start
+      - /hw:resume
+    required_roles:
+      - test
+      - implement
+      - audit
+discovered_goal:
+  summary: "Plan a broad upstream sync of the VSP Codex fork to official rust-v0.143.0-alpha.25 while preserving the VSP public version line and preventing SQLite persistent log write amplification."
+  task_category: "upstream fork synchronization, release preparation, runtime risk remediation"
+  upstream_target:
+    selected: rust-v0.143.0-alpha.25
+    latest_stable_observed: rust-v0.142.2
+    latest_alpha_observed: rust-v0.143.0-alpha.25
+    no_rust_v0_144_tag_observed: true
+  sync_granularity:
+    selected: full_fork_sync
+    note: "Prefer as much upstream synchronization as practical, but evaluate VSP features because the local change surface is large."
+  merge_strategy:
+    selected: incremental_merge_with_conflict_groups
+    rejected:
+      - fresh_upstream_then_reapply_vsp
+      - hotfix_only
+  vsp_feature_policy:
+    selected: prefer_official_when_equivalent
+    rule: "If official alpha.25 has equivalent capability, prefer the official implementation; otherwise preserve the VSP feature with explicit validation."
+  delivery_acceptance:
+    selected: gitlab_release_after_confirm
+    release_remote_write_requires_later_confirmation: true
+  version_policy:
+    selected: vsp8_patch_allowed
+    public_series: "0.140.0-vsp.8"
+    allowed_public_patch_version: "0.140.0-vsp.8.1"
+    final_tag_requires_later_confirmation: true
+  validation_floor:
+    selected: full_release_dry_run
+    required:
+      - broad_local_regression
+      - release_dry_run
+      - sqlite_runtime_io_smoke
+  rollback_policy:
+    selected: split_release_and_long_sync
+    rule: "If alpha.25 sync risk is too high, ship the SQLite hotfix on the VSP line first and continue alpha.25 sync in a longer follow-up Cycle."
+sqlite_log_risk:
+  local_evidence:
+    observed_large_files:
+      - "~/.vsp-codex/logs_2.sqlite"
+      - "~/.vsp-codex/logs_2.sqlite-wal"
+    noisy_targets:
+      - log
+      - codex_otel.log_only
+      - codex_otel.trace_safe
+  upstream_fix_commits_known:
+    - d81fcdf8ef
+    - e98d43ac37
+    - 91e6da943b
+    - 63f8f547c0
+  real_validation_contract:
+    scenario: "Run VSP Codex with an isolated CODEX_HOME/CODEX_SQLITE_HOME and observe logs_2.sqlite plus logs_2.sqlite-wal growth during a bounded real TUI/app-server smoke."
+    pass_signal: "No sustained write amplification from known noisy targets; WAL/database growth remains bounded for the scenario and noisy targets are absent from persisted log rows."
+    fail_signal: "Persistent log database or WAL grows continuously at an unbounded rate, or noisy target rows are persisted during the smoke."
+    independent_validation_owner: test
+    audit_rejects_pseudo_tests: true
+repo_scan:
+  branch: c9-upstream-0.143.0-alpha.25-vsp8
+  upstream_target_ref: rust-v0.143.0-alpha.25
+  approximate_non_pipeline_diff:
+    files_changed: 523
+    insertions: 41785
+    deletions: 3635
+  major_vsp_surfaces:
+    - Hypo-Workflow and OpenCode adapters
+    - Question Tool / Ask protocol, app-server, and TUI cards
+    - plan/update UI and workflow routing
+    - multi-agent, goals, workflow context, and freshness gates
+    - plugin and marketplace behavior
+    - VSCode and remote integration
+    - VSP provider, update, installer, and GitLab release scripts
+    - TUI status surfaces, snapshots, and markdown/workflow rendering
+unresolved_questions:
+  - "Exact public release tag remains open until Generate/execution confirmation: strict v0.140.0-vsp.8 versus v0.140.0-vsp.8.1."
+  - "Exact conflict groups and milestone split remain to be decided in Architecture and Decompose."

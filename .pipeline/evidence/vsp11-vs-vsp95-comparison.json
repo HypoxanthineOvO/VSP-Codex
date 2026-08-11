@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "baseline": {
+    "runId": "98ffd292-ff40-436a-8dc7-95d80affbca4",
+    "generatedAt": "2026-08-01T12:54:00.552583+00:00",
+    "codexBin": "/home/heyx/.vsp-codex/packages/standalone/releases/0.145.0-vsp.9.5-x86_64-unknown-linux-gnu/bin/vsp-codex",
+    "status": "passed",
+    "parameters": {
+      "idleSeconds": 10.0,
+      "postStartDelayMs": 0,
+      "processes": 6,
+      "readIterationsPerProcess": 400,
+      "sharedCodexHome": true,
+      "timeoutSeconds": 20.0,
+      "writeIterationsPerProcess": 40
+    },
+    "aggregate": {
+      "compatibilityReadLatencyMs": {
+        "count": 2400,
+        "max": 6152,
+        "min": 521,
+        "p50": 654,
+        "p95": 723,
+        "p99": 748
+      },
+      "maxRssDeltaKiB": 110852,
+      "metadataWriteLatencyMs": {
+        "count": 240,
+        "max": 1642,
+        "min": 1575,
+        "p50": 1586,
+        "p95": 1592,
+        "p99": 1610
+      },
+      "stateReadLatencyMs": {
+        "count": 2400,
+        "max": 18,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "threadStartLatencyMs": {
+        "count": 240,
+        "max": 159,
+        "min": 112,
+        "p50": 147,
+        "p95": 154,
+        "p99": 157
+      },
+      "writeLatencyMs": {
+        "count": 240,
+        "max": 1787,
+        "min": 1693,
+        "p50": 1732,
+        "p95": 1744,
+        "p99": 1764
+      }
+    },
+    "sqlite": {
+      "logs_2": {
+        "bytes": 7221248,
+        "exists": true,
+        "freelistCount": 113,
+        "journalMode": "wal",
+        "pageCount": 1763,
+        "quickCheck": "ok",
+        "rowCount": 9240
+      },
+      "state_5": {
+        "bytes": 528384,
+        "exists": true,
+        "freelistCount": 0,
+        "journalMode": "wal",
+        "pageCount": 140,
+        "quickCheck": "ok",
+        "rowCount": 280
+      }
+    },
+    "idleGrowth": {
+      "logs_2.sqlite": 0,
+      "logs_2.sqlite-shm": 0,
+      "logs_2.sqlite-wal": 0,
+      "state_5.sqlite": 0,
+      "state_5.sqlite-shm": 0,
+      "state_5.sqlite-wal": 0
+    },
+    "lockErrors": [],
+    "workerErrors": []
+  },
+  "candidate": {
+    "runId": "37e22fe8-0f98-41a1-8715-4a4177d64f33",
+    "generatedAt": "2026-08-01T12:22:50.925578+00:00",
+    "codexBin": "/tmp/vsp11-cargo-target/release/vsp-codex",
+    "status": "passed",
+    "parameters": {
+      "idleSeconds": 10.0,
+      "postStartDelayMs": 0,
+      "processes": 6,
+      "readIterationsPerProcess": 400,
+      "sharedCodexHome": true,
+      "timeoutSeconds": 20.0,
+      "writeIterationsPerProcess": 40
+    },
+    "aggregate": {
+      "compatibilityReadLatencyMs": {
+        "count": 2400,
+        "max": 176,
+        "min": 65,
+        "p50": 93,
+        "p95": 101,
+        "p99": 147
+      },
+      "maxRssDeltaKiB": 0,
+      "metadataWriteLatencyMs": {
+        "count": 240,
+        "max": 89,
+        "min": 17,
+        "p50": 25,
+        "p95": 54,
+        "p99": 70
+      },
+      "stateReadLatencyMs": {
+        "count": 2400,
+        "max": 25,
+        "min": 0,
+        "p50": 1,
+        "p95": 2,
+        "p99": 12
+      },
+      "threadStartLatencyMs": {
+        "count": 240,
+        "max": 121,
+        "min": 56,
+        "p50": 70,
+        "p95": 103,
+        "p99": 118
+      },
+      "writeLatencyMs": {
+        "count": 240,
+        "max": 170,
+        "min": 73,
+        "p50": 96,
+        "p95": 142,
+        "p99": 156
+      }
+    },
+    "sqlite": {
+      "logs_2": {
+        "bytes": 49152,
+        "exists": true,
+        "freelistCount": 0,
+        "journalMode": "wal",
+        "pageCount": 12,
+        "quickCheck": "ok",
+        "rowCount": 24
+      },
+      "state_5": {
+        "bytes": 430080,
+        "exists": true,
+        "freelistCount": 0,
+        "journalMode": "wal",
+        "pageCount": 106,
+        "quickCheck": "ok",
+        "rowCount": 240
+      }
+    },
+    "idleGrowth": {
+      "logs_2.sqlite": 0,
+      "logs_2.sqlite-shm": 0,
+      "logs_2.sqlite-wal": 0,
+      "state_5.sqlite": 0,
+      "state_5.sqlite-shm": 0,
+      "state_5.sqlite-wal": 0
+    },
+    "lockErrors": [],
+    "workerErrors": []
+  },
+  "comparison": {
+    "metadataWriteP95ReductionPercent": 96.60804020100502,
+    "compatibilityReadP95ReductionPercent": 86.03042876901799,
+    "threadStartP95ReductionPercent": 33.116883116883116,
+    "rssDeltaReductionKiB": 110852,
+    "persistentLogRowReduction": 9216
+  }
+}

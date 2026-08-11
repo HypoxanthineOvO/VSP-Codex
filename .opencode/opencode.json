@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "AGENTS.md",
+    ".pipeline/rules.yaml"
+  ],
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "permission": {
+    "*": "allow",
+    "edit": "allow",
+    "bash": "allow",
+    "question": "allow"
+  }
+}

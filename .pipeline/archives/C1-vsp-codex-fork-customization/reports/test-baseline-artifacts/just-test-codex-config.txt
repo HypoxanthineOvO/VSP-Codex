@@ -1,0 +1,478 @@
+START 2026-05-24T19:53:17+08:00
+RUST_MIN_STACK=8388608 cargo nextest run --no-fail-fast "$@"
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.22
+   Compiling getrandom v0.3.4
+   Compiling futures-io v0.3.31
+   Compiling serde_json v1.0.149
+   Compiling writeable v0.6.2
+   Compiling zeroize v1.8.2
+   Compiling rustix v1.1.4
+   Compiling memchr v2.7.6
+   Compiling linux-raw-sys v0.12.1
+   Compiling either v1.15.0
+   Compiling rustls v0.23.36
+   Compiling subtle v2.6.1
+   Compiling serde_core v1.0.228
+   Compiling heck v0.5.0
+   Compiling smallvec v1.15.1
+   Compiling serde v1.0.228
+   Compiling strum v0.27.2
+   Compiling rmcp v0.15.0
+   Compiling prettyplease v0.2.37
+   Compiling quote v1.0.44
+   Compiling lock_api v0.4.14
+   Compiling rustls-pki-types v1.14.0
+   Compiling nix v0.28.0
+   Compiling nix v0.30.1
+   Compiling hashbrown v0.15.5
+   Compiling regex-automata v0.4.13
+   Compiling generic-array v0.14.7
+   Compiling time v0.3.47
+   Compiling itertools v0.14.0
+   Compiling itertools v0.10.5
+   Compiling itertools v0.13.0
+   Compiling display_container v0.9.0
+   Compiling mio v1.1.1
+   Compiling getrandom v0.2.17
+   Compiling spin v0.9.8
+   Compiling dirs-sys-next v0.1.2
+   Compiling parking_lot_core v0.9.12
+   Compiling is-terminal v0.4.17
+   Compiling clap_builder v4.5.58
+   Compiling concurrent-queue v2.5.0
+   Compiling aho-corasick v1.1.4
+   Compiling rustls-native-certs v0.8.3
+   Compiling num-integer v0.1.46
+   Compiling webpki-roots v1.0.5
+   Compiling axum-core v0.5.6
+   Compiling rand_core v0.9.5
+   Compiling ahash v0.8.12
+   Compiling ring v0.17.14
+   Compiling uuid v1.20.0
+   Compiling flume v0.12.0
+   Compiling dirs-next v2.0.0
+   Compiling parking_lot v0.12.5
+   Compiling event-listener v5.4.1
+   Compiling petgraph v0.8.3
+   Compiling rand_chacha v0.9.0
+   Compiling aws-lc-rs v1.16.2
+   Compiling syn v2.0.114
+   Compiling syn v1.0.109
+   Compiling term v0.7.0
+   Compiling num-bigint v0.4.6
+   Compiling hashbrown v0.14.5
+   Compiling string_cache v0.8.9
+   Compiling event-listener-strategy v0.5.4
+   Compiling const_format_proc_macros v0.2.34
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling rand v0.9.3
+   Compiling async-channel v2.5.0
+   Compiling digest v0.10.7
+   Compiling ascii-canvas v3.0.0
+   Compiling sha1 v0.10.6
+   Compiling sha2 v0.10.9
+   Compiling sha1-checked v0.10.0
+   Compiling headers v0.4.1
+   Compiling cookie v0.18.1
+   Compiling yasna v0.5.2
+   Compiling const_format v0.2.35
+   Compiling tempfile v3.27.0
+   Compiling fd-lock v4.0.4
+   Compiling which v8.0.0
+   Compiling gethostname v1.1.0
+   Compiling bstr v1.12.1
+   Compiling regex v1.12.3
+   Compiling gix-validate v0.11.0
+   Compiling gix-error v0.2.1
+   Compiling globset v0.4.18
+   Compiling gix-chunk v0.7.0
+   Compiling gix-quote v0.7.0
+   Compiling rustls-webpki v0.103.13
+   Compiling tonic-build v0.14.3
+   Compiling lalrpop-util v0.19.12
+   Compiling Inflector v0.11.4
+   Compiling tree-sitter v0.25.10
+   Compiling lalrpop v0.19.12
+   Compiling synstructure v0.13.2
+   Compiling serde_derive_internals v0.29.1
+   Compiling darling_core v0.21.3
+   Compiling darling_core v0.23.0
+   Compiling ctor v0.1.26
+   Compiling logos-derive v0.12.1
+   Compiling derivative v2.2.0
+   Compiling serde_derive v1.0.228
+   Compiling thiserror-impl v2.0.18
+   Compiling tokio-macros v2.6.0
+   Compiling tracing-attributes v0.1.31
+   Compiling displaydoc v0.2.5
+   Compiling futures-macro v0.3.31
+   Compiling zerovec-derive v0.11.3
+   Compiling async-trait v0.1.89
+   Compiling rama-macros v0.3.0-alpha.4
+   Compiling openssl-macros v0.1.1
+   Compiling enum-as-inner v0.6.1
+   Compiling asn1-rs-impl v0.2.0
+   Compiling ts-rs-macros v11.1.0
+   Compiling dupe_derive v0.9.1
+   Compiling serde_repr v0.1.20
+   Compiling ref-cast-impl v1.0.25
+   Compiling allocative_derive v0.3.3
+   Compiling derive_more-impl v1.0.0
+   Compiling thiserror-impl v1.0.69
+   Compiling clap_derive v4.5.55
+   Compiling enumflags2_derive v0.7.12
+   Compiling prost-derive v0.14.3
+   Compiling strum_macros v0.28.0
+   Compiling pin-project-internal v1.1.10
+   Compiling codex-experimental-api-macros v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-experimental-api-macros)
+   Compiling maybe-async v0.2.10
+   Compiling zerofrom-derive v0.1.6
+   Compiling yoke-derive v0.8.2
+   Compiling asn1-rs-derive v0.6.0
+   Compiling schemars_derive v0.8.22
+   Compiling schemars_derive v1.2.1
+   Compiling openssl v0.10.75
+   Compiling dupe v0.9.1
+   Compiling ref-cast v1.0.25
+   Compiling futures-util v0.3.31
+   Compiling enumflags2 v0.7.12
+   Compiling starlark_derive v0.13.0
+   Compiling allocative v0.3.4
+   Compiling logos v0.12.1
+   Compiling tracing v0.1.44
+   Compiling thiserror v2.0.18
+   Compiling gix-path v0.11.2
+   Compiling wildcard v0.3.0
+   Compiling asn1-rs v0.7.1
+   Compiling landlock v0.4.4
+   Compiling gix-packetline v0.21.2
+   Compiling zerofrom v0.1.6
+   Compiling thiserror v1.0.69
+   Compiling pin-project v1.1.10
+   Compiling opentelemetry v0.31.0
+   Compiling darling_macro v0.21.3
+   Compiling yoke v0.8.2
+   Compiling darling_macro v0.23.0
+   Compiling ts-rs v11.1.0
+   Compiling gix-command v0.8.0
+   Compiling gix-url v0.35.2
+   Compiling gix-config-value v0.17.1
+   Compiling prost v0.14.3
+   Compiling zerovec v0.11.6
+   Compiling zerotrie v0.2.4
+   Compiling clap v4.5.58
+   Compiling darling v0.21.3
+   Compiling darling v0.23.0
+   Compiling serde_with_macros v3.17.0
+   Compiling prost-types v0.14.3
+   Compiling rmcp-macros v0.15.0
+   Compiling oid-registry v0.8.1
+   Compiling der-parser v10.0.0
+   Compiling tinystr v0.8.3
+   Compiling potential_utf v0.1.4
+   Compiling icu_collections v2.2.0
+   Compiling icu_locale_core v2.2.0
+   Compiling serde_with v3.17.0
+   Compiling x509-parser v0.18.1
+   Compiling chrono v0.4.43
+   Compiling schemars v0.8.22
+   Compiling serde_urlencoded v0.7.1
+   Compiling schemafy_core v0.5.2
+   Compiling multimap v0.10.1
+   Compiling starlark_map v0.13.0
+   Compiling erased-serde v0.3.31
+   Compiling quick-xml v0.38.4
+   Compiling codex-utils-string v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/string)
+   Compiling codex-utils-rustls-provider v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/rustls-provider)
+   Compiling tungstenite v0.27.0 (https://github.com/openai-oss-forks/tungstenite-rs?rev=9200079d3b54a1ff51072e24d81fd354f085156f#9200079d)
+   Compiling os_info v3.14.0
+   Compiling schemafy_lib v0.5.2
+   Compiling derive_more v1.0.0
+   Compiling nibble_vec v0.1.0
+   Compiling gix-date v0.15.1
+   Compiling fixed_decimal v0.7.2
+   Compiling tracing-subscriber v0.3.22
+   Compiling prost-build v0.14.3
+   Compiling futures-executor v0.3.31
+   Compiling native-tls v0.2.14
+   Compiling radix_trie v0.3.0
+   Compiling radix_trie v0.2.1
+   Compiling gix-actor v0.40.0
+   Compiling futures v0.3.31
+   Compiling rustyline v14.0.0
+   Compiling tokio v1.49.0
+   Compiling prodash v31.0.0
+   Compiling moka v0.12.13
+   Compiling icu_provider v2.2.0
+   Compiling schemafy v0.5.2
+   Compiling tonic-prost-build v0.14.3
+   Compiling codex-utils-absolute-path v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/absolute-path)
+   Compiling rcgen v0.14.7
+   Compiling gix-features v0.46.2
+   Compiling schemars v1.2.1
+   Compiling icu_properties v2.2.0
+   Compiling icu_normalizer v2.2.0
+   Compiling icu_locale v2.2.0
+   Compiling codex-utils-home-dir v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/home-dir)
+   Compiling codex-utils-path v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/path-utils)
+   Compiling tracing-opentelemetry v0.32.1
+   Compiling opentelemetry-appender-tracing v0.31.1
+   Compiling gix-hash v0.23.0
+   Compiling gix-fs v0.19.2
+   Compiling gix-glob v0.24.0
+   Compiling gix-transport v0.55.1
+   Compiling debugserver-types v0.5.0
+   Compiling gix-hashtable v0.13.0
+   Compiling gix-commitgraph v0.35.0
+   Compiling gix-tempfile v21.0.2
+   Compiling gix-object v0.58.0
+   Compiling gix-lock v21.0.2
+   Compiling icu_decimal v2.2.0
+   Compiling gix-shallow v0.10.0
+   Compiling idna_adapter v1.2.1
+   Compiling idna v1.1.0
+   Compiling starlark_syntax v0.13.0
+   Compiling url v2.5.8
+   Compiling publicsuffix v2.3.0
+   Compiling gix-ref v0.61.0
+   Compiling gix-revwalk v0.29.0
+   Compiling gix-pack v0.68.0
+   Compiling gix-diff v0.61.0
+   Compiling gix-revision v0.43.0
+   Compiling gix-traverse v0.55.0
+   Compiling cookie_store v0.22.1
+   Compiling lsp-types v0.94.1
+   Compiling gix-refspec v0.39.0
+   Compiling gix-config v0.54.0
+   Compiling gix-discover v0.49.0
+   Compiling gix-protocol v0.59.0
+   Compiling gix-odb v0.78.0
+   Compiling tokio-util v0.7.18
+   Compiling tokio-graceful v0.2.2
+   Compiling rama-utils v0.3.0-alpha.4
+   Compiling tokio-rustls v0.26.4
+   Compiling tokio-stream v0.1.18
+   Compiling hickory-proto v0.25.2
+   Compiling tokio-native-tls v0.3.1
+   Compiling codex-utils-cache v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/cache)
+   Compiling gix v0.81.0
+   Compiling tokio-tungstenite v0.28.0 (https://github.com/openai-oss-forks/tokio-tungstenite?rev=132f5b39c862e3a970f731d709608b3e6276d5f6#132f5b39)
+   Compiling codex-utils-image v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/image)
+   Compiling tokio-test v0.4.5
+   Compiling opentelemetry_sdk v0.31.0
+   Compiling h2 v0.4.13
+   Compiling tower v0.5.3
+   Compiling codex-async-utils v0.0.0 (/home/heyx/Codex-VSP/codex-rs/async-utils)
+   Compiling rama-core v0.3.0-alpha.4
+   Compiling tower-http v0.6.8
+   Compiling axum v0.8.8
+   Compiling hickory-resolver v0.25.2
+   Compiling rama-http-types v0.3.0-alpha.4
+   Compiling hyper v1.8.1
+   Compiling rama-net v0.3.0-alpha.4
+   Compiling hyper-util v0.1.20
+   Compiling hyper-tls v0.6.0
+   Compiling hyper-rustls v0.27.7
+   Compiling hyper-timeout v0.5.2
+   Compiling tonic v0.14.3
+   Compiling reqwest v0.12.28
+   Compiling codex-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-client)
+   Compiling opentelemetry-http v0.31.0
+   Compiling tonic-prost v0.14.3
+   Compiling opentelemetry-proto v0.31.0
+   Compiling rama-http-headers v0.3.0-alpha.4
+   Compiling rama-dns v0.3.0-alpha.4
+   Compiling rama-unix v0.3.0-alpha.4
+   Compiling rama-udp v0.3.0-alpha.4
+   Compiling rama-tls-rustls v0.3.0-alpha.4
+   Compiling opentelemetry-otlp v0.31.0
+   Compiling rama-http v0.3.0-alpha.4
+   Compiling rama-tcp v0.3.0-alpha.4
+   Compiling rama-socks5 v0.3.0-alpha.4
+   Compiling starlark v0.13.0
+   Compiling rama-http-core v0.3.0-alpha.4
+   Compiling rama-http-backend v0.3.0-alpha.4
+   Compiling codex-network-proxy v0.0.0 (/home/heyx/Codex-VSP/codex-rs/network-proxy)
+   Compiling codex-execpolicy v0.0.0 (/home/heyx/Codex-VSP/codex-rs/execpolicy)
+   Compiling codex-protocol v0.0.0 (/home/heyx/Codex-VSP/codex-rs/protocol)
+   Compiling codex-shell-command v0.0.0 (/home/heyx/Codex-VSP/codex-rs/shell-command)
+   Compiling codex-api v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-api)
+   Compiling codex-file-system v0.0.0 (/home/heyx/Codex-VSP/codex-rs/file-system)
+   Compiling codex-git-utils v0.0.0 (/home/heyx/Codex-VSP/codex-rs/git-utils)
+   Compiling codex-app-server-protocol v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-protocol)
+   Compiling codex-otel v0.0.0 (/home/heyx/Codex-VSP/codex-rs/otel)
+   Compiling codex-model-provider-info v0.0.0 (/home/heyx/Codex-VSP/codex-rs/model-provider-info)
+   Compiling codex-features v0.0.0 (/home/heyx/Codex-VSP/codex-rs/features)
+   Compiling codex-config v0.0.0 (/home/heyx/Codex-VSP/codex-rs/config)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 17s
+────────────
+ Nextest run ID 8fb775e4-c9ed-412b-b3c1-9d21dcc62a99 with nextest profile: default
+    Starting 144 tests across 1 binary
+        PASS [   0.014s] (  1/144) codex-config config_requirements::tests::allow_managed_hooks_only_false_is_still_configured
+        PASS [   0.014s] (  2/144) codex-config config_requirements::tests::allow_appshots_false_is_still_configured
+        PASS [   0.014s] (  3/144) codex-config config_requirements::tests::allowed_approvals_reviewers_is_not_empty
+        PASS [   0.014s] (  4/144) codex-config config_requirements::tests::deserialize_allow_appshots
+        PASS [   0.017s] (  5/144) codex-config cloud_requirements::tests::shared_future_runs_once
+        PASS [   0.017s] (  6/144) codex-config config_requirements::tests::blank_guardian_policy_config_is_empty
+        PASS [   0.017s] (  7/144) codex-config config_requirements::tests::allowed_web_search_modes_allows_disabled
+        PASS [   0.017s] (  8/144) codex-config config_requirements::tests::allowed_web_search_modes_empty_restricts_to_disabled
+        PASS [   0.023s] (  9/144) codex-config config_requirements::tests::constrained_fields_store_requirement_source
+        PASS [   0.016s] ( 10/144) codex-config config_requirements::tests::deserialize_exec_policy_requirements
+        PASS [   0.016s] ( 11/144) codex-config config_requirements::tests::deserialize_feature_requirements
+        PASS [   0.017s] ( 12/144) codex-config config_requirements::tests::empty_allowed_approvals_reviewers_is_rejected
+        PASS [   0.019s] ( 13/144) codex-config config_requirements::tests::deserialize_guardian_policy_config
+        PASS [   0.074s] ( 14/144) codex-config config_requirements::tests::deserialize_allowed_approval_policies
+        PASS [   0.019s] ( 15/144) codex-config config_requirements::tests::deserialize_apps_requirements
+        PASS [   0.076s] ( 16/144) codex-config config_requirements::tests::constraint_error_includes_requirement_source
+        PASS [   0.021s] ( 17/144) codex-config config_requirements::tests::deserialize_mcp_server_requirements
+        PASS [   0.076s] ( 18/144) codex-config config_requirements::tests::constraint_error_includes_cloud_requirements_source
+        PASS [   0.022s] ( 19/144) codex-config config_requirements::tests::deserialize_managed_permission_profiles
+        PASS [   0.078s] ( 20/144) codex-config config_requirements::tests::deserialize_allow_managed_hooks_only
+        PASS [   0.023s] ( 21/144) codex-config config_requirements::tests::legacy_network_requirements_are_preserved_as_constraints_with_source
+        PASS [   0.023s] ( 22/144) codex-config config_requirements::tests::deserialize_managed_hooks_requirements
+        PASS [   0.016s] ( 23/144) codex-config mcp_types::tests::deserialize_streamable_http_server_config_with_oauth_client_id
+        PASS [   0.079s] ( 24/144) codex-config config_requirements::tests::deserialize_allowed_approvals_reviewers
+        PASS [   0.024s] ( 25/144) codex-config config_requirements::tests::deserialize_apps_tool_requirements
+        PASS [   0.024s] ( 26/144) codex-config config_requirements::tests::deserialize_computer_use_requirements
+        PASS [   0.079s] ( 27/144) codex-config config_requirements::tests::deserialize_allowed_web_search_modes
+        PASS [   0.024s] ( 28/144) codex-config config_requirements::tests::managed_hooks_constraint_rejects_drift
+        PASS [   0.025s] ( 29/144) codex-config config_requirements::tests::deserialize_remote_sandbox_config_requires_hostname_patterns_list
+        PASS [   0.025s] ( 30/144) codex-config mcp_types::tests::deserialize_server_config_with_default_tool_approval_mode
+        PASS [   0.017s] ( 31/144) codex-config merge::tests::merge_toml_values_normalizes_legacy_key_from_overlay_layer
+        PASS [   0.019s] ( 32/144) codex-config mcp_types::tests::serialize_round_trips_server_config_with_parallel_tool_calls
+        PASS [   0.018s] ( 33/144) codex-config plugin_edit::tests::set_user_plugin_enabled_writes_plugin_entry
+        PASS [   0.029s] ( 34/144) codex-config config_requirements::tests::deserialize_allowed_sandbox_modes
+        PASS [   0.028s] ( 35/144) codex-config config_requirements::tests::merge_app_requirements_descending_keeps_higher_true_when_lower_is_unset
+        PASS [   0.029s] ( 36/144) codex-config config_requirements::tests::exec_policy_error_includes_requirement_source
+        PASS [   0.022s] ( 37/144) codex-config merge::tests::merge_toml_values_normalizes_permission_network_domains_before_overlaying
+        PASS [   0.021s] ( 38/144) codex-config merge::tests::merge_toml_values_prefers_canonical_key_when_one_layer_has_both_names
+        PASS [   0.024s] ( 39/144) codex-config merge::tests::merge_toml_values_normalizes_legacy_key_from_base_layer
+        PASS [   0.018s] ( 40/144) codex-config thread_config::tests::loader_translates_sources_to_config_layers
+        PASS [   0.076s] ( 41/144) codex-config config_requirements::tests::deserialize_filesystem_deny_read_glob_requirements
+        PASS [   0.076s] ( 42/144) codex-config config_requirements::tests::deserialize_plugin_mcp_server_requirements
+        PASS [   0.075s] ( 43/144) codex-config constraint::tests::constrained_allow_any_default_uses_default_value
+        PASS [   0.067s] ( 44/144) codex-config tui_keymap::tests::action_under_global_context_is_accepted
+        PASS [   0.021s] ( 45/144) codex-config hook_config::tests::hook_events_deserialize_camel_case_windows_override_from_toml
+        PASS [   0.078s] ( 46/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config_rejects_unknown_env_var_source
+        PASS [   0.078s] ( 47/144) codex-config config_requirements::tests::merge_unset_fields_apps_empty_higher_source_does_not_block_lower_disables
+        PASS [   0.068s] ( 48/144) codex-config thread_config::remote::tests::model_provider_proto_roundtrips_through_domain_type
+        PASS [   0.078s] ( 49/144) codex-config config_requirements::tests::merge_unset_fields_ignores_blank_guardian_override
+        PASS [   0.070s] ( 50/144) codex-config plugin_edit::tests::clear_user_plugin_removes_empty_plugins_table
+        PASS [   0.070s] ( 51/144) codex-config strict_config::tests::type_errors_take_precedence_over_ignored_fields
+        PASS [   0.070s] ( 52/144) codex-config strict_config::tests::strict_config_rejects_unknown_feature_key
+        PASS [   0.070s] ( 53/144) codex-config thread_config::remote::tests::load_thread_config_request_sets_timeout
+        PASS [   0.071s] ( 54/144) codex-config strict_config::tests::strict_config_accepts_opaque_desktop_keys
+        PASS [   0.080s] ( 55/144) codex-config config_requirements::tests::merge_unset_fields_fills_missing_values
+        PASS [   0.072s] ( 56/144) codex-config plugin_edit::tests::clear_user_plugin_missing_entry_does_not_create_config
+        PASS [   0.024s] ( 57/144) codex-config tui_keymap::tests::removed_backtrack_actions_are_rejected
+        PASS [   0.072s] ( 58/144) codex-config strict_config::tests::ignored_toml_field_errors_accept_non_file_source_names
+        PASS [   0.080s] ( 59/144) codex-config config_toml::tests::forced_chatgpt_workspace_id_rejects_comma_separated_string
+        PASS [   0.081s] ( 60/144) codex-config mcp_types::tests::deserialize_remote_stdio_server_requires_absolute_cwd
+        PASS [   0.080s] ( 61/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config_with_env_vars
+        PASS [   0.080s] ( 62/144) codex-config config_requirements::tests::mixed_legacy_and_canonical_network_requirements_are_rejected
+        PASS [   0.081s] ( 63/144) codex-config constraint::tests::constrained_allow_any_accepts_any_value
+        PASS [   0.081s] ( 64/144) codex-config config_requirements::tests::merge_unset_fields_does_not_overwrite_existing_hooks
+        PASS [   0.025s] ( 65/144) codex-config types::tests::memories_config_clamps_rate_limit_remaining_threshold
+        PASS [   0.081s] ( 66/144) codex-config config_requirements::tests::remote_sandbox_config_first_match_overrides_top_level
+        PASS [   0.025s] ( 67/144) codex-config marketplace_edit::tests::remove_user_marketplace_returns_false_when_missing
+        PASS [   0.074s] ( 68/144) codex-config plugin_edit::tests::set_user_plugin_enabled_follows_config_symlink
+        PASS [   0.027s] ( 69/144) codex-config mcp_types::tests::deserialize_streamable_http_server_config_with_oauth_resource
+        PASS [   0.073s] ( 70/144) codex-config thread_config::remote::tests::load_thread_config_calls_remote_service
+        PASS [   0.075s] ( 71/144) codex-config plugin_edit::tests::set_user_plugin_enabled_preserves_existing_plugin_fields
+        PASS [   0.027s] ( 72/144) codex-config types::tests::deserialize_skill_config_with_path_selector
+        PASS [   0.075s] ( 73/144) codex-config strict_config::tests::strict_config_rejects_unknown_profile_feature_key
+        PASS [   0.076s] ( 74/144) codex-config state::tests::origins_use_canonical_key_aliases
+        PASS [   0.076s] ( 75/144) codex-config state::tests::active_user_layer_is_highest_precedence_user_layer
+        PASS [   0.028s] ( 76/144) codex-config constraint::tests::constrained_normalizer_applies_on_init_and_set
+        PASS [   0.028s] ( 77/144) codex-config types::tests::deserialize_skill_config_with_name_selector
+        PASS [   0.085s] ( 78/144) codex-config hook_config::tests::hooks_toml_deserializes_inline_events_and_state_map
+        PASS [   0.028s] ( 79/144) codex-config constraint::tests::constrained_allow_only_rejects_different_values
+        PASS [   0.085s] ( 80/144) codex-config config_requirements::tests::merge_unset_fields_does_not_overwrite_existing_values
+        PASS [   0.086s] ( 81/144) codex-config mcp_types::tests::deserialize_disabled_server_config
+        PASS [   0.077s] ( 82/144) codex-config state::tests::with_user_config_updates_matching_user_layer_without_replacing_active_profile
+        PASS [   0.031s] ( 83/144) codex-config mcp_types::tests::deserialize_streamable_http_server_config_with_headers
+        PASS [   0.031s] ( 84/144) codex-config marketplace_edit::tests::remove_user_marketplace_config_reports_case_mismatch
+        PASS [   0.031s] ( 85/144) codex-config thread_config::tests::loader_returns_session_and_user_sources
+        PASS [   0.090s] ( 86/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config_with_args
+        PASS [   0.080s] ( 87/144) codex-config config_requirements::tests::merge_app_requirements_descending_preserves_higher_tool_approval_mode
+        PASS [   0.083s] ( 88/144) codex-config mcp_types::tests::deserialize_ignores_unknown_server_fields
+        PASS [   0.082s] ( 89/144) codex-config hook_config::tests::hook_events_deserialize_from_toml_arrays_of_tables
+        PASS [   0.083s] ( 90/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config
+        PASS [   0.082s] ( 91/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config_with_env_var_sources
+        PASS [   0.083s] ( 92/144) codex-config mcp_types::tests::deserialize_rejects_env_for_http_transport
+        PASS [   0.084s] ( 93/144) codex-config mcp_types::tests::deserialize_rejects_headers_for_stdio
+        PASS [   0.083s] ( 94/144) codex-config mcp_types::tests::deserialize_server_config_with_tool_filters
+        PASS [   0.084s] ( 95/144) codex-config tui_keymap::tests::misplaced_action_at_keymap_root_is_rejected
+        PASS [   0.084s] ( 96/144) codex-config types::tests::memories_config_clamps_count_limits_to_nonzero_values
+        PASS [   0.085s] ( 97/144) codex-config config_requirements::tests::merge_app_requirements_descending_uses_lower_tool_approval_when_higher_missing
+        PASS [   0.083s] ( 98/144) codex-config host_name::tests::normalize_fqdn_candidate_accepts_dns_qualified_name
+        PASS [   0.085s] ( 99/144) codex-config config_requirements::tests::merge_unset_fields_copies_every_field_and_sets_sources
+        PASS [   0.085s] (100/144) codex-config hook_config::tests::hook_events_deserialize_windows_override_from_toml
+        PASS [   0.085s] (101/144) codex-config hook_config::tests::managed_hooks_requirements_flatten_hook_events
+        PASS [   0.084s] (102/144) codex-config config_requirements::tests::deserialize_legacy_allowed_approvals_reviewer
+        PASS [   0.085s] (103/144) codex-config config_toml::tests::forced_chatgpt_workspace_id_accepts_single_string
+        PASS [   0.086s] (104/144) codex-config mcp_types::tests::deserialize_server_config_with_parallel_tool_calls
+        PASS [   0.084s] (105/144) codex-config config_requirements::tests::merge_app_requirements_descending_uses_lower_value_when_higher_missing
+        PASS [   0.085s] (106/144) codex-config loader::unit_tests::legacy_managed_config_backfill_preserves_user_only_approvals_reviewer
+        PASS [   0.087s] (107/144) codex-config mcp_types::tests::deserialize_remote_stdio_server_accepts_absolute_cwd
+        PASS [   0.085s] (108/144) codex-config constraint::tests::constrained_new_rejects_invalid_initial_value
+        PASS [   0.086s] (109/144) codex-config marketplace_edit::tests::remove_user_marketplace_removes_requested_entry
+        PASS [   0.087s] (110/144) codex-config loader::unit_tests::legacy_managed_config_backfill_allows_user_when_guardian_is_required
+        PASS [   0.087s] (111/144) codex-config constraint::tests::constrained_add_validator_composes_with_existing_validator
+        PASS [   0.087s] (112/144) codex-config config_requirements::tests::merge_unset_fields_merges_apps_across_sources_with_enabled_evaluation
+        PASS [   0.088s] (113/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config_with_cwd
+        PASS [   0.088s] (114/144) codex-config loader::tests::profile_v2_rejects_matching_legacy_profile_in_base_user_config
+        PASS [   0.087s] (115/144) codex-config host_name::tests::normalize_fqdn_candidate_rejects_short_name
+        PASS [   0.087s] (116/144) codex-config config_requirements::tests::deserialize_filesystem_deny_read_requirements
+        PASS [   0.089s] (117/144) codex-config constraint::tests::constrained_set_rejects_invalid_value_and_leaves_previous
+        PASS [   0.089s] (118/144) codex-config mcp_types::tests::deserialize_streamable_http_server_config
+        PASS [   0.089s] (119/144) codex-config config_requirements::tests::filesystem_requirements_table_cannot_define_a_permission_profile
+        PASS [   0.090s] (120/144) codex-config mcp_types::tests::deserialize_required_server_config
+        PASS [   0.088s] (121/144) codex-config mcp_types::tests::deserialize_rejects_inline_bearer_token_field
+        PASS [   0.090s] (122/144) codex-config config_requirements::tests::remote_sandbox_config_non_match_preserves_top_level
+        PASS [   0.089s] (123/144) codex-config config_requirements::tests::merge_app_requirements_descending_prefers_false_from_lower_precedence
+        PASS [   0.091s] (124/144) codex-config tui_keymap::tests::minus_bindings_under_global_context_are_accepted
+        PASS [   0.090s] (125/144) codex-config config_requirements::tests::merge_app_requirements_descending_unions_distinct_apps
+        PASS [   0.089s] (126/144) codex-config config_requirements::tests::remote_sandbox_config_does_not_override_higher_precedence_sandbox_modes
+        PASS [   0.091s] (127/144) codex-config mcp_types::tests::deserialize_rejects_command_and_url
+        PASS [   0.091s] (128/144) codex-config mcp_types::tests::deserialize_streamable_http_server_config_with_env_var
+        PASS [   0.091s] (129/144) codex-config marketplace_edit::tests::remove_user_marketplace_config_removes_inline_table_entry
+        PASS [   0.090s] (130/144) codex-config loader::unit_tests::ensure_resolve_relative_paths_in_config_toml_preserves_all_fields
+        PASS [   0.091s] (131/144) codex-config mcp_types::tests::deserialize_stdio_command_server_config_with_arg_with_args_and_env
+        PASS [   0.093s] (132/144) codex-config tui_keymap::tests::misspelled_action_under_context_is_rejected
+        PASS [   0.093s] (133/144) codex-config host_name::tests::normalize_fqdn_candidate_trims_trailing_dot_and_normalizes_case
+        PASS [   0.094s] (134/144) codex-config constraint::tests::constrained_can_set_allows_probe_without_setting
+        PASS [   0.094s] (135/144) codex-config config_requirements::tests::network_permission_containers_project_allowed_and_denied_entries
+        PASS [   0.094s] (136/144) codex-config config_requirements::tests::network_requirements_are_preserved_as_constraints_with_source
+        PASS [   0.094s] (137/144) codex-config mcp_edit::tests::replace_mcp_servers_serializes_oauth_client_id
+        PASS [   0.095s] (138/144) codex-config config_toml::tests::forced_chatgpt_workspace_id_accepts_string_list
+        PASS [   0.095s] (139/144) codex-config hook_config::tests::hooks_file_deserializes_existing_json_shape
+        PASS [   0.096s] (140/144) codex-config loader::unit_tests::legacy_managed_config_backfill_includes_read_only_sandbox_mode
+        PASS [   0.096s] (141/144) codex-config config_requirements::tests::merge_app_requirements_descending_preserves_higher_false_when_lower_missing_app
+        PASS [   0.094s] (142/144) codex-config loader::tests::profile_v2_allows_unrelated_legacy_profiles_in_base_user_config
+        PASS [   0.098s] (143/144) codex-config mcp_edit::tests::replace_mcp_servers_serializes_per_tool_approval_overrides
+        PASS [   0.099s] (144/144) codex-config loader::tests::profile_v2_rejects_matching_legacy_profile_selector_in_base_user_config
+────────────
+     Summary [   0.214s] 144 tests run: 144 passed, 0 skipped
+just bench-smoke
+just bench -- --test
+cargo bench --workspace --bench '*' "$@"
+    Finished `bench` profile [optimized] target(s) in 0.56s
+     Running benches/prompt_images.rs (target/release/deps/prompt_images-4624ed2fe8de2cc5)
+prompt_images
+├─ large_jpeg_photo_fresh_attachment
+├─ large_png_screenshot_fresh_attachment
+├─ small_png_screenshot_fresh_attachment
+╰─ small_png_screenshot_repeated_attachment
+
+END 2026-05-24T19:54:38+08:00
+DURATION_SECONDS 81
+STATUS 0

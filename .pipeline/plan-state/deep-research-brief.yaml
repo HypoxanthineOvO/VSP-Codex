@@ -1,0 +1,308 @@
+schema: hypo-workflow.deep_research_requirement_brief.v1
+cycle: C9
+milestone: M6
+source_brief: .pipeline/architecture/c9-upstream-base-upgrade-and-deep-research-brief.md
+created_for: downstream_hypo_workflow_implementation
+scope:
+  summary: >
+    C9 delivers a portable Deep Research requirement brief only. It does not
+    implement production Deep Research behavior in Codex-VSP.
+  c9_deliverable: machine_readable_requirement_brief
+  production_implementation_in_c9: false
+  recommended_ownership:
+    hypo_workflow:
+      - portable command semantics
+      - artifact contract
+      - workflow state model
+    platform_runtime:
+      - subagent scheduling
+      - progress UI panels
+      - execution capabilities
+      - network and tool access enforcement
+
+command_semantics:
+  primary_command:
+    name: deep_research
+    intent: >
+      Start a guided, evidence-backed research workflow that clarifies the
+      user's research target, fans out work to multiple Subagents, recursively
+      expands useful findings, and produces durable research artifacts.
+  lifecycle:
+    - clarify_request
+    - confirm_scope_and_budget
+    - initialize_artifact_directory
+    - dispatch_initial_subagents
+    - collect_raw_reports
+    - update_research_graph
+    - propose_or_select_recursive_branches
+    - prune_by_budget_and_importance
+    - synthesize_final_report
+    - support_follow_up_research
+  required_user_visible_controls:
+    - view_progress
+    - pause
+    - stop
+    - select_branch_for_deeper_research
+    - continue_follow_up
+  suggested_subcommands:
+    start: begin a new Deep Research run after the required clarification gate
+    status: inspect progress, budgets, selected branches, and partial artifacts
+    pause: pause dispatch of new research work without deleting artifacts
+    stop: stop the run and preserve current raw reports, graph, and progress
+    continue: resume or deepen a prior run using its saved artifacts
+    followup: ask an additional question against an existing research run
+
+question_tool_gate:
+  required: true
+  gate_position: before_any_research_or_subagent_dispatch
+  rationale: >
+    Deep Research must clarify the research question, desired depth, output
+    expectations, budget, source constraints, and permission boundaries before
+    starting investigation.
+  minimum_questions:
+    - id: research_question
+      kind: freeText
+      purpose: capture the exact topic or decision the user wants researched
+    - id: desired_output
+      kind: singleChoice
+      purpose: choose report shape, such as brief, detailed report, comparison, or decision memo
+    - id: depth_and_budget
+      kind: singleChoice
+      purpose: select bounded exploration depth, Subagent count, time, or token budget
+    - id: source_constraints
+      kind: multiChoice
+      purpose: capture acceptable source types, recency needs, and whether live web access is allowed
+    - id: output_location
+      kind: freeText
+      purpose: choose default research artifact directory or a caller-provided output root
+  must_not:
+    - dispatch_subagents_before_gate
+    - silently_assume_live_network_permission
+    - treat_the_question_card_as_the_only_explanation
+
+subagent_fan_out:
+  required: true
+  default_behavior: dispatch multiple independent Subagents after the clarification gate
+  max_subagents_candidate: 128
+  requirements:
+    - preserve_each_subagent_prompt
+    - preserve_each_subagent_raw_report
+    - record_agent_id_role_branch_and_status
+    - support_parallel_research_when_runtime_allows
+    - keep_synthesis_separate_from_raw_reports
+  suggested_agent_roles:
+    - landscape_mapper
+    - source_verifier
+    - pricing_or_quantitative_analyst
+    - counterargument_or_risk_reviewer
+    - synthesis_writer
+
+recursive_exploration:
+  required: true
+  description: >
+    Findings may open new research branches. If a Subagent discovers topic A,
+    the workflow can ask whether to explore A further, dispatch follow-on
+    Subagents for A, and add those findings to the research graph.
+  default_max_depth_candidate: 10
+  branch_model:
+    node_types:
+      - root_question
+      - finding
+      - source
+      - follow_up_question
+      - synthesis_claim
+    edge_types:
+      - supports
+      - contradicts
+      - expands_to
+      - derived_from
+      - selected_for_deeper_research
+  branch_selection:
+    automatic_candidates: allowed
+    manual_selection: required_for_user_directed_deepening
+    record_selection_reason: true
+
+budget_and_pruning:
+  required: true
+  candidate_limits:
+    max_depth: 10
+    max_subagents: 128
+  implementation_must_define:
+    - total_time_budget
+    - total_token_or_compute_budget
+    - max_network_queries_or_source_fetches
+    - per_branch_depth_limit
+    - per_branch_subagent_limit
+    - importance_threshold
+    - pruning_ratio_or_top_k
+    - stop_conditions
+  pruning_inputs:
+    - relevance_to_user_question
+    - source_quality
+    - novelty
+    - confidence
+    - cost_to_explore
+    - redundancy_with_existing_findings
+  stop_conditions:
+    - user_stops_run
+    - configured_budget_exhausted
+    - max_depth_reached
+    - no_branch_exceeds_importance_threshold
+    - sufficient_answer_confidence_reached
+    - runtime_or_policy_boundary_blocks_further_work
+
+progress_controls:
+  required: true
+  user_controls:
+    view:
+      description: show status, active agents, completed branches, budgets, and artifact paths
+    pause:
+      description: prevent new dispatch while allowing current safe writes to finish
+    stop:
+      description: end the run and persist current progress, graph, raw reports, and partial synthesis
+    select_branch:
+      description: choose one or more findings for deeper recursive research
+    resume_or_continue:
+      description: continue from saved progress and graph state
+  progress_state_must_include:
+    - run_id
+    - slug
+    - status
+    - created_at
+    - updated_at
+    - current_depth
+    - active_agents
+    - completed_agents
+    - pending_branches
+    - selected_branches
+    - budget_used
+    - budget_remaining
+    - artifact_paths
+
+follow_up:
+  required: true
+  description: >
+    Users can ask follow-up questions or request deeper research after the
+    initial report. Follow-ups should reuse the existing artifacts, graph, and
+    source inventory rather than starting from a blank context.
+  requirements:
+    - store_follow_up_question
+    - preserve_follow_up_report
+    - link_follow_up_to_parent_run
+    - update_graph_when_follow_up_adds_new_findings
+    - keep_follow_up_artifacts_separate_from_original_final_report
+
+artifact_layout:
+  default_root_template: .pipeline/research/<slug>/
+  custom_output_root_allowed: true
+  custom_output_root_semantics: >
+    A caller-provided output root replaces the full research artifact directory
+    root. All artifacts should be written under that root, not just the final
+    report.
+  files:
+    brief.yaml:
+      purpose: normalized run request, confirmed scope, budgets, and constraints
+    progress.yaml:
+      purpose: mutable progress, current status, budget accounting, and controls state
+    graph.yaml:
+      purpose: research nodes, branch edges, source links, and recursive exploration state
+    raw/<agent-id>-prompt.md:
+      purpose: exact prompt or task given to each Subagent
+    raw/<agent-id>-report.md:
+      purpose: unmodified Subagent report
+    sources.yaml:
+      purpose: source inventory with URLs, titles, access dates, credibility notes, and claim links
+    report.md:
+      purpose: readable, complete, detailed final synthesis
+    followups/<timestamp>-question.md:
+      purpose: user follow-up prompt linked to the parent research run
+    followups/<timestamp>-report.md:
+      purpose: follow-up synthesis linked to reused and newly gathered evidence
+  separation_requirements:
+    - raw_reports_are_not_overwritten_by_synthesis
+    - progress_state_is_separate_from_final_report
+    - sources_are_machine_readable
+    - final_report_is_human_readable
+
+report_requirements:
+  final_report:
+    readable: true
+    complete: true
+    detailed: true
+    evidence_backed: true
+    must_include:
+      - research_question
+      - scope_and_budget_summary
+      - methodology
+      - key_findings
+      - supporting_sources
+      - disagreements_or_uncertainties
+      - limitations
+      - follow_up_options
+  source_evidence:
+    required_for_external_claims: true
+    live_web_allowed_for_validation_scenario: true
+
+validation_scenario:
+  name: latest_llm_market_models_performance_and_pricing
+  live_network_allowed: true
+  prompt: >
+    Research the current large model market, including latest models,
+    performance signals, and pricing, with source evidence.
+  expected_validation_evidence:
+    - question_tool_clarification_happened_before_research
+    - multiple_subagent_raw_reports_saved
+    - recursive_branch_or_explicit_no_branch_decision_recorded
+    - budget_and_pruning_state_recorded
+    - progress_controls_state_recorded
+    - sources_yaml_contains_current_source_evidence
+    - report_md_synthesizes_models_performance_and_pricing
+    - follow_up_path_can_be_created_or_is_documented
+
+non_goals:
+  c9:
+    - implement_production_deep_research
+    - add_codex_vsp_deep_research_commands
+    - add_or_modify_subagent_runtime
+    - add_or_modify_progress_ui
+    - run_live_market_research_validation
+    - edit_source_code_tests_prompts_state_cycle_log_or_progress
+  downstream_brief:
+    - prescribe_a_single_platform_ui_implementation
+    - remove_runtime_specific_permission_boundaries
+    - guarantee_network_access_where_policy_disallows_it
+
+open_risks:
+  - id: runtime_capability_variance
+    description: Different platforms may expose different Subagent, network, and UI capabilities.
+    mitigation: Keep command semantics and artifacts portable; leave scheduling and UI to runtime adapters.
+  - id: budget_semantics_ambiguity
+    description: Time, token, network, and cost budgets may not map cleanly across runtimes.
+    mitigation: Require each implementation to declare concrete budget units and stop conditions.
+  - id: source_freshness_and_pricing_drift
+    description: Market, model, benchmark, and pricing data changes frequently.
+    mitigation: Record access dates and source metadata; require live evidence for freshness-sensitive validation.
+  - id: recursive_scope_explosion
+    description: Recursive exploration can expand beyond user intent or available budget.
+    mitigation: Enforce depth limits, pruning thresholds, and user-directed branch selection.
+  - id: raw_report_synthesis_confusion
+    description: Final reports can accidentally obscure or overwrite raw Subagent evidence.
+    mitigation: Store raw prompts and reports separately from synthesis and cite source links in the graph.
+  - id: question_gate_bypass
+    description: Implementations may start research directly from a command invocation.
+    mitigation: Treat the Question Tool gate as a hard pre-dispatch requirement.
+
+handoff_acceptance:
+  - yaml_is_machine_readable
+  - source_architecture_brief_is_referenced
+  - c9_non_implementation_boundary_is_explicit
+  - command_semantics_are_defined
+  - question_tool_gate_is_required
+  - subagent_fan_out_requirements_are_defined
+  - recursive_exploration_requirements_are_defined
+  - budget_and_pruning_requirements_are_defined
+  - progress_controls_are_defined
+  - follow_up_requirements_are_defined
+  - artifact_layout_is_defined
+  - validation_scenario_is_defined
+  - non_goals_and_open_risks_are_defined

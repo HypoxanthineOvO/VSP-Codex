@@ -1,0 +1,387 @@
+START 2026-05-24T19:48:30+08:00
+RUST_MIN_STACK=8388608 cargo nextest run --no-fail-fast "$@"
+   Compiling normalize-line-endings v0.3.0
+   Compiling float-cmp v0.10.0
+   Compiling codex-git-utils v0.0.0 (/home/heyx/Codex-VSP/codex-rs/git-utils)
+   Compiling codex-apply-patch v0.0.0 (/home/heyx/Codex-VSP/codex-rs/apply-patch)
+   Compiling predicates v3.1.3
+   Compiling assert_cmd v2.1.2
+   Compiling codex-utils-cargo-bin v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/cargo-bin)
+   Compiling codex-arg0 v0.0.0 (/home/heyx/Codex-VSP/codex-rs/arg0)
+   Compiling codex-config v0.0.0 (/home/heyx/Codex-VSP/codex-rs/config)
+   Compiling codex-secrets v0.0.0 (/home/heyx/Codex-VSP/codex-rs/secrets)
+   Compiling codex-login v0.0.0 (/home/heyx/Codex-VSP/codex-rs/login)
+   Compiling codex-rmcp-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/rmcp-client)
+   Compiling codex-message-history v0.0.0 (/home/heyx/Codex-VSP/codex-rs/message-history)
+   Compiling codex-models-manager v0.0.0 (/home/heyx/Codex-VSP/codex-rs/models-manager)
+   Compiling codex-feedback v0.0.0 (/home/heyx/Codex-VSP/codex-rs/feedback)
+   Compiling codex-utils-plugins v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/plugins)
+   Compiling codex-rollout v0.0.0 (/home/heyx/Codex-VSP/codex-rs/rollout)
+   Compiling codex-plugin v0.0.0 (/home/heyx/Codex-VSP/codex-rs/plugin)
+   Compiling codex-hooks v0.0.0 (/home/heyx/Codex-VSP/codex-rs/hooks)
+   Compiling codex-model-provider v0.0.0 (/home/heyx/Codex-VSP/codex-rs/model-provider)
+   Compiling codex-thread-store v0.0.0 (/home/heyx/Codex-VSP/codex-rs/thread-store)
+   Compiling codex-external-agent-migration v0.0.0 (/home/heyx/Codex-VSP/codex-rs/external-agent-migration)
+   Compiling codex-analytics v0.0.0 (/home/heyx/Codex-VSP/codex-rs/analytics)
+   Compiling codex-mcp v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-mcp)
+   Compiling codex-backend-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/backend-client)
+   Compiling codex-cloud-tasks-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/cloud-tasks-client)
+   Compiling codex-core-skills v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core-skills)
+   Compiling codex-cloud-tasks-mock-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/cloud-tasks-mock-client)
+   Compiling codex-core-plugins v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core-plugins)
+   Compiling codex-core v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core)
+   Compiling codex-app-server-transport v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-transport)
+   Compiling codex-memories-write v0.0.0 (/home/heyx/Codex-VSP/codex-rs/memories/write)
+   Compiling codex-cloud-requirements v0.0.0 (/home/heyx/Codex-VSP/codex-rs/cloud-requirements)
+   Compiling codex-chatgpt v0.0.0 (/home/heyx/Codex-VSP/codex-rs/chatgpt)
+   Compiling codex-memories-extension v0.0.0 (/home/heyx/Codex-VSP/codex-rs/ext/memories)
+   Compiling codex-guardian v0.0.0 (/home/heyx/Codex-VSP/codex-rs/ext/guardian)
+   Compiling codex-ollama v0.0.0 (/home/heyx/Codex-VSP/codex-rs/ollama)
+   Compiling codex-lmstudio v0.0.0 (/home/heyx/Codex-VSP/codex-rs/lmstudio)
+   Compiling codex-utils-sandbox-summary v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/sandbox-summary)
+   Compiling codex-app-server-test-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-test-client)
+   Compiling codex-mcp-server v0.0.0 (/home/heyx/Codex-VSP/codex-rs/mcp-server)
+   Compiling codex-utils-oss v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/oss)
+   Compiling codex-app-server v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server)
+   Compiling codex-app-server-daemon v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-daemon)
+   Compiling codex-app-server-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-client)
+   Compiling codex-tui v0.0.0 (/home/heyx/Codex-VSP/codex-rs/tui)
+   Compiling codex-exec v0.0.0 (/home/heyx/Codex-VSP/codex-rs/exec)
+   Compiling codex-cloud-tasks v0.0.0 (/home/heyx/Codex-VSP/codex-rs/cloud-tasks)
+   Compiling codex-cli v0.0.0 (/home/heyx/Codex-VSP/codex-rs/cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4m 03s
+────────────
+ Nextest run ID 40289c08-86d5-42c3-9131-bef9b88766a2 with nextest profile: default
+    Starting 217 tests across 16 binaries
+        PASS [   0.016s] (  1/217) codex-cli login::tests::formats_long_key
+        PASS [   0.020s] (  2/217) codex-cli login::tests::short_key_returns_stars
+        PASS [   0.021s] (  3/217) codex-cli debug_sandbox::tests::debug_sandbox_honors_explicit_builtin_permission_profile
+        PASS [   0.021s] (  4/217) codex-cli debug_sandbox::tests::debug_sandbox_honors_explicit_named_permission_profile
+        PASS [   0.026s] (  5/217) codex-cli debug_sandbox::tests::debug_sandbox_defaults_legacy_configs_to_read_only
+        PASS [   0.027s] (  6/217) codex-cli debug_sandbox::tests::debug_sandbox_honors_active_permission_profiles
+        PASS [   0.029s] (  7/217) codex-cli debug_sandbox::tests::debug_sandbox_honors_explicit_legacy_sandbox_mode
+        PASS [   0.029s] (  8/217) codex-cli debug_sandbox::tests::debug_sandbox_uses_explicit_profile_cwd
+        PASS [   0.030s] (  9/217) codex-cli debug_sandbox::tests::debug_sandbox_honors_config_profile_loader_overrides
+        PASS [   0.012s] ( 10/217) codex-cli::bin/codex remote_control_cmd::tests::remote_control_human_start_messages_use_server_name
+        PASS [   0.020s] ( 11/217) codex-cli::bin/codex doctor::output::tests::redact_detail_sanitizes_secret_url_path_segments
+        PASS [   0.021s] ( 12/217) codex-cli::bin/codex doctor::output::tests::render_human_report_promotes_notes_without_changing_statuses
+        PASS [   0.019s] ( 13/217) codex-cli::bin/codex remote_control_cmd::tests::remote_control_json_output_marks_foreground_or_daemon
+        PASS [   0.018s] ( 14/217) codex-cli::bin/codex tests::app_server_capability_token_flags_parse
+        PASS [   0.019s] ( 15/217) codex-cli::bin/codex tests::app_server_analytics_default_enabled_with_flag
+        PASS [   0.021s] ( 16/217) codex-cli::bin/codex remote_control_cmd::tests::daemon_app_server_human_lines_include_path_and_version
+        PASS [   0.020s] ( 17/217) codex-cli::bin/codex state_db_recovery::tests::repair_replaces_blocking_sqlite_home_file
+        PASS [   0.024s] ( 18/217) codex-cli::bin/codex doctor::tests::provider_reachability_uses_active_provider_endpoint
+        PASS [   0.021s] ( 19/217) codex-cli::bin/codex tests::exec_resume_last_accepts_prompt_positional
+        PASS [   0.022s] ( 20/217) codex-cli::bin/codex state_db_recovery::tests::lock_failures_skip_repair
+        PASS [   0.021s] ( 21/217) codex-cli::bin/codex tests::app_server_proxy_sock_path_parses
+        PASS [   0.025s] ( 22/217) codex-cli::bin/codex state_db_recovery::tests::repair_backs_up_owned_database_files
+        PASS [   0.028s] ( 23/217) codex-cli::bin/codex doctor::output::tests::render_human_report_explains_terminal_warning_issue
+        PASS [   0.028s] ( 24/217) codex-cli::bin/codex tests::app_server_daemon_subcommands_parse
+        PASS [   0.044s] ( 25/217) codex-cli::bin/codex doctor::tests::stored_auth_validation_rejects_missing_api_key
+        PASS [   0.044s] ( 26/217) codex-cli::bin/codex doctor::progress::tests::progress_is_shown_for_human_tty_output
+        PASS [   0.045s] ( 27/217) codex-cli::bin/codex doctor::tests::run_sync_check_notifies_progress
+        PASS [   0.045s] ( 28/217) codex-cli::bin/codex remote_control_cmd::tests::remote_control_human_lines_include_foreground_stop_hint_only
+        PASS [   0.043s] ( 29/217) codex-cli::bin/codex tests::app_server_listen_invalid_url_fails_to_parse
+        PASS [   0.046s] ( 30/217) codex-cli::bin/codex doctor::tests::read_probe_file_rejects_unreadable_file
+        PASS [   0.046s] ( 31/217) codex-cli::bin/codex doctor::output::tests::detail_value_colors_inline_statuses_and_low_signal_values
+        PASS [   0.047s] ( 32/217) codex-cli::bin/codex doctor::tests::provider_reachability_api_key_does_not_require_chatgpt
+        PASS [   0.048s] ( 33/217) codex-cli::bin/codex doctor::tests::terminal_check_warns_for_declared_narrow_terminal
+        PASS [   0.047s] ( 34/217) codex-cli::bin/codex doctor::tests::provider_reachability_skips_route_probe_for_bedrock
+        PASS [   0.048s] ( 35/217) codex-cli::bin/codex doctor::tests::terminal_check_warns_for_unreadable_terminfo_path
+        PASS [   0.047s] ( 36/217) codex-cli::bin/codex doctor::tests::redacted_json_report_structures_and_sanitizes_details
+        PASS [   0.048s] ( 37/217) codex-cli::bin/codex doctor::updates::tests::is_newer_compares_plain_semver
+        PASS [   0.048s] ( 38/217) codex-cli::bin/codex doctor::output::tests::update_note_emphasizes_available_version_and_dims_context
+        PASS [   0.048s] ( 39/217) codex-cli::bin/codex doctor::output::tests::render_human_report_supports_summary_output_without_color
+        PASS [   0.048s] ( 40/217) codex-cli::bin/codex doctor::tests::should_enable_color_respects_terminal_inputs
+        PASS [   0.049s] ( 41/217) codex-cli::bin/codex doctor::progress::tests::progress_is_quiet_for_non_tty
+        PASS [   0.046s] ( 42/217) codex-cli::bin/codex tests::app_server_analytics_default_disabled_without_flag
+        PASS [   0.049s] ( 43/217) codex-cli::bin/codex doctor::progress::tests::progress_is_quiet_for_dumb_terminal
+        PASS [   0.049s] ( 44/217) codex-cli::bin/codex doctor::tests::stored_auth_validation_rejects_missing_chatgpt_tokens
+        PASS [   0.050s] ( 45/217) codex-cli::bin/codex doctor::tests::terminal_check_warns_for_narrow_terminal
+        PASS [   0.049s] ( 46/217) codex-cli::bin/codex doctor::tests::provider_specific_auth_fails_when_provider_env_key_is_missing
+        PASS [   0.050s] ( 47/217) codex-cli::bin/codex doctor::progress::tests::progress_is_quiet_for_json
+        PASS [   0.050s] ( 48/217) codex-cli::bin/codex doctor::tests::provider_reachability_adds_models_route_probe_for_openai_compatible_base_urls
+        PASS [   0.050s] ( 49/217) codex-cli::bin/codex marketplace_cmd::tests::sparse_paths_parse_before_or_after_source
+        PASS [   0.051s] ( 50/217) codex-cli::bin/codex marketplace_cmd::tests::remove_subcommand_parses_marketplace_name
+        PASS [   0.047s] ( 51/217) codex-cli::bin/codex tests::feature_toggles_accept_legacy_linux_sandbox_flag
+        PASS [   0.047s] ( 52/217) codex-cli::bin/codex tests::app_server_listen_unix_socket_path_parses
+        PASS [   0.050s] ( 53/217) codex-cli::bin/codex doctor::output::tests::render_human_report_supports_ascii_output
+        PASS [   0.047s] ( 54/217) codex-cli::bin/codex tests::app_server_listen_unix_socket_url_parses
+        PASS [   0.050s] ( 55/217) codex-cli::bin/codex doctor::tests::provider_reachability_outcome_reports_required_failures
+        PASS [   0.047s] ( 56/217) codex-cli::bin/codex tests::debug_models_parses_bundled_flag
+        PASS [   0.047s] ( 57/217) codex-cli::bin/codex tests::debug_prompt_input_parses_prompt_and_images
+        PASS [   0.048s] ( 58/217) codex-cli::bin/codex tests::app_server_listen_stdio_url_parses
+        PASS [   0.051s] ( 59/217) codex-cli::bin/codex doctor::tests::color_output_summary_reports_disabled_reasons
+        PASS [   0.050s] ( 60/217) codex-cli::bin/codex doctor::output::tests::render_human_report_expands_feature_flags_with_all
+        PASS [   0.048s] ( 61/217) codex-cli::bin/codex tests::feature_toggles_accept_removed_image_detail_original_flag
+        PASS [   0.018s] ( 62/217) codex-cli::bin/codex wsl_paths::tests::normalize_is_noop_on_unix_paths
+        PASS [   0.051s] ( 63/217) codex-cli::bin/codex doctor::tests::mcp_check_fails_required_missing_stdio_command
+        PASS [   0.052s] ( 64/217) codex-cli::bin/codex doctor::output::tests::redact_detail_preserves_env_var_names
+        PASS [   0.051s] ( 65/217) codex-cli::bin/codex doctor::tests::terminal_check_warns_for_non_utf8_locale
+        PASS [   0.051s] ( 66/217) codex-cli::bin/codex doctor::tests::config_overrides_from_interactive_preserves_global_options
+        PASS [   0.048s] ( 67/217) codex-cli::bin/codex tests::exec_resume_accepts_output_flags_after_subcommand
+        PASS [   0.019s] ( 68/217) codex-cli::bin/codex tests::reject_remote_mode_for_non_interactive_subcommands
+        PASS [   0.019s] ( 69/217) codex-cli::bin/codex tests::format_exit_messages_names_picker_item_when_thread_has_name
+        PASS [   0.019s] ( 70/217) codex-cli::bin/codex tests::read_remote_auth_token_from_env_var_rejects_empty_values
+        PASS [   0.048s] ( 71/217) codex-cli::bin/codex tests::fork_all_flag_sets_show_all
+        PASS [   0.020s] ( 72/217) codex-cli::bin/codex tests::format_exit_messages_includes_resume_hint_without_color
+        PASS [   0.053s] ( 73/217) codex-cli::bin/codex remote_control_cmd::tests::foreground_start_wait_reports_app_server_exit_before_ready
+        PASS [   0.052s] ( 74/217) codex-cli::bin/codex doctor::output::tests::redact_detail_sanitizes_urls
+        PASS [   0.049s] ( 75/217) codex-cli::bin/codex tests::app_server_listen_websocket_url_parses
+        PASS [   0.020s] ( 76/217) codex-cli::bin/codex tests::resume_all_flag_sets_show_all
+        PASS [   0.049s] ( 77/217) codex-cli::bin/codex tests::dangerous_bypass_conflicts_with_approval_policy
+        PASS [   0.020s] ( 78/217) codex-cli::bin/codex tests::format_exit_messages_skips_zero_usage
+        PASS [   0.020s] ( 79/217) codex-cli::bin/codex tests::format_exit_messages_applies_color_when_enabled
+        PASS [   0.050s] ( 80/217) codex-cli::bin/codex tests::app_server_listen_off_parses
+        PASS [   0.050s] ( 81/217) codex-cli::bin/codex tests::exec_full_auto_reports_migration_path
+        PASS [   0.026s] ( 82/217) codex-cli::bin/codex tests::app_server_subcommands_reject_strict_config
+        PASS [   0.021s] ( 83/217) codex-cli::bin/codex tests::reject_remote_auth_token_env_for_app_server_version
+        PASS [   0.021s] ( 84/217) codex-cli::bin/codex tests::reject_remote_auth_token_env_for_app_server_proxy
+        PASS [   0.017s] ( 85/217) codex-cli::bin/codex wsl_paths::tests::win_to_wsl_basic
+        PASS [   0.021s] ( 86/217) codex-cli::bin/codex tests::sandbox_full_auto_no_longer_parses
+        PASS [   0.021s] ( 87/217) codex-cli::bin/codex tests::responses_subcommand_is_not_registered
+        PASS [   0.023s] ( 88/217) codex-cli::bin/codex tests::marketplace_no_longer_parses_at_top_level
+        PASS [   0.022s] ( 89/217) codex-cli::bin/codex tests::sandbox_rejects_explicit_profile_controls_without_profile
+        PASS [   0.023s] ( 90/217) codex-cli::bin/codex tests::full_auto_no_longer_parses_at_top_level
+        PASS [   0.022s] ( 91/217) codex-cli::bin/codex tests::strict_config_with_compound_enable_errors
+        PASS [   0.023s] ( 92/217) codex-cli::bin/codex tests::reject_remote_flag_for_remote_control
+        PASS [   0.023s] ( 93/217) codex-cli::bin/codex tests::strict_config_with_unknown_disable_errors
+        PASS [   0.023s] ( 94/217) codex-cli::bin/codex tests::root_strict_config_is_rejected_for_unsupported_subcommands
+        PASS [   0.023s] ( 95/217) codex-cli::bin/codex tests::resume_include_non_interactive_flag_sets_source_filter_override
+        PASS [   0.053s] ( 96/217) codex-cli::bin/codex tests::app_server_proxy_subcommand_parses
+        PASS [   0.023s] ( 97/217) codex-cli::bin/codex tests::sandbox_parses_config_profile
+        PASS [   0.026s] ( 98/217) codex-cli::bin/codex tests::plugin_marketplace_help_uses_plugin_namespace
+        PASS [   0.029s] ( 99/217) codex-cli::bin/codex tests::profile_v2_is_allowed_for_runtime_subcommands
+        PASS [   0.063s] (100/217) codex-cli::bin/codex doctor::tests::terminal_check_reports_remote_indicators_as_present_only
+        PASS [   0.029s] (101/217) codex-cli::bin/codex tests::update_parses_as_update_subcommand
+        PASS [   0.075s] (102/217) codex-cli::bin/codex remote_control_cmd::tests::foreground_start_wait_stops_before_ready
+        PASS [   0.050s] (103/217) codex-cli::bin/codex doctor::tests::terminal_check_keeps_tmux_probe_failures_non_fatal
+        PASS [   0.050s] (104/217) codex-cli::bin/codex remote_control_cmd::tests::remote_control_daemon_json_rejects_unstartable_status
+        PASS [   0.051s] (105/217) codex-cli::bin/codex doctor::updates::tests::update_action_labels_install_contexts
+        PASS [   0.051s] (106/217) codex-cli::bin/codex doctor::tests::terminal_check_warns_for_dumb_terminal
+        PASS [   0.051s] (107/217) codex-cli::bin/codex doctor::tests::mcp_check_fails_required_remote_stdio_env_var
+        PASS [   0.045s] (108/217) codex-cli::bin/codex tests::resume_picker_logic_last
+        PASS [   0.052s] (109/217) codex-cli::bin/codex doctor::output::tests::redact_detail_preserves_secret_presence_booleans
+        PASS [   0.046s] (110/217) codex-cli::bin/codex tests::reject_remote_auth_token_env_for_app_server_generate_internal_json_schema
+        PASS [   0.052s] (111/217) codex-cli::bin/codex doctor::tests::compare_npm_package_roots_detects_match
+        PASS [   0.053s] (112/217) codex-cli::bin/codex tests::app_server_signed_bearer_flags_parse
+        PASS [   0.053s] (113/217) codex-cli::bin/codex tests::fork_picker_logic_last
+        PASS [   0.080s] (114/217) codex-cli::bin/codex doctor::tests::provider_reachability_mode_uses_api_key_auth
+        PASS [   0.047s] (115/217) codex-cli::bin/codex tests::resume_merges_bypass_hook_trust_flag
+        PASS [   0.047s] (116/217) codex-cli::bin/codex tests::profile_v2_rejects_non_plain_names_at_parse_time
+        PASS [   0.053s] (117/217) codex-cli::bin/codex doctor::tests::collect_rollout_stats_counts_nested_rollout_files
+        PASS [   0.054s] (118/217) codex-cli::bin/codex doctor::output::tests::render_human_report_includes_redacted_details
+        PASS [   0.054s] (119/217) codex-cli::bin/codex tests::feature_toggles_unknown_feature_errors
+        PASS [   0.048s] (120/217) codex-cli::bin/codex tests::read_remote_auth_token_from_env_var_reports_missing_values
+        PASS [   0.054s] (121/217) codex-cli::bin/codex tests::features_enable_parses_feature_name
+        PASS [   0.048s] (122/217) codex-cli::bin/codex tests::resume_model_flag_applies_when_no_root_flags
+        PASS [   0.048s] (123/217) codex-cli::bin/codex tests::sandbox_parses_permissions_profile
+        PASS [   0.048s] (124/217) codex-cli::bin/codex tests::resume_merges_option_flags
+        PASS [   0.049s] (125/217) codex-cli::bin/codex tests::read_remote_auth_token_from_env_var_trims_values
+        PASS [   0.048s] (126/217) codex-cli::bin/codex tests::plugin_marketplace_add_parses_under_plugin
+        PASS [   0.050s] (127/217) codex-cli::bin/codex tests::plugin_remove_parses_under_plugin
+        PASS [   0.050s] (128/217) codex-cli::bin/codex tests::remote_auth_token_env_flag_parses_for_interactive_root
+        PASS [   0.050s] (129/217) codex-cli::bin/codex tests::plugin_add_parses_under_plugin
+        PASS [   0.057s] (130/217) codex-cli::bin/codex doctor::output::tests::render_human_report_includes_details_by_default_without_color
+        PASS [   0.057s] (131/217) codex-cli::bin/codex marketplace_cmd::tests::upgrade_subcommand_parses_optional_marketplace_name
+        PASS [   0.050s] (132/217) codex-cli::bin/codex tests::resume_picker_logic_none_and_not_last
+        PASS [   0.050s] (133/217) codex-cli::bin/codex tests::root_strict_config_is_supported_for_exec_server
+        PASS [   0.050s] (134/217) codex-cli::bin/codex tests::strict_config_parses_for_supported_commands
+        PASS [   0.057s] (135/217) codex-cli::bin/codex doctor::tests::compare_npm_package_roots_detects_mismatch
+        PASS [   0.050s] (136/217) codex-cli::bin/codex tests::plugin_list_parses_under_plugin
+        PASS [   0.051s] (137/217) codex-cli::bin/codex tests::reject_remote_auth_token_env_for_non_interactive_subcommands
+        PASS [   0.050s] (138/217) codex-cli::bin/codex tests::resume_merges_dangerously_bypass_flag
+        PASS [   0.051s] (139/217) codex-cli::bin/codex tests::strict_config_with_unknown_enable_errors
+        PASS [   0.057s] (140/217) codex-cli::bin/codex tests::fork_picker_logic_none_and_not_last
+        PASS [   0.057s] (141/217) codex-cli::bin/codex remote_control_cmd::tests::foreground_wait_aborts_app_server_on_stop_signal
+        PASS [   0.051s] (142/217) codex-cli::bin/codex tests::resume_picker_logic_with_session_id
+        PASS [   0.051s] (143/217) codex-cli::bin/codex tests::remote_flag_parses_for_resume_subcommand
+        PASS [   0.057s] (144/217) codex-cli::bin/codex tests::feature_toggles_known_features_generate_overrides
+        PASS [   0.057s] (145/217) codex-cli::bin/codex doctor::output::tests::render_human_report_can_emit_color
+        PASS [   0.057s] (146/217) codex-cli::bin/codex doctor::tests::overall_status_prefers_fail
+        PASS [   0.057s] (147/217) codex-cli::bin/codex tests::fork_picker_logic_with_session_id
+        PASS [   0.057s] (148/217) codex-cli::bin/codex doctor::tests::provider_specific_auth_allows_non_openai_provider_without_env_key
+        PASS [   0.057s] (149/217) codex-cli::bin/codex tests::app_server_rejects_removed_insecure_non_loopback_flag
+        PASS [   0.057s] (150/217) codex-cli::bin/codex tests::features_disable_parses_feature_name
+        PASS [   0.051s] (151/217) codex-cli::bin/codex tests::plugin_marketplace_remove_parses_under_plugin
+        PASS [   0.058s] (152/217) codex-cli::bin/codex doctor::tests::run_async_check_notifies_progress
+        PASS [   0.052s] (153/217) codex-cli::bin/codex tests::profile_v2_is_rejected_for_config_management_subcommands
+        PASS [   0.058s] (154/217) codex-cli::bin/codex doctor::tests::executable_path_exists_rejects_non_executable_file
+        PASS [   0.058s] (155/217) codex-cli::bin/codex doctor::tests::mcp_check_ignores_disabled_servers
+        PASS [   0.053s] (156/217) codex-cli::bin/codex tests::plugin_marketplace_upgrade_parses_under_plugin
+        PASS [   0.053s] (157/217) codex-cli::bin/codex tests::remote_flag_parses_for_interactive_root
+        PASS [   0.171s] (158/217) codex-cli::marketplace_remove marketplace_remove_deletes_config_and_installed_root
+        PASS [   0.172s] (159/217) codex-cli::features features_enable_under_development_feature_prints_warning
+        PASS [   0.174s] (160/217) codex-cli::features strict_config_rejects_unknown_config_override
+        PASS [   0.178s] (161/217) codex-cli::exec_server strict_config_rejects_unknown_config_fields_for_exec_server
+        PASS [   0.181s] (162/217) codex-cli::debug_models debug_models_default_prints_json_without_auth
+        PASS [   0.193s] (163/217) codex-cli::login login_with_api_key_reads_stdin_and_writes_auth_json
+        PASS [   0.194s] (164/217) codex-cli::login login_with_access_token_rejects_invalid_jwt
+        PASS [   0.149s] (165/217) codex-cli::bin/codex doctor::tests::http_probe_treats_http_status_as_reachable
+        PASS [   0.202s] (166/217) codex-cli::app_server strict_config_rejects_unknown_config_fields_for_app_server
+        PASS [   0.205s] (167/217) codex-cli::mcp_add_remove add_cant_add_command_and_url
+        PASS [   0.222s] (168/217) codex-cli::execpolicy execpolicy_check_matches_expected_json
+        PASS [   0.223s] (169/217) codex-cli::features features_disable_writes_feature_flag_to_config
+        PASS [   0.225s] (170/217) codex-cli::marketplace_add marketplace_add_local_directory_source
+        PASS [   0.233s] (171/217) codex-cli::marketplace_upgrade marketplace_upgrade_runs_under_plugin
+        PASS [   0.244s] (172/217) codex-cli::marketplace_upgrade marketplace_upgrade_no_longer_runs_at_top_level
+        PASS [   0.244s] (173/217) codex-cli::debug_models debug_models_bundled_prints_json
+        PASS [   0.246s] (174/217) codex-cli::execpolicy execpolicy_check_includes_justification_when_present
+        PASS [   0.248s] (175/217) codex-cli::features features_list_is_sorted_alphabetically_by_feature_name
+        PASS [   0.249s] (176/217) codex-cli::marketplace_add marketplace_add_rejects_local_manifest_file_source
+        PASS [   0.232s] (177/217) codex-cli::plugin_cli plugin_list_excludes_unconfigured_repo_local_marketplaces
+        PASS [   0.232s] (178/217) codex-cli::plugin_cli marketplace_list_includes_root_when_plugins_are_filtered_out
+        PASS [   0.251s] (179/217) codex-cli::mcp_add_remove add_streamable_http_rejects_removed_flag
+        PASS [   0.254s] (180/217) codex-cli::features features_enable_writes_feature_flag_to_config
+        PASS [   0.240s] (181/217) codex-cli::plugin_cli marketplace_list_fails_when_configured_marketplace_snapshot_is_malformed
+        PASS [   0.245s] (182/217) codex-cli::plugin_cli marketplace_list_shows_configured_marketplace_names
+        PASS [   0.247s] (183/217) codex-cli::mcp_add_remove profile_mcp_reports_legacy_profile_migration
+        PASS [   0.270s] (184/217) codex-cli::marketplace_add marketplace_add_rejects_sparse_for_local_directory_source
+        PASS [   0.254s] (185/217) codex-cli::mcp_add_remove add_with_env_preserves_key_order_and_values
+        PASS [   0.254s] (186/217) codex-cli::plugin_cli marketplace_list_fails_when_configured_marketplace_name_is_invalid
+        PASS [   0.256s] (187/217) codex-cli::plugin_cli marketplace_list_fails_when_configured_marketplace_snapshot_is_missing
+        PASS [   0.257s] (188/217) codex-cli::plugin_cli marketplace_list_includes_home_marketplace_when_present
+        PASS [   0.256s] (189/217) codex-cli::bin/codex doctor::tests::mcp_check_warns_for_optional_http_reachability
+        PASS [   0.260s] (190/217) codex-cli::plugin_cli plugin_list_fails_when_configured_marketplace_snapshot_is_missing
+        PASS [   0.284s] (191/217) codex-cli::marketplace_remove marketplace_remove_rejects_unknown_marketplace
+        PASS [   0.269s] (192/217) codex-cli::plugin_cli plugin_add_rejects_unconfigured_repo_local_marketplaces
+        PASS [   0.273s] (193/217) codex-cli::update update_does_not_start_interactive_prompt
+        PASS [   0.293s] (194/217) codex-cli::features strict_config_is_not_supported_for_cloud_command
+        PASS [   0.277s] (195/217) codex-cli::plugin_cli marketplace_list_fails_when_home_marketplace_is_malformed
+        PASS [   0.280s] (196/217) codex-cli::mcp_add_remove add_streamable_http_with_custom_env_var
+        PASS [   0.282s] (197/217) codex-cli::mcp_list list_shows_empty_state
+        PASS [   0.286s] (198/217) codex-cli::plugin_cli marketplace_list_fails_when_configured_local_marketplace_source_is_missing
+        PASS [   0.288s] (199/217) codex-cli::plugin_cli plugin_add_fails_when_configured_marketplace_snapshot_is_malformed
+        PASS [   0.261s] (200/217) codex-cli::bin/codex doctor::tests::provider_reachability_route_404_fails_bad_base_url_path
+        PASS [   0.261s] (201/217) codex-cli::bin/codex doctor::tests::provider_reachability_route_401_keeps_reachability_ok
+        PASS [   0.275s] (202/217) codex-cli::bin/codex doctor::tests::mcp_http_probe_falls_back_to_get_when_head_times_out
+        PASS [   0.304s] (203/217) codex-cli::plugin_cli plugin_list_ignores_implicit_system_marketplace_roots_without_manifests
+        PASS [   0.279s] (204/217) codex-cli::plugin_cli plugin_list_fails_for_custom_marketplace_under_system_root
+        PASS [   0.289s] (205/217) codex-cli::plugin_cli plugin_list_prints_plugins_in_a_table
+        PASS [   0.353s] (206/217) codex-cli::debug_clear_memories debug_clear_memories_resets_state_and_removes_memory_dir
+        PASS [   0.364s] (207/217) codex-cli::mcp_list get_disabled_server_shows_single_line
+        PASS [   0.395s] (208/217) codex-cli::plugin_cli plugin_add_and_remove_updates_installed_plugin_config
+        PASS [   0.401s] (209/217) codex-cli::plugin_cli plugin_list_shows_installed_version_when_plugin_is_installed
+        PASS [   0.406s] (210/217) codex-cli::plugin_cli plugin_add_reinstalls_from_configured_marketplace_snapshot
+        PASS [   0.400s] (211/217) codex-cli::plugin_cli plugin_list_hides_version_for_cached_but_unconfigured_plugin
+        PASS [   0.478s] (212/217) codex-cli::mcp_add_remove add_and_remove_server_updates_global_config
+        PASS [   0.522s] (213/217) codex-cli::plugin_cli plugin_remove_works_after_marketplace_is_removed
+        PASS [   0.543s] (214/217) codex-cli::plugin_cli plugin_add_rejects_cached_plugins_without_authorizing_marketplace_snapshot
+        PASS [   0.623s] (215/217) codex-cli::mcp_add_remove add_streamable_http_without_manual_token
+        PASS [   0.633s] (216/217) codex-cli::mcp_add_remove add_streamable_http_with_oauth_options
+        PASS [   0.777s] (217/217) codex-cli::mcp_list list_and_get_render_expected_output
+────────────
+     Summary [   0.798s] 217 tests run: 217 passed, 0 skipped
+just bench-smoke
+just bench -- --test
+cargo bench --workspace --bench '*' "$@"
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.44
+   Compiling unicode-ident v1.0.22
+   Compiling libc v0.2.182
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling typenum v1.19.0
+   Compiling version_check v0.9.5
+   Compiling find-msvc-tools v0.1.9
+   Compiling bitflags v2.10.0
+   Compiling serde v1.0.228
+   Compiling shlex v1.3.0
+   Compiling pkg-config v0.3.32
+   Compiling vcpkg v0.2.15
+   Compiling autocfg v1.5.0
+   Compiling rustix v1.1.4
+   Compiling simd-adler32 v0.3.8
+   Compiling crc32fast v1.5.0
+   Compiling parking_lot_core v0.9.12
+   Compiling linux-raw-sys v0.12.1
+   Compiling utf8parse v0.2.2
+   Compiling scopeguard v1.2.0
+   Compiling adler2 v2.0.1
+   Compiling foldhash v0.2.0
+   Compiling unicase v2.9.0
+   Compiling subtle v2.6.1
+   Compiling anstyle-query v1.1.5
+   Compiling anstyle v1.0.13
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling const-oid v0.9.6
+   Compiling colorchoice v1.0.4
+   Compiling allocator-api2 v0.2.21
+   Compiling log v0.4.29
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.18
+   Compiling byteorder-lite v0.1.0
+   Compiling weezl v0.1.12
+   Compiling heck v0.5.0
+   Compiling pin-project-lite v0.2.16
+   Compiling zune-core v0.5.1
+   Compiling clap_lex v1.0.0
+   Compiling strsim v0.11.1
+   Compiling quick-error v2.0.1
+   Compiling bytes v1.11.1
+   Compiling color_quant v1.1.0
+   Compiling cpufeatures v0.2.17
+   Compiling bytemuck v1.25.0
+   Compiling mime v0.3.17
+   Compiling regex-lite v0.1.8
+   Compiling base64 v0.22.1
+   Compiling condtype v1.3.0
+   Compiling generic-array v0.14.7
+   Compiling num-traits v0.2.19
+   Compiling lock_api v0.4.14
+   Compiling anstyle-parse v0.2.7
+   Compiling miniz_oxide v0.8.9
+   Compiling mime_guess v2.0.5
+   Compiling fdeflate v0.3.7
+   Compiling hashbrown v0.16.1
+   Compiling gif v0.14.1
+   Compiling zune-jpeg v0.5.12
+   Compiling image-webp v0.2.4
+   Compiling anstream v0.6.21
+   Compiling lru v0.16.3
+   Compiling jobserver v0.1.34
+   Compiling syn v2.0.114
+   Compiling pxfm v0.1.27
+   Compiling cc v1.2.55
+   Compiling getrandom v0.2.17
+   Compiling errno v0.3.14
+   Compiling mio v1.1.1
+   Compiling socket2 v0.6.2
+   Compiling signal-hook-registry v1.4.8
+   Compiling rand_core v0.6.4
+   Compiling libz-sys v1.1.23
+   Compiling flate2 v1.1.8
+   Compiling png v0.18.0
+   Compiling moxcms v0.7.11
+   Compiling zeroize_derive v1.4.3
+   Compiling serde_derive v1.0.228
+   Compiling tokio-macros v2.6.0
+   Compiling thiserror-impl v2.0.18
+   Compiling clap_derive v4.5.55
+   Compiling divan-macros v0.1.21
+   Compiling zeroize v1.8.2
+   Compiling terminal_size v0.4.3
+   Compiling clap_builder v4.5.58
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling sha1 v0.10.6
+   Compiling smallvec v1.15.1
+   Compiling parking_lot v0.12.5
+   Compiling tokio v1.49.0
+   Compiling clap v4.5.58
+   Compiling divan v0.1.21
+   Compiling image v0.25.9
+   Compiling codex-utils-cache v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/cache)
+   Compiling codex-utils-image v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/image)
+    Finished `bench` profile [optimized] target(s) in 28.95s
+     Running benches/prompt_images.rs (target/release/deps/prompt_images-4624ed2fe8de2cc5)
+prompt_images
+├─ large_jpeg_photo_fresh_attachment
+├─ large_png_screenshot_fresh_attachment
+├─ small_png_screenshot_fresh_attachment
+╰─ small_png_screenshot_repeated_attachment
+
+END 2026-05-24T19:53:07+08:00
+DURATION_SECONDS 277
+STATUS 0

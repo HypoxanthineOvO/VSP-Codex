@@ -1,0 +1,39 @@
+id: C9-PATCH-vscode-provider-runtime-boundaries-20260607
+schema_version: 1
+type: patch
+source:
+  patch: P001
+created_at: "2026-06-07T17:35:00+08:00"
+summary: Empty provider and inherited CODEX_HOME are separate VSCode compatibility boundaries.
+details:
+  lessons:
+    - title: Normalize provider values at every request boundary
+      text: Empty or whitespace-only `modelProvider` from the VSCode extension must be treated as unset, not as an explicit provider override. This applies to thread start, resume, fork, mismatch logging, and thread settings update.
+    - title: Do not assume the launched binary controls CODEX_HOME
+      text: The official VSCode extension can start the VSP binary while still passing `CODEX_HOME=$HOME/.codex`. VSP launch integration must pin or sanitize runtime home before config loading.
+    - title: Source fixes and runtime wiring are distinct
+      text: A source-level app-server provider normalization fix can be present and still fail in practice if VSCode launches the process with the wrong home/config directory.
+  evidence:
+    - "2026-05-31 app-server fix: empty or whitespace-only model_provider request parameters are normalized to unset."
+    - "2026-06-07 P001: `vsp-codex vscode install` writes `$HOME/.vsp-codex/vscode/vsp-codex`, which exports `CODEX_HOME=$HOME/.vsp-codex` before execing the real CLI."
+  validation:
+    - "codex-app-server thread_processor_behavior_tests and thread_settings_build_params covered the empty-provider request boundary."
+    - "codex-cli VSCode integration tests covered the wrapper launch path and inherited `$HOME/.codex` regression."
+tags:
+  - c9
+  - vscode
+  - provider
+  - codex-home
+  - sessions
+  - compatibility
+categories:
+  - pitfalls
+  - config-notes
+  - references
+refs:
+  files:
+    - codex-rs/app-server/src/request_processors/thread_processor.rs
+    - codex-rs/app-server/src/request_processors/turn_processor.rs
+    - codex-rs/cli/src/vscode_cmd.rs
+    - codex-rs/cli/tests/vscode.rs
+    - .pipeline/patches/P001-vscode-wrapper-pins-vsp-home.md

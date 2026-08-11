@@ -1,0 +1,321 @@
+p2_decompose:
+  cycle: C4
+  status: confirmed
+  generated_at: "2026-05-28T00:00:00+08:00"
+  feature: "体验优化 + 预览版发布闭环"
+  source:
+    - ".plan-state/p0-configure.yaml"
+    - ".plan-state/p1-discover.yaml"
+  checkpoint_policy:
+    next_phase_requires_user_confirmation: false
+    generated_prompts: true
+    generated_architecture_files: true
+    start_command_is_execution_confirmation: false
+    continuous_execution_after_start: false
+  scope_policy:
+    framing: "本 Cycle 定义为能发布给大家用的 VSCode/TUI preview，不是完整体验优化大版本。"
+    blockers:
+      - "VSCode 官方插件自动接入和 rollback。"
+      - "至少 Linux x64 预览包、quickstart、smoke evidence。"
+      - "Rename 写 canonical session/thread metadata，并在 TUI/app-server/VSCode 可见。"
+      - "Thinking 只接真实 summary/raw reasoning 能力；不伪造。"
+      - "必要操作不依赖 VSCode 终端冲突键。"
+    included_non_blocker_work:
+      - "Markdown 已有 renderer 的颜色补齐。"
+      - "默认淡色块配色和输入框明显化。"
+      - "性能测量与低风险启动优化。"
+    deferred:
+      - "完整 Color Theme picker、三组主题持久化和完整 fallback matrix。"
+      - "完整 command palette/focus stack/键盘复制选择系统。"
+      - "resume metadata cache、recent preview cache、progressive stale-cache verification。"
+      - "自研 VSCode 插件或 patch 官方插件 UI。"
+  global_validation:
+    format:
+      - "just fmt"
+      - "just fix -p <changed-crate>"
+    focused_tests:
+      - "just test -p codex-cli"
+      - "just test -p codex-tui"
+      - "just test -p codex-app-server"
+      - "just test -p codex-app-server-protocol"
+      - "just test -p codex-core"
+    snapshot_flow:
+      - "just test -p codex-tui"
+      - "cargo insta pending-snapshots -p codex-tui"
+      - "cargo insta accept -p codex-tui"
+    schema_flow:
+      - "just write-app-server-schema"
+      - "just test -p codex-app-server-protocol"
+    release_smoke:
+      - "vsp-codex app-server --analytics-default-enabled initialize probe"
+      - "vsp-codex vscode install settings write probe"
+      - "vsp-codex vscode uninstall/rollback probe"
+      - "VS Code CLI extension installed probe when code CLI is available"
+    full_suite_policy: "如 core/protocol/app-server 共享面改动超过 focused tests 覆盖，先征得用户同意再运行完整 just test。"
+  milestones:
+    - id: M1
+      name: "Release Spine + VSCode Hijack"
+      goal: "让预览版二进制能自动接入官方 VSCode 插件，并提供可验证的安装、回滚和发布 smoke。"
+      implementation_scope:
+        - "新增 `vsp-codex vscode install` 和 rollback/uninstall/reset 子命令。"
+        - "写入 VSCode user settings，优先设置 `chatgpt.cliExecutable` 指向当前或指定 `vsp-codex`，失败时支持 workspace `.vscode/settings.json` fallback。"
+        - "写 settings 前备份原值，保留原 `chatgpt.cliExecutable`，`chatgpt.localeOverride=zh-CN` 只在为空时写入。"
+        - "如果 VS Code CLI 可用且 extension 缺失，尝试安装 `openai.chatgpt`；不可用时给出明确手动命令。"
+        - "提供 app-server initialize probe，验证官方插件启动参数 `app-server --analytics-default-enabled` 可用。"
+        - "发布包最小 blocker 是 Linux x64；macOS arm64 为 should-have，除非构建链已就绪。"
+        - "生成或更新 preview quickstart 与 rollback 说明，保留 release evidence。"
+      technical_solution: "在 `codex-rs/cli` 增加独立 `vscode_cmd` 模块和 clap 子命令，不修改官方 VSCode 插件。集成方式基于官方插件的 restricted development setting `chatgpt.cliExecutable`，通过保守 JSON settings 编辑、备份和回滚实现自动劫持。app-server 兼容性用 stdio initialize 探针验证。"
+      technical_route:
+        - "在 `codex-rs/cli/src/main.rs` 的 `Subcommand` 增加 `Vscode(VscodeCommand)`，逻辑放入新模块 `codex-rs/cli/src/vscode_cmd.rs`。"
+        - "实现 settings 路径发现：Linux `$HOME/.config/Code/User/settings.json` / VSCode Server 相关路径优先，macOS `$HOME/Library/Application Support/Code/User/settings.json` 作为 should-have。"
+        - "实现 JSON 读写：保持未知字段，写前复制备份到 `~/.vsp-codex/vscode-settings-backups/`，记录旧值和写入来源。"
+        - "实现 `install`、`status`、`rollback` 或 `uninstall` 子命令；`install` 支持 `--cli PATH`、`--workspace PATH`、`--dry-run`。"
+        - "实现 VS Code CLI 探测：`code --list-extensions` / `code --install-extension openai.chatgpt`，失败不静默。"
+        - "实现 app-server initialize probe，复用 release binary 运行 `app-server --analytics-default-enabled` 并发送最小 initialize JSON。"
+        - "补 CLI tests：settings 写入、保留字段、备份、rollback、locale 空值写入、locale 非空不覆盖、workspace fallback。"
+      research_required:
+        - status: resolved
+          evidence: "P1 已验证本地官方插件安装路径、`chatgpt.cliExecutable`、插件启动参数和 VSP app-server initialize 成功。"
+        - status: pending_for_implementation
+          evidence: "VS Code user settings 在 remote/server 场景的最终路径需要实现阶段用本机环境确认；失败时必须 fallback 到 workspace settings 或明确手动命令。"
+      risks_and_alternatives:
+        - "风险：VS Code restricted setting 不能被普通 settings 写入生效；应以 status/probe 和手动 fallback 暴露，不 patch 插件。"
+        - "风险：settings JSONC 含注释，普通 serde_json 会丢注释；实现阶段优先使用 JSONC-preserving 或最小可接受的保守编辑策略。"
+        - "替代方案：自研插件或 patch 官方插件；本 Cycle 拒绝，范围过大。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-cli vscode"
+          - "just test -p codex-app-server"
+          - "vsp-codex app-server --analytics-default-enabled < initialize-probe"
+        pass_signal: "settings 写入/备份/rollback 测试通过，initialize probe 返回 VSP codexHome/userAgent，release evidence 记录成功。"
+        fail_signal: "写坏 settings、无法 rollback、locale 覆盖用户值、app-server 无法按官方插件参数 initialize。"
+      audit_focus:
+        - "确认没有修改或分发官方插件代码。"
+        - "确认 settings 写入可回滚且不会覆盖用户已有 locale。"
+        - "确认 release blocker 以 Linux x64 闭环为准，macOS arm64 未就绪时不阻塞。"
+
+    - id: M2
+      name: "Canonical Rename"
+      goal: "让 Rename 真正修改 canonical session/thread name，而不是 TUI-only alias，并在 TUI、app-server 和 VSCode history/list 可见。"
+      implementation_scope:
+        - "复用现有 app-server `thread/name/set`，不新增协议 surface。"
+        - "修复当前 loaded thread、普通 stored/unloaded thread 的 metadata 写入和 re-read。"
+        - "TUI `/rename` 保持 prefill、Enter save、Esc cancel、trim、空名拒绝。"
+        - "TUI resume list、app-server `thread/list` / `thread/read` 返回新 name。"
+        - "发送 `thread/name/updated` 给已连接 app-server clients，使 VSCode 可见。"
+        - "Archived rename 和 resume picker action 作为 should-have；若实现风险高可降级。"
+      technical_solution: "以 thread id 为唯一身份，rename 写入 state DB 的 canonical metadata，同时追加 rollout compatibility thread-name record。TUI 和 app-server 均从 canonical metadata/read path 取名；旧 name 只作为历史兼容索引，不作为当前显示来源。"
+      technical_route:
+        - "梳理 `ThreadMetadataPatch.name`、state DB thread metadata 更新和 `codex-rs/rollout/src/session_index.rs::append_thread_name` 的事务边界。"
+        - "修复 app-server `thread/name/set` processor，确保 loaded 和 stored thread 都写 canonical metadata 并 emit `thread/name/updated`。"
+        - "修复 TUI `SetThreadName` / `/rename` 处理，使 terminal title/status、resume hint、resume picker read path 立即更新。"
+        - "确保 `thread/list`、`thread/read` 读取 canonical metadata，并对 rollout index 做兼容回填。"
+        - "补 tests：当前 loaded rename、stored/unloaded rename、app-server list/read、restart/re-read persistence、TUI snapshot。"
+      research_required:
+        - status: resolved
+          evidence: "P1 已确认 `thread/name/set`、`thread/name/updated`、`ThreadMetadataPatch.name`、rollout thread-name record、TUI `/rename` 和 resume picker name path 均存在。"
+      risks_and_alternatives:
+        - "风险：sqlite metadata 成功但 rollout compatibility append 失败造成 false success；保存路径必须返回整体失败或明确部分失败并不更新 UI。"
+        - "风险：duplicate names lookup 混淆；所有 API/UX 使用 thread id 定位，duplicate name 允许。"
+        - "替代方案：新增 alias 字段；拒绝，因为用户明确要改 metadata name。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-app-server thread_name"
+          - "just test -p codex-tui rename"
+          - "just test -p codex-rollout thread_name"
+        pass_signal: "rename 后 TUI/app-server/list/read/restart 均显示新 name，失败路径不显示假成功。"
+        fail_signal: "只改当前 UI、resume list 仍旧名、VSCode list 收不到 updated notification、空名可保存。"
+      audit_focus:
+        - "确认 rename 不写入 transcript turn/item。"
+        - "确认 canonical metadata 和 rollout compatibility lookup 一致。"
+        - "确认 archived/resume picker UX 若未完成，被清楚标记为非 blocker。"
+
+    - id: M3
+      name: "Reasoning Capability Gate"
+      goal: "确认并接入真实 Thinking/Reasoning 输出；如果 raw/summary 不可得，明确降级而不伪造。"
+      implementation_scope:
+        - "确认 core 实际 emitted events：summary `ReasoningContentDelta`、raw `ReasoningRawContentDelta`、section break。"
+        - "app-server v2 保持 `item/reasoning/summaryTextDelta`、`summaryPartAdded`、`textDelta` 映射兼容。"
+        - "TUI 展示 collapsed Thinking block，默认 collapsed；summary 优先，raw 仅真实可得时显示。"
+        - "新增三态显示模式 `off / summary / raw` 的实现方案；旧 `show_raw_agent_reasoning=true/false` 映射为 raw/summary。"
+        - "provider 无 reasoning 时不显示空 Thinking block，release notes 明确 unsupported。"
+      technical_solution: "Reasoning 能力从 core event 和 v2 app-server notification 出发，不从 tool/progress 合成。配置层提供兼容旧 bool 的三态可见性；TUI history cell 以 item/turn 级 collapsible block 聚合 summary/raw/section break。"
+      technical_route:
+        - "检查 `codex-rs/core` Responses event handling，确认当前 VSP provider 是否产生 summary/raw event；补 core fixture 测试。"
+        - "保留并测试 `codex-rs/app-server-protocol/src/protocol/event_mapping.rs` 的 reasoning v2 mapping。"
+        - "在 TUI history/reasoning cell 现有路径新增 collapsed state 和 label 本地化；无内容不渲染。"
+        - "在 config types 中设计 `thinking_visibility` 或等价三态；如改 `ConfigToml`，运行 `just write-config-schema`。"
+        - "补 snapshot：summary、raw、off、unsupported/no empty block、section break。"
+      research_required:
+        - status: partially_resolved
+          evidence: "app-server v2 reasoning notifications 和 thread history reasoning item 已存在；真实 provider raw/summary 输出可得性需实现阶段用 VSP provider fixture/probe 确认。"
+      risks_and_alternatives:
+        - "风险：raw reasoning 不由 provider/API 输出；发布时只能 summary 或 unsupported。"
+        - "风险：把 tool progress 当 Thinking 展示；明确禁止。"
+        - "替代方案：只做 release note 能力判定；若 TUI block 风险高，可降级但必须保留 capability verdict。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-core reasoning"
+          - "just test -p codex-app-server-protocol reasoning"
+          - "just test -p codex-tui reasoning"
+        pass_signal: "真实 summary/raw event 能映射到 app-server/TUI；off 隐藏；unsupported 无空块无错误。"
+        fail_signal: "无真实 reasoning 时生成假 Thinking，或 VSCode 只能收到 legacy raw event 而非 v2 item/reasoning。"
+      audit_focus:
+        - "确认没有伪造 hidden reasoning。"
+        - "确认旧 config 兼容迁移。"
+        - "确认 app-server v2 是 VSCode 兼容主路径。"
+
+    - id: M4
+      name: "VSCode-Terminal-Safe Keymap + Composer Prominence"
+      goal: "修复 VSCode 集成终端中的必要快捷键冲突，并让输入框更像当前可输入的主操作面。"
+      implementation_scope:
+        - "必要操作不得依赖 `Ctrl+J/K`、`Ctrl+P`、`Ctrl+Shift+P`、`Alt` chords 或 `Ctrl+C`。"
+        - "Ask/ranking/list 等上下移动使用方向键；组件间焦点使用 Tab/Shift+Tab；Enter/Esc 保持主提交/退出语义。"
+        - "修复 request_user_input overlay 当前 `ctrl+j/k to reorder`、`ctrl+p/n change question` 提示和处理路径。"
+        - "保留 `/keymap` 自定义能力，但默认 keymap 和 hints 必须 VSCode-terminal-safe。"
+        - "输入框增加更清晰边框、主题 accent、淡背景和焦点提示；不显著增加高度。"
+      technical_solution: "以现有 `RuntimeKeymap` 和 bottom pane view 为边界，调整默认 bindings 与组件 hints；添加禁用键约束测试，防止必要 action 重新绑定到 VSCode 终端冲突键。composer 视觉只改 chat_composer/bottom pane 渲染样式，不做完整 focus stack。"
+      technical_route:
+        - "在 `codex-rs/tui/src/keymap.rs` 和 keymap setup tests 中定义 VSCode-terminal-safe default constraints。"
+        - "修改 `codex-rs/tui/src/bottom_pane/request_user_input/mod.rs`：ranking reorder 改为 safe keys/hints，question navigation 改为 Tab/Shift+Tab 或显式按钮式提示。"
+        - "更新 footer/shortcut overlay 中 `ctrl+j` newline、`ctrl+p/n` 等高风险默认提示；保留配置自定义但不作为必要入口。"
+        - "修改 `codex-rs/tui/src/bottom_pane/chat_composer.rs` 或相关渲染模块，强化 focused/unfocused composer 样式。"
+        - "补 tests/snapshots：默认 keymap 不含 forbidden essential chords、Ask ranking、multi-question nav、composer focused/unfocused。"
+      research_required:
+        - status: resolved
+          evidence: "本地 grep 已确认 request_user_input overlay 存在 `ctrl+j/k to reorder` 和 `ctrl+p/n change question`，footer snapshots 也展示 `ctrl+j` 等提示。"
+      risks_and_alternatives:
+        - "风险：移除 Ctrl+J newline 影响老用户肌肉记忆；保留自定义 keymap，默认改为 safe path。"
+        - "风险：Tab/Shift+Tab 与终端 focus 行为也可能被宿主截获；仍比 Ctrl chords 更安全，并保留 slash/Enter/Esc 兜底。"
+        - "替代方案：完整 command palette/focus stack；顺延。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui keymap"
+          - "just test -p codex-tui request_user_input"
+          - "just test -p codex-tui chat_composer"
+        pass_signal: "默认必要操作不再提示/依赖 forbidden chords，composer focused/unfocused snapshot 清晰。"
+        fail_signal: "Ask 仍提示 Ctrl+J/K 或 Ctrl+P/N 为必要操作，Ctrl+C 被用作复制主入口，输入框仍不明显。"
+      audit_focus:
+        - "确认用户最新痛点 VSCode terminal 冲突被优先解决。"
+        - "确认没有引入完整 keybinding 配置重构。"
+        - "确认文本选择/复制没有因边框样式变差。"
+
+    - id: M5
+      name: "Markdown Color Refinement + Default Subtle Blocks"
+      goal: "在已有 Markdown renderer 基础上补齐可见颜色，让 bold/italic/list/table 等元素在暗色终端中清楚可扫读，并加入默认淡色块区分。"
+      implementation_scope:
+        - "不重写 Markdown renderer；复用 `pulldown-cmark` renderer。"
+        - "采用三角色 palette：emphasis text、code/link、structural elements。"
+        - "bold、italic、bold+italic 必须有非默认前景色，不只依赖 terminal bold/italic 属性。"
+        - "list markers、table headers、table borders、headings、blockquote marker 使用克制但明显的颜色。"
+        - "inline code 改为主题派生 code 色，而不是硬编码青色。"
+        - "默认 teal/amber-like 淡色块区分 user/assistant/thinking/tool/Ask/subagent/error，但不做完整 Color Theme picker。"
+        - "确保窄宽度不引入水平滚动或重叠；普通正文保持安静。"
+      technical_solution: "在 `codex-rs/tui/src/markdown_render.rs` 中抽象默认 Markdown style palette，替换当前 strong/emphasis 默认前景和 hardcoded cyan/light_blue。消息块配色优先通过 history cell 边框/accent 小范围接入，不改变 transcript 数据结构。"
+      technical_route:
+        - "调整 `MarkdownStyles::default()`：strong/emphasis/heading/list/table/blockquote 使用 theme-derived semantic styles。"
+        - "把 inline code/link 当前 cyan 改为默认主题 code/link role；必要时新增小型 `tui/src/style.rs` helper，而不是完整 theme config。"
+        - "更新 table rendering 中 header/border style，确保正文不整块染色。"
+        - "在 history cell user/assistant/thinking/tool/Ask/subagent/error 渲染边界加入默认淡色 accent 或 border；避免新增标题行。"
+        - "更新 snapshots/style assertions：bold/italic/bold+italic/list/table/code/link/blockquote/mixed message blocks。"
+      research_required:
+        - status: resolved
+          evidence: "已确认 `markdown_render.rs`、`markdown.rs`、`history_cell/messages.rs` 和 `markdown_render_tests.rs` 存在，当前 inline code/link 为 cyan，strong/emphasis 主要依赖 bold/italic 默认前景。"
+      risks_and_alternatives:
+        - "风险：颜色过多导致长消息花；采用三角色 palette 和 snapshot review 控制。"
+        - "风险：truecolor/fallback 扩展过大；本 Cycle 只做默认暗色终端优先，不做完整 fallback matrix。"
+        - "替代方案：完整 Color Theme picker；顺延。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui markdown_render"
+          - "just test -p codex-tui history_cell"
+          - "cargo insta pending-snapshots -p codex-tui"
+        pass_signal: "样式断言证明 strong/emphasis/list/table/code 非默认且可区分，混合消息块和输入框视觉 snapshot 通过。"
+        fail_signal: "bold/italic 仍是默认白色，list marker/table border 不上色，边框/淡色导致窄屏重叠。"
+      audit_focus:
+        - "确认没有把 headings 做成独立大标题行。"
+        - "确认没有完整 theme picker/config 持久化范围膨胀。"
+        - "确认 Markdown renderer 的 wrapping/table 行为未回退。"
+
+    - id: M6
+      name: "Performance Evidence + Low-Risk Startup Fixes"
+      goal: "为预览版提供冷启动、resume/history 和 VSCode initialize 的性能证据，并只做低风险启动优化。"
+      implementation_scope:
+        - "记录 cold start、resume list、open historical session、VSCode app-server initialize 的 before/after evidence。"
+        - "只优化明显低风险阻塞项：避免启动时无必要全量 history scan、provider/network probe、MCP discovery 阻塞首屏。"
+        - "不实现 resume metadata cache、recent preview cache 或 progressive stale-cache verification。"
+        - "无网络/慢 provider 场景应不阻塞 TUI 首屏可输入。"
+        - "性能诊断不做产品入口；只进入 release evidence。"
+      technical_solution: "在启动和 app-server initialize 关键点增加可测试 timing/log hooks，识别并延后非首屏必要初始化。优化以 lazy/background 初始化为主，不引入新缓存一致性系统。"
+      technical_route:
+        - "梳理 TUI startup path、resume picker construction、thread open 和 app-server initialize path 的同步阻塞点。"
+        - "添加测试可观察的 timing/evidence helper 或 release script，避免常驻 UI `/perf`。"
+        - "将 provider/account probe、MCP/tool discovery、全量 history scan 中非首屏必要部分延后或后台化。"
+        - "补 no-network/slow-provider startup probe 和 large-history fixture 测试；若 fixture 成本过高，至少保留 release evidence script。"
+        - "记录 VSCode initialize timing 到 release validation artifact。"
+      research_required:
+        - status: pending_for_implementation
+          evidence: "P1 已定性能范围，但具体阻塞点需要实现阶段通过 timing evidence 定位；不得在无基线时先做缓存系统。"
+      risks_and_alternatives:
+        - "风险：后台初始化改变状态时序；只延后非首屏必要工作，并用 tests 覆盖 no-network/slow-provider。"
+        - "风险：性能优化无可观测证据；release evidence 必须包含 before/after 或 timing artifact。"
+        - "替代方案：metadata cache/progressive loading；顺延。"
+      validation_path:
+        owner: test
+        commands:
+          - "just test -p codex-tui startup"
+          - "just test -p codex-app-server initialize"
+          - "release evidence script for cold start/resume/open historical/vscode initialize"
+        pass_signal: "release evidence 包含 timing，no-network/slow-provider 不阻塞首屏，低风险优化有测试或可复现 probe。"
+        fail_signal: "性能结论无数据，启动仍被 provider/MCP/history 明显阻塞，或引入 cache stale 问题。"
+      audit_focus:
+        - "确认没有偷偷实现半成品缓存系统。"
+        - "确认 performance evidence 可复现。"
+        - "确认优化不牺牲 correctness 或错误可见性。"
+
+    - id: M7
+      name: "Preview Release Validation"
+      goal: "把 VSCode/TUI preview 的核心路径打包、验证并产出可发布证据。"
+      implementation_scope:
+        - "汇总 M1-M6 focused tests、fmt、fix、snapshots 和 schema。"
+        - "构建 Linux x64 preview artifact；macOS arm64 作为 should-have 构建。"
+        - "运行 VSCode hijack install/status/rollback smoke。"
+        - "运行 app-server initialize probe、thread start/read/list/name set probe、reasoning verdict probe。"
+        - "生成 quickstart、rollback、known limitations 和 release evidence。"
+      technical_solution: "最后一个 milestone 不再新增产品功能，只做 release closure。所有 blocker 必须有自动测试或 smoke artifact；无法证明的 should-have 降级到 known limitations。"
+      technical_route:
+        - "运行 `just fmt`，按改动 crate 运行 `just fix -p ...`，然后运行 focused tests。"
+        - "如 app-server protocol/schema 被改动，运行 schema flow 并纳入 diff。"
+        - "运行 snapshot flow，审查并接受 TUI snapshot。"
+        - "构建 release binary，记录 target、git rev、artifact path、sha256。"
+        - "在临时 HOME/VSCode settings 下跑 install/rollback smoke，保存 stdout/log。"
+        - "整理 `.pipeline/reports/` 下 release validation report。"
+      research_required:
+        - status: pending_for_implementation
+          evidence: "最终 release target 和构建链依赖实现阶段环境；Linux x64 是硬门，macOS arm64 可降级。"
+      risks_and_alternatives:
+        - "风险：把功能缺口留到 release validation 才发现；前置 milestone 都必须有 focused validation。"
+        - "风险：完整 workspace test 太慢；遵守 P0 策略，先 focused tests，完整 `just test` 需询问用户。"
+        - "替代方案：无打包只给源码；拒绝，因为预览版要能发布给大家用。"
+      validation_path:
+        owner: test
+        commands:
+          - "just fmt"
+          - "just fix -p codex-cli"
+          - "just fix -p codex-tui"
+          - "just fix -p codex-app-server"
+          - "just test -p codex-cli"
+          - "just test -p codex-tui"
+          - "just test -p codex-app-server"
+          - "just test -p codex-app-server-protocol"
+        pass_signal: "release report 含 artifact、smoke logs、known limitations，所有 blockers 有证据。"
+        fail_signal: "没有可用二进制、VSCode install/rollback 不可验证、核心 tests/snapshots 未通过。"
+      audit_focus:
+        - "确认 blocker/should-have/deferred 没有混淆。"
+        - "确认 release evidence 足够让其他人安装和回滚。"
+        - "确认 Worker Separation 的 test/implement/audit 证据在执行阶段完整。"

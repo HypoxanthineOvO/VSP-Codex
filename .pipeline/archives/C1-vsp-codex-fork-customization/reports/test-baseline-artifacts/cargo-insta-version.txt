@@ -1,0 +1,9 @@
+START 2026-05-24T19:41:40+08:00
+error: no such command: `insta`
+
+help: a command with a similar name exists: `init`
+
+help: view all installed commands with `cargo --list`
+help: find a package to install `insta` with `cargo search cargo-insta`
+END 2026-05-24T19:41:40+08:00
+STATUS 101

@@ -1,0 +1,132 @@
+pipeline:
+  name: "体验优化 + 发布"
+  status: completed
+  prompts_total: 7
+  prompts_completed: 7
+  started: "2026-05-28T01:37:44+08:00"
+  finished: "2026-05-28T13:28:04+08:00"
+
+last_heartbeat: "2026-05-28T13:28:04+08:00"
+
+current:
+  phase: completed
+  prompt_index: 6
+  prompt_file: .pipeline/prompts/007-preview-release-validation.md
+  prompt_name: "Preview Release Validation"
+  step: completed
+  step_index: 9
+
+milestones:
+  - id: M1
+    title: "Release Spine + VSCode Hijack"
+    status: completed
+    started_at: "2026-05-28T01:37:44+08:00"
+    completed_at: "2026-05-28T02:25:56+08:00"
+    prompt_file: .pipeline/prompts/001-release-spine-vscode-hijack.md
+    reports:
+      - .pipeline/reports/001-release-spine-vscode-hijack.md
+    reviews:
+      - .pipeline/reviews/C4/M1/test.md
+      - .pipeline/reviews/C4/M1/implement.md
+      - .pipeline/reviews/C4/M1/audit.md
+  - id: M2
+    title: "Canonical Rename"
+    status: completed
+    started_at: "2026-05-28T10:19:01+08:00"
+    completed_at: "2026-05-28T10:42:17+08:00"
+    prompt_file: .pipeline/prompts/002-canonical-rename.md
+    reports:
+      - .pipeline/reports/002-canonical-rename.md
+    reviews:
+      - .pipeline/reviews/C4/M2/test.md
+      - .pipeline/reviews/C4/M2/implement.md
+      - .pipeline/reviews/C4/M2/audit.md
+  - id: M3
+    title: "Reasoning Capability Gate"
+    status: completed
+    started_at: "2026-05-28T10:42:17+08:00"
+    completed_at: "2026-05-28T11:02:10+08:00"
+    prompt_file: .pipeline/prompts/003-reasoning-capability-gate.md
+    reports:
+      - .pipeline/reports/003-reasoning-capability-gate.md
+    reviews:
+      - .pipeline/reviews/C4/M3/test.md
+      - .pipeline/reviews/C4/M3/implement.md
+      - .pipeline/reviews/C4/M3/audit.md
+  - id: M4
+    title: "VSCode-Terminal-Safe Keymap + Composer Prominence"
+    status: completed
+    started_at: "2026-05-28T11:02:10+08:00"
+    completed_at: "2026-05-28T11:49:02+08:00"
+    prompt_file: .pipeline/prompts/004-vscode-terminal-safe-keymap-composer.md
+    reports:
+      - .pipeline/reports/004-vscode-terminal-safe-keymap-composer.md
+    reviews:
+      - .pipeline/reviews/C4/M4/test.md
+      - .pipeline/reviews/C4/M4/implement.md
+      - .pipeline/reviews/C4/M4/audit.md
+  - id: M5
+    title: "Markdown Color Refinement + Default Subtle Blocks"
+    status: completed
+    started_at: "2026-05-28T11:49:02+08:00"
+    completed_at: "2026-05-28T12:38:18+08:00"
+    prompt_file: .pipeline/prompts/005-markdown-color-default-blocks.md
+    reports:
+      - .pipeline/reports/005-markdown-color-default-blocks.md
+    reviews:
+      - .pipeline/reviews/C4/M5/test.md
+      - .pipeline/reviews/C4/M5/implement.md
+      - .pipeline/reviews/C4/M5/audit.md
+  - id: M6
+    title: "Performance Evidence + Low-Risk Startup Fixes"
+    status: completed
+    started_at: "2026-05-28T12:38:18+08:00"
+    completed_at: "2026-05-28T13:08:16+08:00"
+    prompt_file: .pipeline/prompts/006-performance-evidence-startup.md
+    reports:
+      - .pipeline/reports/006-performance-evidence-startup.md
+    reviews:
+      - .pipeline/reviews/C4/M6/test.md
+      - .pipeline/reviews/C4/M6/implement.md
+      - .pipeline/reviews/C4/M6/audit.md
+  - id: M7
+    title: "Preview Release Validation"
+    status: completed
+    started_at: "2026-05-28T13:08:16+08:00"
+    completed_at: "2026-05-28T13:28:04+08:00"
+    prompt_file: .pipeline/prompts/007-preview-release-validation.md
+    reports:
+      - .pipeline/reports/007-preview-release-validation.md
+    reviews:
+      - .pipeline/reviews/C4/M7/test.md
+      - .pipeline/reviews/C4/M7/implement.md
+      - .pipeline/reviews/C4/M7/audit.md
+
+history:
+  completed_prompts:
+    - .pipeline/prompts/001-release-spine-vscode-hijack.md
+    - .pipeline/prompts/002-canonical-rename.md
+    - .pipeline/prompts/003-reasoning-capability-gate.md
+    - .pipeline/prompts/004-vscode-terminal-safe-keymap-composer.md
+    - .pipeline/prompts/005-markdown-color-default-blocks.md
+    - .pipeline/prompts/006-performance-evidence-startup.md
+    - .pipeline/prompts/007-preview-release-validation.md
+
+cycle:
+  id: C4
+  previous_cycle: C3
+  theme: "体验优化 + 发布"
+
+plan:
+  phase: generated
+  p0_configure: completed
+  p1_discover: completed
+  p2_decompose: confirmed
+  p3_generate: completed
+  p4_confirm: completed
+
+acceptance:
+  scope: cycle
+  state: not_requested
+  cycle_id: C4
+  updated_at: "2026-05-27T17:05:53+08:00"

@@ -1,0 +1,10 @@
+---
+source: tui/src/chatwidget/tests/popups_and_settings.rs
+expression: popup
+---
+  反 馈 已 禁 用
+  此 官 方 服 务 入 口 已 在  VSP Codex 中 禁 用 。
+
+› 1. 关 闭
+
+  Press enter to confirm or esc to go back

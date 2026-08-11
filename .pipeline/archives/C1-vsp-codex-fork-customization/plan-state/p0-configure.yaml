@@ -1,0 +1,32 @@
+p0_configure:
+  status: completed
+  timestamp: "2026-05-24T19:12:00+08:00"
+  source: cycle_explicit
+  user_decisions:
+    automation_level: balanced
+    worker_separation:
+      mode: strict
+      codex_execution_subworkers_authorized: true
+      authorized_scopes:
+        - /hw:start
+        - /hw:resume
+      required_roles:
+        - test
+        - implement
+        - audit
+      note: "User explicitly authorized strict execution subworkers before P1."
+    acceptance:
+      mode: full_local_regression_first
+      requirements:
+        - "Build regression coverage for most existing normal functionality before feature removal/localization."
+        - "Prefer realistic simulated TUI user tests when possible."
+        - "Use related crate tests and TUI snapshot coverage where UI output changes."
+    compatibility_boundary:
+      fork_first: true
+      preserve_original_official_experience: false
+      official_upstream_merge_strategy_required: true
+      note: "User accepts removing/hiding original OAuth/Base URL/Plan Mode/login prompts, but wants an upstream merge strategy."
+    pr_remote_write: not_requested
+    full_regression: desired_when_practical
+    analysis_boundary:
+      before_p1: "Summarize init architecture conclusions, especially related functions and removable feature areas."

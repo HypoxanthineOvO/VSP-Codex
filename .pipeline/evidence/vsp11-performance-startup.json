@@ -1,0 +1,76 @@
+{
+  "codexBin": "/tmp/vsp11-cargo-target/release/vsp-codex",
+  "generatedAt": "2026-08-01T12:47:36.242444+00:00",
+  "repoRoot": "/home/heyx/VSP-Codex-v11",
+  "runId": "f40f3b6d-4132-48c0-a792-36b3715ce7fd",
+  "scenarios": [
+    {
+      "command": [
+        "/tmp/vsp11-cargo-target/release/vsp-codex",
+        "--no-alt-screen",
+        "--config",
+        "features={}"
+      ],
+      "details": {
+        "exitStatus": 15,
+        "observedBytes": 1287,
+        "sample": "[K\u001b[1;3H\u6b22\u001b[1;5H\u8fce\u001b[1;7H\u4f7f\u001b[1;9H\u7528\u001b[1;12H\u001b[1mVSP Codex\u001b[22m\uff0c\u001b[1;23HVSP\u001b[1;27HLab\u001b[1;31H\u7684\u001b[1;33H\u547d\u001b[1;35H\u4ee4\u001b[1;37H\u884c\u001b[1;39H\u7f16\u001b[1;41H\u7801\u001b[1;44HAgent\u001b[3;1H>\u001b[3;3H\u001b[1m\u914d\u001b[3;5H\u7f6e\u001b[3;7H VSP Provider\u001b[5;3H\u001b[22m\u586b\u001b[5;5H\u5199\u001b[5;8HOpenAI\u001b[5;15HResponses\u001b[5;25HAPI\u001b[5;29H\u517c\u001b[5;31H\u5bb9\u001b[5;33H\u7684\u001b[5;36HBase\u001b[5;41HURL\u001b[5;45H\u548c\u001b[5;48HAPI\u001b[5;52HKey\u3002\u001b[6;1H\u001b[2m  \u914d\u001b[6;5H\u7f6e\u001b[6;7H\u5c06\u001b[6;9H\u4fdd\u001b[6;11H\u5b58\u001b[6;13H\u5230\u001b[6;15H ~/.vsp-codex/config.toml\u3002\u001b[8;1H\u001b[22m\u001b[;m\u256dBase URL\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500",
+        "visibleSample": "\u6b22\u8fce\u4f7f\u7528VSP Codex\uff0cVSPLab\u7684\u547d\u4ee4\u884c\u7f16\u7801Agent>\u914d\u7f6e VSP Provider\u586b\u5199OpenAIResponsesAPI\u517c\u5bb9\u7684BaseURL\u548cAPIKey\u3002  \u914d\u7f6e\u5c06\u4fdd\u5b58\u5230 ~/.vsp-codex/config.toml\u3002\u256dBase URL\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
+      },
+      "durationMs": 401,
+      "reason": null,
+      "scenario": "cold_tui_start",
+      "status": "passed"
+    },
+    {
+      "command": [
+        "/tmp/vsp11-cargo-target/release/vsp-codex",
+        "app-server",
+        "thread/list"
+      ],
+      "details": {
+        "hasNextCursor": false,
+        "initializeDurationMs": 162,
+        "threadCount": 0
+      },
+      "durationMs": 2,
+      "reason": null,
+      "scenario": "resume_list_first_page",
+      "status": "passed"
+    },
+    {
+      "command": [
+        "/tmp/vsp11-cargo-target/release/vsp-codex",
+        "app-server",
+        "thread/resume"
+      ],
+      "details": {
+        "initializeDurationMs": 136,
+        "threadId": "019fbd5d-9241-7662-8df4-507213a4a48b",
+        "turnCount": 1
+      },
+      "durationMs": 76,
+      "reason": null,
+      "scenario": "open_historical_session",
+      "status": "passed"
+    },
+    {
+      "command": [
+        "/tmp/vsp11-cargo-target/release/vsp-codex",
+        "app-server"
+      ],
+      "details": {
+        "responseKeys": [
+          "id",
+          "result"
+        ]
+      },
+      "durationMs": 185,
+      "reason": null,
+      "scenario": "vscode_app_server_initialize",
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "timeoutSeconds": 10.0
+}

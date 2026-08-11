@@ -1,0 +1,4 @@
+interface:
+  display_name: "VSP Provider"
+  short_description: "Configure or diagnose VSP providers"
+  default_prompt: "Use $vsp-provider to diagnose or configure the active VSP model provider safely."

@@ -1,0 +1,105 @@
+phase: technical_stack
+cycle: C9
+status: confirmed
+started_at: "2026-06-14T09:01:34+08:00"
+checkpoint_at: "2026-06-14T09:02:46+08:00"
+confirmed_at: "2026-06-14T09:08:14+08:00"
+discover_source: ".pipeline/plan-state/discover.yaml"
+project_stack:
+  repository_type: rust_node_monorepo
+  primary_language: rust
+  secondary_languages:
+    - javascript
+    - typescript
+    - python
+  build_systems:
+    - cargo
+    - just
+    - bazel
+  package_managers:
+    - cargo
+    - pnpm
+    - uv
+current_vsp_baseline:
+  branch: main
+  head_short: "af11d8a308"
+  version: "0.134.0-vsp.7.2"
+  latest_local_tag: "v0.134.0-vsp.7.2"
+  release_surface:
+    - "codex-rs/Cargo.toml workspace version"
+    - "README.md install/version text"
+    - "docs/vsp-codex.md"
+    - "docs/install.md"
+    - ".pipeline/release/vsp-release-manifest.json"
+    - ".pipeline/release/v*/vsp-release-manifest.json"
+    - "scripts/build_vsp_preview_release.py"
+    - "scripts/install/install.sh"
+upstream_research:
+  source: "GitHub release page and git ls-remote upstream tags"
+  latest_release: "0.140.0-alpha.18"
+  latest_tag: "rust-v0.140.0-alpha.18"
+  latest_main_head: "51316ead4a434e97928d1331e446d4bf274d44a5"
+  stable_tags_after_0_134:
+    - "rust-v0.135.0"
+    - "rust-v0.136.0"
+    - "rust-v0.137.0"
+    - "rust-v0.138.0"
+    - "rust-v0.139.0"
+  alpha_tags_after_0_139:
+    latest: "rust-v0.140.0-alpha.18"
+technical_decisions_proposed:
+  upgrade_target:
+    recommendation: "Target upstream `rust-v0.140.0-alpha.18` unless user prefers latest stable `rust-v0.139.0`."
+    rationale:
+      - "User asked to update the fork base version directly to the upstream version."
+      - "GitHub latest release currently points to 0.140.0-alpha.18."
+      - "Alpha target may include breaking changes and requires heavier validation."
+  worktree_strategy:
+    recommendation: "Before merge execution, commit/checkpoint current archive/planning changes, then create a dedicated upgrade branch."
+    rationale:
+      - "Current worktree is dirty from archive maintenance, planning state, and existing unrelated local changes."
+      - "A baseline upgrade needs a clean diff boundary for conflict review."
+  merge_strategy:
+    recommendation: "Fetch upstream, compare current VSP divergence, merge or rebase onto selected upstream tag in an isolated branch, preserve VSP-specific CLI/config/provider/release behavior, then run focused and broad Rust validation."
+    forbidden_without_gate:
+      - "push origin"
+      - "push upstream"
+      - "tag creation"
+      - "GitLab/GitHub release publication"
+      - "destructive reset or checkout of user changes"
+  deep_research_prototype:
+    recommendation: "Design/prototype after baseline upgrade, using existing Subagent execution, request_user_input, active Subagent panel, Workflow Markdown surface, and `.pipeline/research/<slug>/` artifacts."
+    non_goal_for_c9: "Full production Deep Research command surface with 128 concurrent Subagents."
+validation_stack:
+  baseline_upgrade:
+    focused:
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui workflow_slash_routing -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_routing -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all request_user_input -- --nocapture"
+      - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-cli --test vscode -- --nocapture"
+    broad:
+      - "cargo fmt --manifest-path codex-rs/Cargo.toml --check"
+      - "cargo test --manifest-path codex-rs/Cargo.toml --workspace"
+      - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+      - "python3 scripts/build_vsp_preview_release.py --entrypoint-bin codex-rs/target/release/vsp-codex --force"
+      - "git diff --check"
+    notes:
+      - "Exact broad command may need to be narrowed if upstream changes make full workspace test impractical; audit must reject fake or purely compile-only validation for changed behavior."
+  deep_research_prototype:
+    scenario: "Run a real-network research prototype for current large-model market latest models, performance, and pricing."
+    required_observables:
+      - "Question Tool clarification before execution."
+      - "Multiple scoped Subagents or simulated prototype workers with explicit limitation if true fan-out is deferred."
+      - "Progress surface or progress artifact updates."
+      - "Raw reports preserved."
+      - "Final readable report generated."
+      - "Follow-up/deepen path demonstrated or documented as prototype boundary."
+open_questions:
+  - "Should the upstream target be latest alpha 0.140.0-alpha.18 or latest stable 0.139.0?"
+  - "Does C9 need to publish a VSP release after the base upgrade, or only build/package locally?"
+  - "Is the Deep Research C9 prototype allowed to be non-production as long as the architecture and validation scenario are real?"
+confirmation:
+  upstream_target: "rust-v0.140.0-alpha.18"
+  release_scope: "publish_gitlab_release"
+  deep_research_scope: "design_brief_only"
+  deep_research_note: "User wants a requirement brief written under the Workflow files so they can continue implementation in Hypo-Workflow later."

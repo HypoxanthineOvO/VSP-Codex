@@ -1,0 +1,20 @@
+---
+source: tui/src/chatwidget/tests/status_surface_previews.rs
+expression: status_line_popup_snapshot(&mut chat)
+---
+  配 置  Status Line
+  选 择  status line 中 显 示 的 项 目 。
+
+  Type to search
+  >
+› [x] Use theme colors      使 用 当 前  /theme 的 颜 色
+  ───────────────────────
+  [x] project-name          项 目 名 （ 不 可 用 时 省 略 ）
+  [x] git-branch            当 前  Git branch（ 不 可 用 时 省 略 ）
+  [x] thread-title          当 前  thread 标 题 ； 未 命 名 时 显 示  thread 标 识
+  [ ] model                 当 前  model 名 称
+  [ ] model-with-reasoning  当 前  model 名 称 和  reasoning level
+  [ ] reasoning             当 前  reasoning level
+
+  my-project · feature/mixed-preview · Mixed preview thread
+  Press space to toggle; ←/→ to move; enter to confirm and close; esc to close

@@ -1,0 +1,50 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "api"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - when: never
+
+stages:
+  - smoke
+
+variables:
+  CARGO_HOME: "$CI_PROJECT_DIR/.cargo-home"
+  RUSTUP_HOME: "$CI_PROJECT_DIR/.rustup-home"
+  CARGO_TARGET_DIR: "$CI_PROJECT_DIR/codex-rs/target"
+  CARGO_TERM_COLOR: always
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+  GIT_CONFIG_COUNT: "1"
+  GIT_CONFIG_KEY_0: "url.https://github.com/lemenkov/libyuv.git.insteadOf"
+  GIT_CONFIG_VALUE_0: "https://chromium.googlesource.com/libyuv/libyuv"
+
+cache:
+  key: "vsp-rust-$CI_RUNNER_EXECUTABLE_ARCH"
+  paths:
+    - .cargo-home/
+    - .rustup-home/
+
+# The required gate covers only the long-lived contracts documented in docs/ci.md.
+vsp-smoke:
+  stage: smoke
+  interruptible: true
+  timeout: 10m
+  tags:
+    - latex-runner
+  before_script:
+    - export PATH="$CARGO_HOME/bin:$PATH"
+    - |
+      if ! command -v cargo >/dev/null 2>&1; then
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+          sh -s -- -y --profile minimal --default-toolchain none
+      fi
+    - cd codex-rs
+    - rustup show active-toolchain
+  script:
+    - cargo build --locked -p codex-cli --bin vsp-codex
+    - python3 ../scripts/ci_vsp_smoke.py --codex-bin target/debug/vsp-codex

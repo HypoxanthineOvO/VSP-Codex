@@ -1,0 +1,60 @@
+queue:
+  - prompt_file: ".pipeline/prompts/002-tui-user-simulation-tests.md"
+    status: proposed
+    reason: m1_postfix_changed_test_baseline
+    source_milestone: M1
+    summary: "M2 should now assume codex-tui is green locally and focus on adding reusable TUI user-simulation regression coverage."
+    suggested_edits:
+      - section: "Execution Boundary"
+        change: "State that M2 starts from a green local codex-tui baseline; do not re-litigate the previous 11 failures except as regression cases already fixed."
+      - section: "Technical Route"
+        change: "Add focused baseline tests for slash popup/provider picker/footer/disabled official prompts using existing chatwidget, VT100, snapshot, and tmux patterns."
+      - section: "Validation Path"
+        change: "Use `just fmt`, `just test -p codex-tui`, `just test -p codex-tui resize_reflow -- --ignored`, and supported `cargo insta pending-snapshots` syntax."
+      - section: "Risks And Alternatives"
+        change: "Retain snapshot churn risk, but remove the assumption that full codex-tui is currently red."
+    approval_required: true
+  - prompt_file: ".pipeline/prompts/003-vsp-entrypoint-home.md"
+    status: proposed
+    reason: m1_postfix_changed_test_baseline
+    source_milestone: M1
+    summary: "M3 can rely on a green TUI baseline and a working just fmt gate while planning binary rename and ~/.vsp-codex home."
+    suggested_edits:
+      - section: "Validation Path"
+        change: "Add `just fmt` before scoped tests; keep `just test -p codex-cli`, `just test -p codex-config`, and `just test -p codex-tui` as likely gates."
+      - section: "Risks And Alternatives"
+        change: "Add risk that renaming the binary can break SDK/runtime packaging and tests that assume `codex` as the binary name."
+    approval_required: true
+  - prompt_file: ".pipeline/prompts/004-provider-command.md"
+    status: proposed
+    reason: m1_postfix_changed_test_baseline
+    source_milestone: M1
+    summary: "M4 should include provider picker UI tests on top of the now-green TUI baseline."
+    suggested_edits:
+      - section: "Validation Path"
+        change: "Add `just fmt`, `just test -p codex-tui`, `just test -p codex-config`, `just test -p codex-model-provider-info`, and `just test -p codex-model-provider`."
+      - section: "Technical Route"
+        change: "Require the first /provider UI to have snapshot or VT100-style coverage before provider behavior changes are accepted."
+    approval_required: true
+  - prompt_file: ".pipeline/prompts/005-disable-official-services.md"
+    status: proposed
+    reason: m1_postfix_changed_test_baseline
+    source_milestone: M1
+    summary: "M5 should preserve MCP, Skills, Plugins, local exec-server, and generic URL/API provider while hiding official-service entrypoints."
+    suggested_edits:
+      - section: "Validation Path"
+        change: "Add `just fmt`, `just test -p codex-cli`, `just test -p codex-login`, `just test -p codex-tui`, and `just test -p codex-exec-server`."
+      - section: "Audit Focus"
+        change: "Explicitly verify official Cloud/OAuth/ChatGPT app surfaces are hidden or disabled without breaking retained MCP/Skills/Plugins and local exec-server paths."
+    approval_required: true
+  - prompt_file: ".pipeline/prompts/006-vsp-branding-prompt-cleanup.md"
+    status: proposed
+    reason: m1_postfix_changed_test_baseline
+    source_milestone: M1
+    summary: "M6 should treat branding and concise Chinese cleanup as a user-visible TUI snapshot milestone."
+    suggested_edits:
+      - section: "Validation Path"
+        change: "Require `just fmt`, `just test -p codex-tui`, and supported snapshot pending checks after reviewing `.snap.new` output."
+      - section: "Risks And Alternatives"
+        change: "Mention that broad Python SDK/default install runtime packaging remains outside this milestone unless the user explicitly expands scope."
+    approval_required: true

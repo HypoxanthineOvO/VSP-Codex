@@ -1,0 +1,13 @@
+---
+source: tui/src/chatwidget/provider_model_popups_tests.rs
+expression: "render_bottom_popup(&chat, 80)"
+---
+  Solo
+  Provider: solo
+
+  OpenAI  [Solo]
+
+  Search models
+› Solo Shared (current)  shared-model | Context window: 100000 tokens
+
+  Press enter to confirm or esc to go back

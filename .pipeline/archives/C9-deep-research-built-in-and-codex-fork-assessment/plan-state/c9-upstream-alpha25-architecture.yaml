@@ -1,0 +1,151 @@
+cycle: C9
+phase: architecture
+status: confirmed
+created_at: "2026-06-26T14:13:53+08:00"
+discover_source: ".plan-state/c9-upstream-alpha25-discover.yaml"
+technical_stack_source: ".plan-state/c9-upstream-alpha25-technical-stack.yaml"
+summary: "Architecture checkpoint for an incremental conflict-group merge toward upstream rust-v0.143.0-alpha.25 while preserving or replacing VSP surfaces by equivalence."
+baseline:
+  pipeline_architecture_available: false
+  note: ".pipeline/architecture.md was not readable during the checkpoint; this architecture proposal should become the temporary baseline for Decompose and can later be promoted into .pipeline/architecture.md after confirmation."
+diff_observations:
+  compared_against: rust-v0.143.0-alpha.25...HEAD
+  approximate_non_pipeline_changed_files: 523
+  conflict_domain_counts:
+    tui: 250
+    core_workflow: 60
+    app_server: 33
+    app_server_protocol: 30
+    cli: 29
+    opencode_adapter: 20
+    scripts_release: 13
+    rollout: 10
+    docs: 8
+    plugins: 6
+    state_sqlite: 4
+    gitlab_ci: 1
+    other: 55
+architecture_strategy:
+  merge_model: incremental_merge_with_conflict_groups
+  ordering:
+    - "upstream_fix_and_sqlite_logging"
+    - "protocol_contract_and_codegen"
+    - "core_workflow_runtime"
+    - "app_server_bridge"
+    - "tui_surface"
+    - "cli_vscode_update_release"
+    - "adapters_docs_ci"
+    - "release_candidate_validation"
+  equivalence_rule: "Prefer upstream alpha.25 implementation when it provides equivalent behavior; otherwise preserve VSP behavior behind the current command/config/protocol surface."
+  version_rule: "Keep public version in the vsp.8 series; allow 0.140.0-vsp.8.1 only after release-version confirmation."
+component_map:
+  upstream_fix_and_sqlite_logging:
+    owned_paths:
+      - codex-rs/state/src/log_db.rs
+      - codex-rs/state/src/log_db_filter_tests.rs
+      - codex-rs/app-server/src/lib.rs
+      - codex-rs/tui/src/lib.rs
+    desired_direction: "Use official alpha.25 noisy-log reductions when present, while keeping local default_filter/in-layer guard if official implementation is missing or weaker."
+    validation:
+      - "targeted codex-state filter tests"
+      - "runtime SQLite I/O smoke"
+  protocol_contract_and_codegen:
+    owned_paths:
+      - codex-rs/app-server-protocol/
+      - codex-rs/app-server-client/
+    desired_direction: "Reconcile upstream protocol additions with VSP Question Tool, plan update, thread/workflow metadata, and TypeScript schema outputs."
+    risk: "Official alpha.25 changes add, remove, and rename protocol schema/types; blind overwrite could break Ask cards or clients."
+  core_workflow_runtime:
+    owned_paths:
+      - codex-rs/core/src/workflow_context.rs
+      - codex-rs/core/src/workflow_files.rs
+      - codex-rs/core/src/workflow_routing.rs
+      - codex-rs/core/src/state/plan_freshness.rs
+      - codex-rs/core/src/goals.rs
+      - codex-rs/core/src/tools/handlers/
+    desired_direction: "Preserve Hypo-Workflow routing, plan freshness, goals, and worker separation unless upstream has direct equivalents."
+  app_server_bridge:
+    owned_paths:
+      - codex-rs/app-server/src/
+      - codex-rs/app-server/tests/suite/v2/
+    desired_direction: "Preserve VSP app-server request_user_input/Question Tool and workflow markdown behavior, but adapt to upstream request processor structure where official changes supersede local layout."
+  tui_surface:
+    owned_paths:
+      - codex-rs/tui/src/
+    desired_direction: "Preserve user-visible VSP TUI workflows, cards, plan panel, status surfaces, provider UX, and snapshots unless upstream alpha.25 provides equivalent surfaces."
+    risk: "Largest changed area; should be merged after protocol/core contracts are stable."
+  cli_vscode_update_release:
+    owned_paths:
+      - codex-rs/cli/src/
+      - scripts/
+      - docs/
+      - .gitlab-ci.yml
+    desired_direction: "Preserve vsp-codex entrypoint, VSCode/Remote integration, VSP updater, package builder, and GitLab release dry-run path."
+  adapters_docs_ci:
+    owned_paths:
+      - .opencode/
+      - AGENTS.md
+      - docs/
+      - .gitlab-ci.yml
+    desired_direction: "Preserve Hypo-Workflow/OpenCode integration unless upstream introduces official compatible agent-adapter mechanisms."
+validation_architecture:
+  closed_loop_path:
+    - "static diff classification before merge group"
+    - "group-specific tests after each merge group"
+    - "integration checks after protocol/core/app-server/TUI convergence"
+    - "full release dry run and SQLite runtime I/O smoke before release preparation"
+  sqlite_io_smoke_design:
+    setup: "isolated CODEX_HOME and CODEX_SQLITE_HOME"
+    scenario: "bounded TUI/app-server launch and minimal request flow"
+    measurements:
+      - "logs_2.sqlite size before/after"
+      - "logs_2.sqlite-wal size before/after"
+      - "persisted log target counts"
+    reject_targets:
+      - log
+      - codex_otel.log_only
+      - codex_otel.trace_safe
+    threshold_status: "must be finalized in Decompose"
+architecture_flow_mermaid: |
+  graph TD
+    A[Current VSP v0.140.0-vsp.8 branch] --> B[Classify diff against rust-v0.143.0-alpha.25]
+    B --> C[SQLite and upstream noisy-log fixes]
+    C --> D[Protocol contract and generated schemas]
+    D --> E[Core workflow runtime]
+    E --> F[App-server bridge]
+    F --> G[TUI workflow surfaces]
+    G --> H[CLI, VSCode, updater, release scripts]
+    H --> I[Adapters, docs, GitLab CI]
+    I --> J[Full regression and release dry run]
+    J --> K[GitLab release confirmation gate]
+decision_table:
+  - domain: "SQLite persistent logs"
+    default_action: "prefer upstream plus keep VSP guard if needed"
+    confirmation_need: "Finalize runtime I/O threshold"
+  - domain: "Question Tool / Ask"
+    default_action: "preserve VSP unless official equivalent is proven"
+    confirmation_need: "Check alpha.25 protocol/client support before replacement"
+  - domain: "Plan/update UI"
+    default_action: "preserve VSP"
+    confirmation_need: "Check if upstream plan surfaces are equivalent"
+  - domain: "Workflow routing / Hypo-Workflow"
+    default_action: "preserve VSP"
+    confirmation_need: "No known upstream direct equivalent yet"
+  - domain: "Plugin/marketplace"
+    default_action: "case-by-case"
+    confirmation_need: "Compare upstream plugin changes and VSP marketplace behavior"
+  - domain: "VSCode/Remote integration"
+    default_action: "preserve VSP"
+    confirmation_need: "Validate official extension/app-server compatibility"
+  - domain: "Release/package/version"
+    default_action: "preserve VSP release toolchain"
+    confirmation_need: "Confirm strict vsp.8 versus vsp.8.1"
+risks:
+  - "Protocol generated schema churn can silently break app-server clients if not regenerated and tested together."
+  - "TUI snapshot churn is large; merging it before protocol/core convergence risks repeated conflict resolution."
+  - "Keeping public vsp.8 while changing upstream base can confuse diagnostics unless reports/manifests record forked-from alpha.25."
+  - "SQLite static filter tests are insufficient; release gate must include runtime I/O measurement."
+open_questions:
+  - "Exact SQLite byte-growth threshold and scenario duration."
+  - "Final release tag/package string: v0.140.0-vsp.8 or v0.140.0-vsp.8.1."
+  - "Whether to promote this checkpoint into .pipeline/architecture.md during Generate."

@@ -1,0 +1,22 @@
+schema_version: 1
+category: decisions
+entries:
+  -
+    record_id: C9-DECISION-official-session-compatibility-boundary-20260607
+    type: chat
+    source: C9-session-compatibility-audit
+    created_at: "2026-06-07T17:35:00+08:00"
+    summary: VSP sessions must remain official-compatible; raw official session migration requires explicit user authorization and backups.
+    tags:
+      - c9
+      - official-codex
+      - sessions
+      - compatibility
+      - privacy
+    refs:
+      files:
+        - codex-rs/protocol/src/protocol.rs
+        - codex-rs/rollout/src/recorder.rs
+        - codex-rs/rollout/src/official_codex_discovery.rs
+        - codex-rs/rollout/tests/official_codex_discovery.rs
+    items:

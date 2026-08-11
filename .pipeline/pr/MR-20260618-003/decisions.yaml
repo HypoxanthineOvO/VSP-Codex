@@ -1,0 +1,16 @@
+remote_write_gate: confirm
+allowed_without_confirmation:
+- inspect
+- review
+- local_archive_write
+requires_confirmation:
+- push
+- merge
+- close
+- reviewer_write
+- label_write
+- target_branch_write
+current_recommendation: close_or_mark_superseded
+final_status: absorbed_core_fix_into_hotfix
+remote_writes_performed: false
+hotfix_note: Absorbed core metadata_release_dir fix into current main hotfix.

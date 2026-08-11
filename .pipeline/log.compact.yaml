@@ -1,0 +1,146 @@
+entries:
+  -
+    timestamp: "2026-06-18T20:22:11+08:00"
+    event_type: pr_hotfix_release
+    milestone: M5
+    step: post_release_mr_absorb
+    message: Inspected GitLab MRs !1, !2, and !3 from `lichf`. Absorbed the relevant installer staging fix from !1/!3 into current main, including `metadata_release_dir` and duplicate `vspRelease` guard; !2 is obsolete after the v0.140.0-vsp.0 release. Published same-version hotfix commit `ca3623e1ec327c22d22ea2ccf557a6488c4bb13d` to main and the C9 branch, rebuilt and replaced the v0.140.0-vsp.0 GitLab Release assets, and updated the stable manifest sha256 to `4ae4562b7d7447c6572e8034b444512f1c641628376cee1db81e4db75e9013a9`.
+  -
+    timestamp: "2026-06-18T18:57:17+08:00"
+    event_type: milestone_complete
+    milestone: M5
+    step: completed
+    message: "Published GitLab release `v0.140.0-vsp.0`. Release commit `89358b9cf3efb6e63d250af168d267e6125360aa`, branch `c9-upstream-0.140.0-alpha.18`, `main`, and tag are pushed. Release URL: https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.0. Asset upload used Generic Package Registry after direct uploads returned HTTP 413; downloads tarball and sha256 URLs return HTTP 200."
+  -
+    timestamp: "2026-06-18T18:57:17+08:00"
+    event_type: step_start
+    milestone: M6
+    step: m6_ready
+    message: M6 `Deep Research Workflow Requirement Brief` is ready to begin.
+  -
+    timestamp: "2026-06-18T18:38:10+08:00"
+    event_type: debug_complete
+    milestone: M5
+    step: m5_release_gate_pending
+    message: Fixed the three serial app-server stable failures and one newly exposed MCP status timeout. Focused app-server tests now pass for workspace-directory installed plugin visibility, turn-profile native Ask UI follow-up sampling, spawn-agent role-locked metadata precedence, and toolsAndAuthOnly MCP status. Supporting core/core-plugin focused tests pass; release gate remains paused pending user confirmation.
+  -
+    timestamp: "2026-06-18T18:00:41+08:00"
+    event_type: debug_complete
+    milestone: M5
+    step: m5_release_gate_pending
+    message: "Classified broad app-server failures. Default parallel `codex-app-server --test all` 376 failures are primarily initialize/websocket timeout cascades under integration-suite concurrency; serial full run narrowed to 618 passed, 3 failed, 2 ignored. Stable failures: workspace-directory installed plugin visibility, turn-profile model-list mock count, and spawn-agent role-locked model precedence. Report written to `.pipeline/debug/20260618T180041+0800-app-server-failure-classification.md`; release remains paused."
+  -
+    timestamp: "2026-06-18T17:24:32+08:00"
+    event_type: debug_complete
+    milestone: M5
+    step: m5_release_gate_pending
+    message: Resolved pre-release debug blockers reported by the user. VSP session meta now preserves provider `vsp`; state metadata treats blank provider as missing; affected local VSP session JSONL and state DB records were backed up and backfilled; VSCode wrapper was repointed from old 0.134.0-vsp.7.1 binary to current 0.140.0-vsp.0 release binary; report written to `.pipeline/debug/20260618T172432+0800-session-provider-vscode.md`. Release gate remains pending explicit confirmation.
+  -
+    timestamp: "2026-06-17T18:09:17+08:00"
+    event_type: validation_passed
+    milestone: M5
+    step: m5_local_release_readiness
+    message: "M5 local focused regression and release-readiness checks passed for `0.140.0-vsp.0`. Broad app-server integration remains a disclosed risk: `codex-app-server --test all` reported 245 passed, 376 failed, 2 ignored with initialize/websocket deadline cascades. Release commit/tag/push/GitLab release remains pending explicit user gate."
+  -
+    timestamp: "2026-06-17T18:09:17+08:00"
+    event_type: step_start
+    milestone: M5
+    step: m5_release_gate_pending
+    message: Awaiting explicit user confirmation before creating a release commit, tag, push, GitLab release, or asset upload.
+  -
+    timestamp: "2026-06-17T17:34:11+08:00"
+    event_type: validation_passed
+    milestone: M4
+    step: m4_release_surface_validation
+    message: Validated `0.140.0-vsp.0` metadata and release surface. Cargo metadata, release build, vsp-codex --version, package build with /usr/bin/bwrap, checksum, package metadata smoke, manifest JSON, docs stale scan, and git diff --check passed.
+  -
+    timestamp: "2026-06-17T17:34:11+08:00"
+    event_type: milestone_complete
+    milestone: M4
+    step: completed
+    message: M4 completed with verdict pass_with_warnings. Release artifacts generated under `.pipeline/release/v0.140.0-vsp.0`; stable manifest updated; no push/tag/GitLab release performed.
+  -
+    timestamp: "2026-06-17T17:34:11+08:00"
+    event_type: step_start
+    milestone: M5
+    step: m5_ready
+    message: M5 `Broad Regression And GitLab Release` is ready. Broad regression may run next; push, tag, release, and remote asset upload still require explicit confirmation.
+  -
+    timestamp: "2026-06-17T11:55:33+08:00"
+    event_type: validation_passed
+    milestone: M3
+    step: m3_surface_validation
+    message: "Resolved M3 test blockers and validated retained surfaces. Passed: cargo fmt --all; codex-core workflow_routing 10 tests; codex-app-server request_user_input 11 tests; codex-app-server workflow_markdown_surface 2 tests; codex-tui workflow_slash_routing 9 tests; codex-cli vscode 14 tests. Warnings only; voice/realtime and remote-control remain non-retained by user decision."
+  -
+    timestamp: "2026-06-17T11:55:33+08:00"
+    event_type: milestone_complete
+    milestone: M3
+    step: completed
+    message: M3 completed with verdict pass_with_warnings. VSP Workflow, Question Tool metadata, Markdown surface, TUI /hw routing, VSCode Remote SSH, and focused CLI surfaces passed validation; no push/tag/release performed.
+  -
+    timestamp: "2026-06-17T11:55:33+08:00"
+    event_type: step_start
+    milestone: M4
+    step: m4_ready
+    message: M4 `Version Metadata And Release Surface Update` is ready to begin. No release, push, or tag is authorized yet.
+  -
+    timestamp: "2026-06-17T11:31:29+08:00"
+    event_type: subagent_lifecycle
+    milestone: M3
+    role: test
+    worker_id: 019ed396-4509-77c2-b604-3ae447a28707
+    worker_name: 沈博宇
+    status: completed
+    prompt_name: C9 M3 VSP runtime surface validation
+    detail: Report written to `.pipeline/reviews/C9/M3/test.md`; verdict blocked_partial_pass due to core/app-server test-target compile/runtime blockers after upstream API drift.
+  -
+    timestamp: "2026-06-17T11:31:29+08:00"
+    event_type: subagent_lifecycle
+    milestone: M3
+    role: test
+    worker_id: 019ed396-4509-77c2-b604-3ae447a28707
+    worker_name: 沈博宇
+    status: closed
+    prompt_name: C9 M3 VSP runtime surface validation
+    detail: Worker completed and no longer needed.
+  -
+    timestamp: "2026-06-17T11:19:28+08:00"
+    event_type: surface_policy_confirmed
+    milestone: M3
+    step: m3_test_worker_running
+    message: "User confirmed M3 strategy: preserve VSP provider/config, CLI/updater, VSCode Remote SSH, Workflow surfaces, Subagent UX, plugin/skills compatibility, and sandbox safety defaults; do not treat voice/realtime or remote-control as VSP retained capabilities."
+  -
+    timestamp: "2026-06-17T11:19:28+08:00"
+    event_type: subagent_lifecycle
+    milestone: M3
+    role: test
+    worker_id: 019ed396-4509-77c2-b604-3ae447a28707
+    worker_name: 沈博宇
+    status: started
+    prompt_name: C9 M3 VSP runtime surface validation
+    detail: "Focused validation for VSP protected surfaces. Write scope: `.pipeline/reviews/C9/M3/test.md` and necessary focused test assets only; production code changes forbidden."
+  -
+    timestamp: "2026-06-14T15:05:25+08:00"
+    event_type: subagent_lifecycle
+    milestone: M2
+    role: audit
+    worker_id: 019ec4f1-2e44-7a91-9646-3ac6daeab560
+    worker_name: 朱昊骋
+    status: completed
+    prompt_name: C9 M2 upstream merge audit
+    detail: Report written to `.pipeline/reviews/C9/M2/audit.md`; verdict pass_with_risks. No unresolved conflicts or strict conflict markers; diff and fmt checks passed; realtime voice remains unavailable in this build.
+  -
+    timestamp: "2026-06-14T15:05:25+08:00"
+    event_type: subagent_lifecycle
+    milestone: M2
+    role: audit
+    worker_id: 019ec4f1-2e44-7a91-9646-3ac6daeab560
+    worker_name: 朱昊骋
+    status: closed
+    prompt_name: C9 M2 upstream merge audit
+    detail: Worker completed and no longer needed.
+older:
+  count: 618
+  earliest: "2026-05-24T18:35:13+08:00"
+  latest: "2026-06-14T15:05:25+08:00"
+  summary: "unknown:28, cycle_new:4, release:6, integration_sync:1, maintenance:3, patch_release:1, patch_close:1, audit:1, debug_fix:2, release_publish:1, release_publish_blocked:1, release_validation:1, release_prep:3, subagent_lifecycle:184, cycle_complete:3, step_complete:28, milestone_complete:25, cycle_resume:2, milestone_start:14, cycle_pause:2, lease:1, plan_confirm:5, prompt_audit:1, plan_generate:5, plan_decompose:3, heartbeat:12, validation:33, worker_lifecycle:138, lifecycle_milestone:18, lifecycle_start:18, plan:4, runtime_finalized:1, milestone_started:2, review:2, user_decision:1, worker_separation_downgrade:1, blocked:1, execution_start:1, plan_generate_validation:1, plan_discover:5, plan_phase:1, cycle_accept:2, cycle_archive:3, cycle_execution_complete:2, resume:2, debug:1, docs_sync:1, worker_step:6, plan_extend:2, lifecycle_repair:4, cycle_reject:1, lifecycle_blocked:1, start:1, deep_plan:2, deep_plan_context:1, sync:2, docs:2, implementation:5, lifecycle_complete:4, lifecycle_plan:3, lifecycle_cycle:1, ci_validation:1, ci_repair:1, lifecycle_patch:2, lifecycle_plan_review:1, lifecycle_debug:1, lifecycle_init:1"

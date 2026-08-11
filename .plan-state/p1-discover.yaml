@@ -1,0 +1,779 @@
+cycle: C4
+phase: p1_discover
+status: in_progress
+interaction:
+  mode: interactive
+  min_rounds_required: 3
+  rounds_completed: 3
+  explicit_end_signal_received: true
+  explicit_end_signal: "够了，进入 P2"
+  discovery_depth_status: completed
+  revised_process: "Each initial topic requires at least 3 focused Ask Tool rounds before P2."
+  ask_tool_policy:
+    source: user_answer
+    value: "Each topic must have at least 3 Ask Tool rounds."
+  latest_checkpoint:
+    user_choice: "Summarize P1 before deciding whether to enter P2."
+    user_concern: "The Cycle may be too broad; each topic might be planned too complexly and then implemented poorly. Send a Subagent to audit whether everything belongs in one Cycle or should be recorded for a later Cycle."
+    user_scope_feedback: "User accepts the should-have items as feasible for this Cycle, especially because Markdown rendering already exists and likely only needs completion/extension."
+    final_scope_checkpoint:
+      visual_scope: "Markdown completion/refinement plus default subtle color theme and composer prominence; no full Color Theme picker in this Cycle."
+      performance_scope: "Measurement plus low-risk startup optimizations only; no resume metadata cache/progressive cache system in this Cycle."
+      p2_ready: "User later explicitly chose to enter P2."
+worker_separation:
+  mode: strict
+  codex_execution_subworkers_authorized: true
+  authorization_scopes:
+    - /hw:start
+    - /hw:resume
+initial_topics:
+  - thinking_visibility
+  - true_session_rename
+  - card_messages_and_rich_text
+  - keyboard_shortcuts_and_interaction
+  - startup_and_access_speed
+  - vscode_extension_hijack_or_integration
+  - preview_release_and_install
+topic_interview_plan:
+  status: in_progress
+  required_rounds_per_topic: 3
+  topics:
+    thinking_visibility:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+    true_session_rename:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+    card_messages_and_rich_text:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+    keyboard_shortcuts_and_interaction:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+    startup_and_access_speed:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+    vscode_extension_hijack_or_integration:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+    preview_release_and_install:
+      rounds_completed: 3
+      status: minimum_rounds_complete
+ask_tool_rounds:
+  - round: process_reset
+    answers:
+      topic_order: "No valid ranking answer captured; defaulting to risk-first order unless user overrides."
+      vscode_settings_scope: "Prefer user-level VS Code settings; if that fails, write workspace .vscode/settings.json."
+      ask_tool_process: "Each topic gets at least 3 Ask Tool rounds."
+    derived_requirements:
+      - "All topic-level requirements must be captured through Ask Tool rounds."
+      - "VSCode auto-hijack must attempt user settings first, then workspace fallback."
+      - "Manual fallback and rollback must be part of release planning."
+  - round: vscode_release_1
+    topic:
+      - vscode_extension_hijack_or_integration
+      - preview_release_and_install
+    answers:
+      release_channel_priority: "GitHub Release binary package first."
+      vscode_hijack_behavior:
+        - "Write chatgpt.cliExecutable to point at vsp-codex."
+        - "Install official openai.chatgpt extension if missing."
+        - "Write chatgpt.localeOverride=zh-CN."
+      vscode_acceptance:
+        - "Extension initializes through vsp-codex app-server."
+        - "User can start one conversation/task from VSCode Sidebar."
+        - "VSCode history/list sees VSP session names."
+        - "Reasoning is visible or explicitly declared downgraded/unsupported."
+        - "VSP Provider setup works without official ChatGPT login dependency."
+    derived_requirements:
+      - "Release package must include a VSCode integration installer or post-install command."
+      - "VSCode compatibility tests must use the official extension and VSP binary, not a mock extension."
+  - round: vscode_release_2
+    topic:
+      - vscode_extension_hijack_or_integration
+      - preview_release_and_install
+    answers:
+      installer_entrypoint: "vsp-codex vscode install subcommand."
+      failure_policy: "Failure to auto-install/hijack VSCode is a preview release blocker."
+      release_artifacts:
+        - "vsp-codex binary"
+        - "VSCode automatic integration command/script capability"
+        - "quickstart"
+        - "rollback script/command"
+    derived_requirements:
+      - "Implement VSCode installer as first-party CLI subcommand if feasible."
+      - "Add rollback path, likely vsp-codex vscode uninstall/reset."
+      - "Preview release gate must include VSCode installer smoke."
+  - round: vscode_release_3
+    topic:
+      - vscode_extension_hijack_or_integration
+      - preview_release_and_install
+    answers:
+      platform_scope:
+        - linux_x64
+        - macos_arm64
+      settings_write_details:
+        - "Back up settings before writing."
+        - "Preserve existing chatgpt.cliExecutable in VSP backup field/file."
+        - "Only set chatgpt.localeOverride=zh-CN when localeOverride is empty."
+        - "Verify settings parse/result after write."
+      vscode_release_test_contract:
+        - "vsp-codex app-server initialize probe."
+        - "settings write and rollback probe."
+        - "VS Code CLI confirms openai.chatgpt is installed."
+        - "Capture extension/app-server logs as evidence."
+    derived_requirements:
+      - "Preview release platform matrix is Linux x64 + macOS arm64."
+      - "VSCode settings writes must be reversible and conservative with user language preference."
+      - "Published evidence must include non-UI probes plus logs; manual Sidebar smoke may be optional but not the minimum release gate."
+  - round: thinking_1
+    topic:
+      - thinking_visibility
+    answers:
+      thinking_surfaces:
+        - inline_history
+        - collapsible_block
+      thinking_default_visibility: "Default collapsed, user can expand."
+      thinking_content_contract:
+        - reasoning_summary
+        - reasoning_text_delta_or_raw_content
+        - section_breaks
+        - no_synthetic_thinking
+    derived_requirements:
+      - "Render Thinking in the TUI history stream as a collapsible block."
+      - "Do not synthesize Thinking from tool calls or progress events."
+      - "Preserve provider capability boundaries: display only real reasoning summary/raw content/sections."
+  - round: thinking_2
+    topic:
+      - thinking_visibility
+    answers:
+      thinking_config_shape: "Three-level mode: off / summary / raw."
+      thinking_privacy_prompt: "No runtime prompt required before displaying raw reasoning."
+      unsupported_behavior: "If provider emits no reasoning content, do not render a Thinking area in the message stream."
+    derived_requirements:
+      - "Add or map config/TUI setting to a three-level Thinking visibility mode."
+      - "Raw mode should be explicit but not gated by runtime confirmation."
+      - "Unsupported provider behavior should be silent in the transcript UI, with verification handled by tests/diagnostics."
+  - round: thinking_3
+    topic:
+      - thinking_visibility
+    answers:
+      thinking_existing_config_compat: "Existing raw=true maps to raw; raw=false maps to summary."
+      thinking_test_contract:
+        - "summary delta TUI snapshot"
+        - "raw text delta TUI snapshot"
+        - "off mode hides Thinking"
+        - "unsupported/no reasoning events renders no empty block and no error"
+        - "app-server v2 reasoning event mapping test"
+      thinking_ui_details:
+        - "Thinking title, localizable"
+        - "Preserve reasoning section breaks"
+        - "Remember expanded/collapsed state per turn/block"
+    derived_requirements:
+      - "Thinking migration must be backward-compatible with show_raw_agent_reasoning."
+      - "UI snapshot coverage is required for visible Thinking blocks."
+      - "Protocol mapping remains part of acceptance because VSCode consumes v2 reasoning notifications."
+  - round: rename_1
+    topic:
+      - true_session_rename
+    answers:
+      rename_entrypoints:
+        - "TUI /rename slash command"
+        - "resume picker action for selected session"
+        - "app-server thread/name/set API"
+      rename_scope:
+        - "current TUI title/status display"
+        - "TUI resume history list"
+        - "app-server thread/list/read returned name"
+        - "rollout compatibility record / legacy lookup path"
+        - "archived sessions can also be renamed"
+      rename_conflict_policy: "Allow duplicate names."
+    derived_requirements:
+      - "Rename must target canonical thread metadata, not a TUI-only alias."
+      - "Rename must work for stored and archived threads, not only loaded/current sessions."
+      - "Duplicate names are accepted; lookup should use thread id when unambiguous identity is needed."
+  - round: rename_2
+    topic:
+      - true_session_rename
+    answers:
+      rename_empty_behavior: "Reject empty names."
+      rename_api_shape: "Reuse thread/name/set where possible; fix implementation gaps instead of expanding API for preview."
+      rename_editor_experience:
+        - "Prefill current name."
+        - "When renaming from resume picker, show thread id/time context to avoid editing wrong session."
+        - "Esc cancels without saving."
+        - "Enter saves."
+        - "Trim leading/trailing whitespace."
+        - "Show max length or over-length hint."
+    derived_requirements:
+      - "Keep app-server API surface minimal for preview."
+      - "Rename UI must be a real edit form, not a blind prompt."
+      - "Input validation must reject empty names after trimming."
+  - round: rename_3
+    topic:
+      - true_session_rename
+    answers:
+      rename_sync_behavior:
+        - "Emit thread/name/updated to connected app-server clients."
+        - "Resume picker shows updated name after returning/reloading."
+        - "Current terminal title/status updates immediately."
+        - "Rename does not create a new conversation turn/item."
+        - "Name survives vsp-codex restart."
+      rename_failure_handling:
+        - "Show inline error in the edit UI."
+        - "Keep editor open on save failure."
+        - "Restore old visible name after failure."
+        - "Log diagnostic error context."
+        - "No partial success: sqlite/rollout compatibility write failure must not be reported as success."
+      rename_test_contract:
+        - "current loaded thread rename"
+        - "stored/unloaded thread rename"
+        - "archived thread rename"
+        - "resume picker new-name snapshot"
+        - "app-server thread/list/read new name"
+        - "restart/re-read persistence"
+    derived_requirements:
+      - "Rename must be transactional enough to avoid false success."
+      - "Rename must not pollute transcript."
+      - "Tests must cover loaded, stored, archived, TUI, app-server, and persistence surfaces."
+  - round: card_rich_text_1
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      message_types_scope:
+        - assistant_messages
+        - user_messages
+        - tool_calls
+        - ask_cards
+        - subagent_events
+        - errors_warnings
+      visual_style_level: "Bordered cards for each message type."
+      rich_text_features:
+        - colored visual hierarchy without explicit title rows
+        - bold_labels
+        - markdown_emphasis
+    derived_requirements:
+      - "Card design must cover common history cells, not only special Ask UI."
+      - "Do not add explicit title rows to each message card; use color/weight as lightweight hierarchy only."
+      - "Plan updates are not selected for this card round unless needed indirectly."
+      - "Markdown emphasis rendering is in scope, but must respect terminal layout and snapshots."
+  - round: card_rich_text_correction
+    trigger: "User clarified that colored/bold text should not mean explicit message titles."
+    correction:
+      - "No explicit card title rows by default."
+      - "Use subtle color, bold labels, sender/type affordances, and borders for visual grouping."
+      - "Re-ask visual details with this constraint."
+  - round: card_rich_text_scope_correction
+    trigger: "User clarified the primary goal is Markdown rendering; cardization mainly means colors and borders inside/around message presentation."
+    correction:
+      - "Treat Markdown rendering quality as the primary deliverable."
+      - "Treat card borders/colors as visual container/hierarchy support, not a broad redesign of every message type."
+      - "Tool/Ask/Subagent/error coverage should mainly verify compatibility and no visual regression unless specific Markdown rendering is involved."
+  - round: card_rich_text_2
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      card_density: "Compact: few blank lines, thin borders, small titles."
+      collapse_policy:
+        - "Long tool output auto-collapses."
+        - "Errors/warnings default expanded."
+      narrow_terminal_policy: "No horizontal scrolling; wrap or degrade layout."
+    derived_requirements:
+      - "Card layout must preserve terminal density."
+      - "Tool output needs a concise summary/collapsed representation."
+      - "Narrow terminal tests are required to prevent overflow."
+  - round: card_rich_text_3
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      card_identity_affordance: "Use left accent bar/border color to distinguish source/type; no explicit card title row."
+      bold_color_usage:
+        - "sender or small inline prefix, if needed"
+        - "tool name and status"
+        - "Ask selected option / current focus"
+        - "respect Markdown bold/italic emphasis in body"
+      card_snapshot_acceptance:
+        - "user + assistant message pair"
+        - "tool output collapsed/expanded"
+        - "Ask active/answered states"
+        - "Markdown bold/italic/code mixed body"
+    derived_requirements:
+      - "Do not add standalone card titles."
+      - "Visual grouping should rely on compact borders/accent color and existing content hierarchy."
+      - "Snapshot tests must prioritize Markdown rendering and prove Ask/tool compatibility does not regress."
+  - round: markdown_rendering_scope
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      markdown_priority_features:
+        - "bold / italic / inline code"
+        - "Markdown headings rendered as emphasis, not large title rows"
+        - "lists and nested lists"
+        - "tables"
+        - "code fences and language markers"
+      card_markdown_relation: "Container color/border and Markdown emphasis should work together; cardization supports hierarchy but does not replace Markdown rendering."
+      markdown_non_goals:
+        - "No large heading rows or explicit title rows."
+    derived_requirements:
+      - "Primary deliverable is Markdown rendering improvement."
+      - "Message card changes should be limited to border/color container support."
+      - "Avoid full theme redesign unless required by Markdown readability."
+  - round: color_theme_supplement
+    topic:
+      - card_messages_and_rich_text
+    trigger: "User clarified the color/card design should include selectable theme colors, very subtle theme-derived colors, distinct colors for different output blocks, and a more visible input box."
+    answers:
+      theme_color_direction:
+        - "Provide a small set of theme color groups."
+        - "Each theme group contains two or three related theme colors."
+        - "Use super-light / very subtle derived colors for backgrounds, borders, or accents."
+        - "Different output blocks should use different color treatments."
+        - "Users should be able to choose the theme color group."
+        - "Input composer box should be more visually prominent."
+    derived_requirements:
+      - "Visual work includes a lightweight theme-color system, not only Markdown span rendering."
+      - "Theme colors should support output block differentiation without making the TUI visually heavy."
+      - "Composer/input prominence is part of the visual acceptance scope."
+  - round: color_theme_1
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      theme_selection_scope: "Config option plus TUI picker."
+      block_color_mapping:
+        - "User messages / assistant messages."
+        - "Thinking blocks."
+        - "Tool / command execution blocks."
+        - "Ask UI blocks."
+        - "Subagent event blocks."
+        - "Errors / warnings."
+      composer_prominence:
+        - "Stronger border."
+        - "Theme accent."
+        - "Subtle background."
+        - "Cursor/focus hint."
+    derived_requirements:
+      - "Theme selection must be persisted in config and adjustable from inside the TUI."
+      - "All major block families need distinct but very light color treatments."
+      - "Error/warning colors should remain semantically strong enough while fitting the theme."
+      - "The composer must look like the active input surface without consuming much more terminal space."
+  - round: color_theme_2
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      theme_preset_style:
+        - "Blue/green group."
+        - "Teal/amber group."
+        - "Rose/cyan group."
+      terminal_color_capability: "Prefer truecolor; fall back to plain/border/bold styling when color capability is insufficient."
+      background_mode: "Dark terminal first."
+    derived_requirements:
+      - "Ship at least three built-in theme color groups unless implementation discovery finds a strong reason to reduce."
+      - "Color styling must degrade gracefully when truecolor is unavailable."
+      - "Snapshot coverage should prioritize dark terminal rendering; light-mode support is not a primary preview requirement."
+  - round: color_theme_3
+    topic:
+      - card_messages_and_rich_text
+    answers:
+      default_theme: "Teal/amber group."
+      theme_config_name: "Color Theme."
+      theme_snapshot_acceptance:
+        - "Theme picker."
+        - "Mixed message blocks."
+        - "Composer focused and unfocused states."
+    derived_requirements:
+      - "Default preview visual theme should be teal/amber unless implementation screenshots expose readability issues."
+      - "Expose the setting as Color Theme rather than Accent Theme, Message Theme, or VSP Theme."
+      - "Minimum color-theme visual acceptance does not require narrow-terminal and no-truecolor snapshots unless implementation risk suggests adding them."
+  - round: keyboard_interaction_1
+    topic:
+      - keyboard_shortcuts_and_interaction
+    answers:
+      keyboard_surfaces:
+        - "composer"
+        - "Ask UI"
+        - "Subagent panel/detail"
+        - "global commands / command palette"
+      keyboard_pain_points:
+        - "focus is unclear"
+        - "shortcuts are hidden"
+        - "shortcut conflicts"
+        - "too many modes and inconsistent exit/return behavior"
+        - "copy/select is hard"
+      interaction_model_preference: "VSCode/GUI-like."
+    derived_requirements:
+      - "Keyboard work must define a clear focus model across composer, Ask, Subagent, and global command surfaces."
+      - "Shortcut discoverability and conflict handling are part of the requirement, not polish-only."
+      - "Copy/select workflows should be designed explicitly instead of left to terminal defaults."
+  - round: keyboard_interaction_2
+    topic:
+      - keyboard_shortcuts_and_interaction
+    answers:
+      command_entry_shape: "Hybrid model: keep slash commands, add a command palette and a small set of high-frequency shortcuts."
+      focus_escape_model: "VSCode-style overlay stack: Esc closes the current overlay/detail/picker first, then returns focus to the composer, with clear focus highlighting."
+      copy_select_priority:
+        - "Optimize mouse selection so UI borders/colors do not interfere with terminal-native copying."
+    derived_requirements:
+      - "Do not replace slash commands; layer command palette discovery over existing commands."
+      - "Keyboard state should behave like a stack of overlays rather than unrelated local modes."
+      - "Copy/select scope for this Cycle should prioritize preserving terminal-native mouse selection behavior; advanced keyboard text selection is out of scope unless later selected."
+  - round: keyboard_interaction_3
+    topic:
+      - keyboard_shortcuts_and_interaction
+    answers:
+      shortcut_set_scope: "Minimal safe set."
+      shortcut_discoverability:
+        - "Contextual footer hints."
+        - "Lightweight hints inside the focused component."
+      conflict_test_gate:
+        - "Enter / Shift+Enter send vs newline behavior."
+        - "Esc closes overlay stack vs interrupts active work."
+        - "Ctrl+C copy/cancel/exit semantics."
+    derived_requirements:
+      - "This Cycle should not introduce a broad configurable keybinding system."
+      - "Shortcut hints should remain contextual and compact rather than a large always-visible help surface."
+      - "Keyboard acceptance must include conflict tests for composer send/newline, overlay Esc behavior during running work, and Ctrl+C semantics."
+  - round: keyboard_interaction_priority_correction
+    topic:
+      - keyboard_shortcuts_and_interaction
+    trigger: "User clarified the main keyboard problem is shortcut conflicts inside the VSCode terminal, such as Ctrl+J/K, making the UI unusable."
+    correction:
+      - "Treat VSCode terminal shortcut conflict avoidance as the primary keyboard requirement."
+      - "Do not rely on Ctrl+J/K-style shortcuts for essential navigation or actions."
+      - "Other keyboard polish is lower priority unless required to provide usable conflict-free alternatives."
+    derived_requirements:
+      - "Keyboard acceptance must include documented VSCode-terminal-safe keymap constraints and automated keymap/snapshot/unit coverage; manual VSCode terminal smoke is optional."
+      - "Essential actions need non-conflicting fallbacks discoverable from footer or focused component hints."
+      - "The planned shortcut set should prefer arrow keys, Enter/Esc, slash commands, and command palette actions over terminal-reserved Ctrl chords."
+  - round: keyboard_vscode_terminal_conflict_followup
+    topic:
+      - keyboard_shortcuts_and_interaction
+    answers:
+      reserved_key_chords:
+        - "Ctrl+J / Ctrl+K"
+        - "Ctrl+P / Ctrl+Shift+P"
+        - "Ctrl+C"
+        - "Alt combinations"
+      conflict_free_navigation: "Arrow keys move within focused components; Tab / Shift+Tab moves focus between components."
+      vscode_terminal_gate: "Documented design constraint plus TUI keymap/snapshot/unit tests; manual VSCode terminal smoke is not a hard release gate."
+    derived_requirements:
+      - "Essential actions must not require the reserved key chords."
+      - "Ctrl+C should retain terminal cancel/interrupt expectations rather than becoming the primary copy command."
+      - "Command palette should not rely on Ctrl+Shift+P as its only entry point in the TUI."
+      - "Tests should assert keymap/design constraints so forbidden chords are not reintroduced for required actions."
+  - round: startup_access_speed_1
+    topic:
+      - startup_and_access_speed
+    answers:
+      performance_primary_pain:
+        - "TUI cold start."
+        - "resume history list."
+        - "opening historical sessions."
+        - "VSCode extension connection/startup."
+      preview_perf_priority: "TUI first."
+      speed_target_style: "Perceived smoothness rather than hard numeric thresholds."
+    derived_requirements:
+      - "Performance work should prioritize the TUI path, while keeping VSCode startup visible because it is part of preview release."
+      - "Optimize cold start, resume list loading, and historical thread opening before provider/network latency."
+      - "Acceptance should include visible smoothness signals such as non-blocking loading states and no obvious stalls, not only timing thresholds."
+  - round: startup_access_speed_2
+    topic:
+      - startup_and_access_speed
+    answers:
+      loading_strategy: "Progressive loading plus cache for resume lists and opening historical sessions."
+      startup_work_to_defer:
+        - "Full history scan."
+        - "Provider/account probing."
+        - "MCP/tool discovery."
+      diagnostics_visibility: "Release evidence only; no product-facing /perf or timing status UI required in this Cycle."
+    derived_requirements:
+      - "Resume and historical thread loading should prioritize first useful paint over complete metadata availability."
+      - "Cold start should avoid blocking on full history, network/provider checks, or MCP discovery when possible."
+      - "Performance instrumentation may be added for release evidence, but should not become a user-facing feature unless needed for debugging."
+  - round: startup_access_speed_3
+    topic:
+      - startup_and_access_speed
+    answers:
+      cache_scope:
+        - "Session list metadata."
+        - "Recent thread preview summaries."
+      stale_cache_behavior: "Wait until cache is verified before displaying potentially stale cached data."
+      perf_acceptance_signal:
+        - "Before/after timing comparison."
+        - "Large history fixture test."
+        - "No-network or slow-provider startup probe."
+        - "VSCode app-server initialize timing."
+        - "Loading/cache-refresh state snapshots."
+    derived_requirements:
+      - "Cache work should focus on metadata and recent previews, not parsed transcript indexes or provider/MCP state caches in this Cycle."
+      - "Do not show unverified stale session metadata as if it were current; prefer verified display over stale-first speed."
+      - "Release evidence must include timing, large-history behavior, no-network/slow-provider startup, VSCode initialize timing, and visible loading-state coverage."
+rounds:
+  - round: 1
+    questions:
+      - "Release bar: preview release vs product-grade stable release?"
+      - "Primary user path: TUI, VSCode extension, or both?"
+      - "Real acceptance scenarios?"
+    user_answers:
+      release_bar: "Preview release."
+      vscode_scope: "Explore VSCode extension integration/hijack in this Cycle; if viable, make VSCode extension usable after the Cycle."
+    derived_requirements:
+      - "Treat VSCode as an exploration item with a viability gate, not an unconditional implementation promise."
+      - "If VSCode route is viable, include enough work for post-Cycle usage through the extension."
+      - "If VSCode route is not viable, produce evidence and a concrete follow-up path."
+  - round: 2
+    questions:
+      - "Is VSCode extension usage a hard preview requirement if viable?"
+      - "Which Thinking content should be shown?"
+      - "Which entity should true Rename modify?"
+    user_answers:
+      vscode_requirement: "If it can connect, it must connect in this Cycle; if not, Plan must explicitly determine that."
+      thinking_target: "Expose native Reasoning content as thinking events if possible."
+      rename_target: "The name seen in resume history, VSCode extension, and other clients; likely session/thread metadata."
+    derived_requirements:
+      - "Run an immediate VSCode extension feasibility exploration during P1 before P2."
+      - "Thinking visibility must investigate whether raw/native reasoning is available and allowed, not merely improve tool/progress display."
+      - "Rename should update canonical session/thread metadata rather than a TUI-only alias."
+  - round: 3
+    questions:
+      - "Manual VSCode setting vs automatic settings hijack?"
+      - "Acceptable Thinking fallback if raw native reasoning is unavailable?"
+      - "Scope of card/rich message UI: TUI only or VSCode too?"
+    user_answers:
+      vscode_integration_shape: "Prefer automatic VS Code settings write and post-install automatic hijack."
+      thinking_fallback: "If raw reasoning is unsupported, summary is acceptable; if neither raw nor summary exists, explicitly do not implement Thinking visibility."
+      rich_message_scope: "Prioritize TUI only."
+      extension_research_scope: "Scan and study all interfaces supported by the official VSCode extension."
+    derived_requirements:
+      - "Plan VSCode support as automatic configuration where possible, with manual fallback only if auto hijack is blocked by VS Code/extension constraints."
+      - "Thinking implementation must be capability-driven and must not fabricate reasoning content."
+      - "Card/rich message work should focus on TUI history cells/messages; VSCode UI patching is out of scope unless required for compatibility."
+      - "P1/P2 must include an official extension interface compatibility inventory."
+  - round: correction
+    trigger: "User noted that many listed topics were not discussed deeply enough and asked why Ask Tools were not used."
+    correction:
+      - "Treat the first 3 rounds as general discovery plus VSCode feasibility research, not as sufficient topic-level discovery."
+      - "Continue P1 with Ask Tool based focused interviews."
+      - "Do not enter P2 until every topic has at least 3 Ask Tool rounds or a user-approved deferral."
+open_questions:
+  - "Which user path must be the release blocker for preview: TUI only, VSCode only, or both?"
+  - "Which real acceptance scenarios define preview readiness?"
+  - "Can the current VSCode extension route be integrated or hijacked by VSP Codex in this Cycle?"
+  - "What exact reasoning event source is available without violating hidden-reasoning/privacy boundaries?"
+  - "Which metadata store owns session names across resume history and app-server consumers?"
+  - "After scope audit, which items are preview blockers for this Cycle and which should become follow-up Cycle candidates?"
+research:
+  scope_audit_subagent:
+    status: completed
+    lifecycle:
+      requested: true
+      started: true
+      completed: true
+      closed: true
+    agent:
+      id: "019e6a4d-d031-7922-a0ee-01909c9a641e"
+      nickname: "宋应星"
+    task: "Audit whether the P1 scope should fit in one preview Cycle, and recommend must-have, should-have, and follow-up splits before P2."
+    conclusion:
+      framing: "This Cycle can proceed only if scoped as a preview release closure, not a complete experience-optimization release."
+      preview_blockers:
+        - "VSCode integration and release closure: install/rollback, settings backup, app-server initialize probe, official extension usable for at least one task."
+        - "Minimal release package: at least one usable binary package, quickstart, rollback path, smoke evidence. Linux x64 is blocker; macOS arm64 can be should-have if build chain is not ready."
+        - "Canonical Rename: current/stored sessions, TUI resume list, app-server thread/list/read, VSCode-visible names. Archived rename and richer picker UX can be downgraded."
+        - "VSCode-terminal-safe keymap: essential actions must not require Ctrl+J/K, Ctrl+P, Ctrl+Shift+P, Alt chords, or Ctrl+C."
+        - "Thinking capability decision: connect real v2 summary/raw events if available; otherwise explicitly downgrade without fake Thinking."
+      should_have:
+        - "TUI Thinking collapsed block, summary first; raw only if real."
+        - "Rename edit UX enhancements where cheap."
+        - "Markdown minimal rendering: bold/italic/inline code/lists/tables/code fences."
+        - "Composer prominence: stronger border, light accent, focus hint."
+        - "Default teal/amber lightweight block coloring, without full theme picker."
+        - "Performance measurement and low-risk startup fixes, without a full cache system."
+      defer_next_cycle:
+        - "Full Color Theme system: three themes, TUI picker, config persistence, all block families, truecolor fallback matrix."
+        - "Global command palette, complete focus stack, keyboard copy/selection system."
+        - "Session metadata cache, recent preview cache, progressive loading/stale verification."
+        - "Deep raw native reasoning support beyond real emitted capability."
+        - "Custom VSCode extension or patching official extension UI."
+      p2_milestone_suggestion:
+        - "Release Spine + VSCode Hijack."
+        - "Canonical Rename."
+        - "Reasoning Capability Gate."
+        - "VSCode-Terminal-Safe Keymap + Composer Prominence."
+        - "Markdown Minimal Visual Slice."
+        - "Preview Release Validation."
+  markdown_existing_capability_check:
+    status: completed
+    evidence:
+      - "codex-rs/tui/src/markdown_render.rs is a pulldown-cmark based TUI transcript renderer with table layout, width-aware wrapping, file-link display, headings, inline code, emphasis, strong, links, blockquote, lists, and code blocks."
+      - "codex-rs/tui/src/markdown.rs provides append_markdown_agent_with_cwd and unwraps markdown fences containing tables."
+      - "codex-rs/tui/src/history_cell/messages.rs uses append_markdown_agent_with_cwd for assistant message rendering."
+      - "codex-rs/tui/src/markdown_render_tests.rs already covers inline code, strong, emphasis, links, lists, and complex markdown snapshots."
+    plan_impact:
+      - "Markdown work should be planned as completion/refinement of existing renderer and history-cell integration, not a from-scratch renderer."
+      - "The Markdown minimal visual slice can remain in this Cycle because baseline capability exists."
+      - "Risk is now mainly visual integration, block styling, snapshot acceptance, and gaps in current renderer behavior."
+  final_scope_decisions:
+    status: in_progress
+    accepted_for_this_cycle:
+      - "VSCode integration and preview release closure."
+      - "Minimal release package and smoke evidence."
+      - "Canonical Rename across TUI/app-server/VSCode-visible list surfaces."
+      - "Thinking capability gate with real summary/raw mapping only."
+      - "VSCode-terminal-safe keymap conflict avoidance."
+      - "Markdown renderer completion/refinement using existing pulldown-cmark renderer."
+      - "Default subtle teal/amber-like block coloring without full theme selector."
+      - "Composer/input visual prominence."
+      - "Performance measurement and low-risk startup/access fixes."
+    deferred_or_non_blocking:
+      - "Full Color Theme picker/config persistence/three theme groups."
+      - "Full command palette and complete focus stack."
+      - "Keyboard copy/selection system beyond preserving terminal-native mouse selection."
+      - "Resume metadata cache, recent preview cache, and progressive stale-cache verification system."
+      - "Custom VSCode extension or patching official extension UI."
+  visual_markdown_color_followup:
+    status: in_progress
+    trigger: "User clarified that Markdown syntax support already exists, but bold/italic/list styling is visually too weak; bold rendered as white/default is hard to see."
+    requirements:
+      - "Markdown emphasis styling must add visible color, not only bold/italic terminal attributes."
+      - "Bold, italic, bold+italic, list markers, inline code, links, headings, table borders, and blockquote markers should have theme-consistent visible styles."
+      - "Default styling must improve contrast on dark terminals."
+      - "Snapshot acceptance should verify styled spans, not only plain text output."
+    answers:
+      markdown_colored_tokens:
+        - "bold"
+        - "italic"
+        - "bold+italic"
+        - "list markers"
+        - "headings"
+        - "inline code"
+        - "links / file paths"
+        - "blockquote"
+        - "table borders / headers"
+      markdown_color_strength: "Subtle but clearly visible."
+      markdown_theme_relation: "Theme colors plus a small semantic palette."
+    derived_requirements:
+      - "Do not leave strong/emphasis styles as default foreground only."
+      - "Use color to compensate for terminals where bold/italic attributes are hard to distinguish."
+      - "Keep the palette compact and readable for long assistant messages."
+    color_mapping_decision:
+      markdown_color_roles: "Three-role palette: emphasis text, code/link, and structural elements."
+      inline_code_color: "Use a theme-derived code color instead of hardcoded cyan."
+      list_table_style: "Color list markers, table headers, and table borders; keep ordinary table/body prose calm."
+    acceptance:
+      - "Snapshot or style assertions show bold, italic, and bold+italic use visible non-default colors."
+      - "Snapshot or style assertions show list markers, table headers, and table borders are colored."
+      - "Inline code uses the selected/default theme-derived code style."
+  vscode_extension_feasibility:
+    status: viable
+    evidence:
+      - "Official extension installed locally as openai.chatgpt-26.519.32039-linux-x64."
+      - "Extension package contributes restricted development setting chatgpt.cliExecutable: path to Codex CLI executable."
+      - "Extension bundle starts Codex with arguments: app-server --analytics-default-enabled."
+      - "Extension sends initialize with clientInfo and experimentalApi capability over stdio."
+      - "Local VSP binary /home/heyx/Codex-VSP/codex-rs/target/debug/vsp-codex app-server --analytics-default-enabled responds successfully to the same initialize shape."
+      - "Initialize response reports codexHome=/home/heyx/.vsp-codex and userAgent codex_vscode/0.134.0-vsp.2."
+    plan_impact:
+      - "VSCode extension support should be treated as a hard preview target, not deferred exploration only."
+      - "Likely implementation path is configuration and compatibility work, not writing a full extension from scratch."
+      - "Preview release must include an automated or post-install way to point official extension setting chatgpt.cliExecutable at the released vsp-codex binary, with manual fallback if VS Code settings protection blocks automation."
+    remaining_unknowns:
+      - "Whether all UI flows used by the extension remain compatible with VSP-gated provider/auth behavior."
+      - "Whether official extension can show VSP Provider setup cleanly or needs VSP-side app-server compatibility adjustments."
+      - "Whether VS Code Settings UI permits normal users to set restricted chatgpt.cliExecutable without extension development friction."
+    interface_inventory:
+      extension_commands:
+        - chatgpt.openSidebar
+        - chatgpt.openCommandMenu
+        - chatgpt.newCodexPanel
+        - chatgpt.addToThread
+        - chatgpt.addFileToThread
+        - chatgpt.newChat
+        - chatgpt.showLspMcpCliArgs
+      settings:
+        - "chatgpt.cliExecutable: restricted development setting; controls spawned Codex CLI path."
+        - "chatgpt.openOnStartup"
+        - "chatgpt.followUpQueueMode"
+        - "chatgpt.composerEnterBehavior"
+        - "chatgpt.reviewDelivery"
+        - "chatgpt.localeOverride"
+        - "chatgpt.runCodexInWindowsSubsystemForLinux"
+      app_server_start:
+        executable_resolution: "chatgpt.cliExecutable if set, otherwise bundled bin/<platform>/codex."
+        args:
+          - app-server
+          - --analytics-default-enabled
+        transport: stdio-jsonl
+        initialize_capabilities:
+          experimentalApi: true
+          requestAttestation: false
+      forwarded_notifications:
+        thread:
+          - thread/started
+          - thread/name/updated
+          - thread/tokenUsage/updated
+          - thread/status/changed
+          - thread/archived
+          - thread/unarchived
+          - thread/goal/updated
+          - thread/goal/cleared
+        turn_and_items:
+          - turn/started
+          - turn/completed
+          - turn/diff/updated
+          - turn/plan/updated
+          - item/started
+          - item/completed
+          - item/agentMessage/delta
+          - item/plan/delta
+          - item/commandExecution/outputDelta
+          - item/commandExecution/terminalInteraction
+          - item/fileChange/patchUpdated
+          - item/reasoning/summaryTextDelta
+          - item/reasoning/summaryPartAdded
+          - item/reasoning/textDelta
+        tool_and_services:
+          - serverRequest/resolved
+          - item/mcpToolCall/progress
+          - mcpServer/oauthLogin/completed
+          - account/updated
+          - account/rateLimits/updated
+          - app/list/updated
+          - externalAgentConfig/import/completed
+          - fs/changed
+          - skills/changed
+          - windowsSandbox/setupCompleted
+          - remoteControl/status/changed
+        opted_out_legacy_or_noisy:
+          - rawResponseItem/completed
+          - command/exec/outputDelta
+          - process/outputDelta
+          - process/exited
+          - mcpServer/startupStatus/updated
+          - codex/event/agent_reasoning_raw_content
+          - codex/event/agent_reasoning_raw_content_delta
+          - codex/event/reasoning_raw_content_delta
+          - codex/event/request_user_input
+          - codex/event/token_count
+      compatibility_focus:
+        - "thread/start, thread/resume, turn/start, thread/list, thread/read, thread/name/set must work against VSP defaults."
+        - "VSP provider/auth setup must not trap the extension behind official ChatGPT login-only flows."
+        - "Reasoning display through v2 item/reasoning/* notifications should remain compatible; legacy raw reasoning events are not enough because extension opts them out."
+        - "Auto-hijack must safely modify VS Code user settings or provide an install-time command with rollback."
+  reasoning_visibility:
+    status: partially_known
+    evidence:
+      - "app-server protocol includes item/reasoning/textDelta and item/reasoning/summaryTextDelta notifications."
+      - "VSP/official legacy events include agent_reasoning_raw_content and reasoning_raw_content_delta toggles, but extension defaults opt out of raw legacy events."
+      - "core config has model_reasoning_summary and show_raw_agent_reasoning controls."
+    plan_impact:
+      - "Thinking work must first determine what the backend actually emits for the selected VSP Provider/model."
+      - "If native raw reasoning is not emitted by provider/API, the preview can only expose reasoning summaries or existing reasoning deltas."
+      - "VSCode extension forwards v2 reasoning notifications, so app-server compatibility is enough for VSCode; TUI needs dedicated presentation work."
+  true_rename:
+    status: viable
+    evidence:
+      - "app-server protocol exposes thread/name/set and thread/name/updated."
+      - "thread-store supports ThreadMetadataPatch.name and appends compatibility thread-name records for rollout lookup."
+      - "TUI has SetThreadName command, slash rename handling, resume picker prefers thread_name, and app-server session calls thread/name/set."
+    plan_impact:
+      - "Rename should target canonical thread metadata and verify resume list, app-server thread/list/read, and VSCode extension list behavior."

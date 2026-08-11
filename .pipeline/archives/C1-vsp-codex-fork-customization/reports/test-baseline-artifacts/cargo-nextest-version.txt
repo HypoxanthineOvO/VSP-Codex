@@ -1,0 +1,8 @@
+START 2026-05-24T19:41:40+08:00
+cargo-nextest 0.9.136 (1d5bf1ec9 2026-05-16)
+release: 0.9.136
+commit-hash: 1d5bf1ec99c918517d2c0f0cad2c1075c48d4b20
+commit-date: 2026-05-16
+host: x86_64-unknown-linux-gnu
+END 2026-05-24T19:41:40+08:00
+STATUS 0

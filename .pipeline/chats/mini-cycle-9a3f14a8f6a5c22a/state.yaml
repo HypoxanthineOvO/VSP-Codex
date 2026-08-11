@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019eee7a-f02a-7e42-b12f-07809bcd62f5
+topic_summary: 我觉得不能是 vsp.0，之前他的版本更新有问题来的，之前在 0.140.0 之前就有 vsp.几了，这个数字应该是继续延续的，就是比如之前是 vsp.7，如果fork了baseline，就不变；自己加功能就继续+1才对。
+turn_count: 16

@@ -1,0 +1,5 @@
+---
+source: tui/src/chatwidget/tests/popups_and_settings.rs
+expression: rendered.trim_end()
+---
+■ 此官方服务入口已在 VSP Codex 中禁用。请使用 /provider 配置内部 Provider。

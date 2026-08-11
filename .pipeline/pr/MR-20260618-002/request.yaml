@@ -1,0 +1,22 @@
+provider: gitlab
+kind: merge_request
+host: gitlab.vsplab.cn
+owner: heyx
+repository: Codex
+number: 2
+id: 5
+url: https://gitlab.vsplab.cn/heyx/Codex/-/merge_requests/2
+title: 'docs: fix VSP 7.2 install checksum'
+state: opened
+source_branch: fix-vsp-7-2-install-sha
+target_branch: main
+author: lichf
+sha: dec4d987562dcca7d42f428d089b79d97a33ee7d
+created_at: '2026-06-14T10:51:58.435Z'
+updated_at: '2026-06-14T10:51:59.637Z'
+status_snapshot:
+  detailed_merge_status: checking
+  has_conflicts: false
+  blocking_discussions_resolved: true
+  pipelines_count: 2
+archive_created_at: '2026-06-18T19:05:00+08:00'

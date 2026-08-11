@@ -1,0 +1,394 @@
+# Hypo-Workflow Pipeline State
+
+pipeline:
+  name: Upstream Sync And VSP Client Connectivity Adaptation
+  status: completed
+  prompts_total: 5
+  prompts_completed: 5
+  started: '2026-07-02T16:43:45+08:00'
+  finished: '2026-07-11T14:52:29+08:00'
+last_heartbeat: '2026-07-11T14:52:29+08:00'
+current:
+  phase: completed
+  prompt_index: 4
+  prompt_file: .pipeline/prompts/c10-005-version-vsp9-release-and-distribution.md
+  prompt_name: Version 0.145.0-vsp.9 Release And Distribution
+  step: completed
+  step_index: 7
+milestones:
+- id: M1
+  name: Stage-1 Merge To Upstream rust-v0.143.0-alpha.25
+  prompt: .pipeline/prompts/c10-001-stage1-merge-upstream-alpha25.md
+  status: completed
+  current_step: null
+  dependencies: []
+- id: M2
+  name: Stage-1 Contract Validation And Schema Regeneration
+  prompt: .pipeline/prompts/c10-002-stage1-contract-validation-and-schema-regeneration.md
+  status: completed
+  current_step: null
+  dependencies:
+  - M1
+- id: M3
+  name: Stage-2 Merge To rust-v0.143.0-alpha.33 And VSP Surface Recheck
+  prompt: .pipeline/prompts/c10-003-stage2-merge-alpha33-and-vsp-surface-recheck.md
+  status: completed
+  current_step: null
+  dependencies:
+  - M2
+- id: M4
+  name: Client Connectivity Adaptation And Drift Regression
+  prompt: .pipeline/prompts/c10-004-client-connectivity-adaptation-and-drift-regression.md
+  status: completed
+  current_step: null
+  completed_at: '2026-07-10T12:56:51+08:00'
+  dependencies:
+  - M3
+- id: M5
+  name: Version 0.145.0-vsp.9 Release And Distribution
+  prompt: .pipeline/prompts/c10-005-version-vsp9-release-and-distribution.md
+  status: completed
+  current_step: null
+  completed_at: '2026-07-11T14:52:29+08:00'
+  dependencies:
+  - M4
+history:
+  completed_prompts:
+  - id: M1
+    prompt: .pipeline/prompts/c10-001-stage1-merge-upstream-alpha25.md
+    finished_at: '2026-07-02T18:45:11+08:00'
+    result: pass
+    commits:
+    - 093be881df3355727294b3b03b26028417cd8388
+    - d42677dc65780be6abb5c744068b2e95c9be0322
+  - id: M2
+    prompt: .pipeline/prompts/c10-002-stage1-contract-validation-and-schema-regeneration.md
+    finished_at: '2026-07-02T19:19:03+08:00'
+    result: pass
+    commits:
+    - 7df9f3c1cba8a7dd82731618c9583fb423a7a251
+  - id: M3
+    prompt: .pipeline/prompts/c10-003-stage2-merge-alpha33-and-vsp-surface-recheck.md
+    finished_at: '2026-07-02T20:50:18+08:00'
+    result: pass
+    commits:
+    - 05aed0f7fb0c3cfc035c04d0c92d24275a6ba167
+    - 3a8d660bbb9f2da242e51f4e4a67c1a7de8950ab
+    - 77deba2968f29edac6f134813d87f1e4a4e69fbe
+    - 9e23218d1005bf30baed0dd78591b498a4ac9518
+  - id: M4
+    prompt: .pipeline/prompts/c10-004-client-connectivity-adaptation-and-drift-regression.md
+    finished_at: '2026-07-10T12:56:51+08:00'
+    result: pass
+    commits:
+    - 0a2bcf3df5
+    - b62a07b59e
+  - id: M5
+    prompt: .pipeline/prompts/c10-005-version-vsp9-release-and-distribution.md
+    finished_at: '2026-07-11T14:52:29+08:00'
+    result: pass
+    commits:
+    - 7ffab1c7ae
+    - 47bb38a787
+    - ecf799926b
+    - 79cc6564b9
+    tag: v0.145.0-vsp.9
+prompt_state:
+  started_at: '2026-07-10T19:45:22+08:00'
+  updated_at: '2026-07-11T14:52:29+08:00'
+  finished_at: '2026-07-11T14:52:29+08:00'
+  result: pass
+  diff_score: null
+  code_quality: null
+  steps:
+  - name: write_tests
+    status: completed
+    executor: subagent
+    subagent_tool: codex
+    started_at: '2026-07-10T19:45:22+08:00'
+    finished_at: '2026-07-10T20:52:10+08:00'
+    subagent_result: green
+    notes:
+    - M4 manual client acceptance was recorded after the user confirmed the local client
+      was running GPT-5.6 Sol with Ultra reasoning.
+    - M5 target was refreshed from 0.143.0-vsp.9 to 0.145.0-vsp.9 after merging
+      rust-v0.145.0-alpha.2 and cherry-picking two relevant post-tag sandbox fixes.
+    - Independent test worker validated updater, installer, release-builder and diff
+      checks before release packaging; its final matrix passed 28 tests with zero
+      failures.
+    - Main-thread follow-up added the release-builder default source contract and
+      reran the Unix installer suite at 15/15.
+    - A fresh upstream fetch advanced main to 6138909d6e. Eight additional production
+      and dependency-closed test commits were Cherry Picked after the original two;
+      all ten local/upstream patch IDs match.
+    - Independent post-tag validation reported 545 passed, 2 host-polluted failures,
+      and 4 ignored. Re-running core-skills under clean TMPDIR=/dev/shm passed 120/120.
+  - name: review_tests
+    status: completed
+    executor: subagent
+    subagent_tool: codex
+    subagent_result: pass
+    started_at: '2026-07-10T20:20:00+08:00'
+    finished_at: '2026-07-10T20:21:00+08:00'
+    notes:
+    - Test scope covers multi-segment VSP revisions, Cargo/npm version drift,
+      official-binary rejection, strict JSON metadata, and direct archive provenance.
+  - name: run_tests_red
+    status: completed
+    executor: subagent
+    subagent_tool: codex
+    subagent_result: contract_findings_reproduced
+    started_at: '2026-07-10T20:21:00+08:00'
+    finished_at: '2026-07-10T20:22:00+08:00'
+    notes:
+    - No standalone pre-fix RED run was persisted after compaction. The updater parser,
+      official-binary rebranding, JSON parser, and builder/installer source mismatch
+      were reproduced through contract analysis, then locked with regression tests.
+  - name: implement
+    status: completed
+    executor: main
+    subagent_tool: codex
+    started_at: '2026-07-10T21:58:00+08:00'
+    finished_at: '2026-07-11T14:48:42+08:00'
+    subagent_result: green
+    notes:
+    - Follow-up scope adds resumed-client ownership for pending Question Tool requests,
+      built-in GitLab release discovery, and read-only upstream Cherry Pick reminders.
+    - App-server now routes Ask to the latest thread owner, reuses the original pending
+      request on resume, and dismisses stale cards on prior connections; cargo check passed.
+    - Pending Question responses are now connection-owned and atomically retargeted on
+      resume; a websocket regression proves stale-terminal answers are ignored.
+    - Second independent audit found five P1 races across Ask registration, disconnect,
+      unsubscribe, fallback resolution, and update action selection; remediation remains
+      inside implement and no release gate has been opened.
+    - Ask registration, native/fallback answers, resume ownership, unsubscribe, and
+      disconnect now share one handoff lock and thread-listener ordering. Running resume
+      no longer revives answered rollout Questions; the focused Request User Input matrix
+      passes 24/24.
+    - Upstream main advanced from 6138909d6e to c8dc8e5fd5 while the newest release tag
+      remained rust-v0.145.0-alpha.2. Six dependency-closed commits were Cherry Picked in
+      order through local 0add73defb; four patch IDs match exactly, while reasoning and
+      workspace-roots preserve intentional VSP override/module context.
+    - Final upstream adaptation aligned MultiAgent V2 role-locked reasoning with V1 and
+      official role semantics in local commit 7fcb5f235c.
+    - A final upstream refresh discovered rust-v0.145.0-alpha.3 and alpha.4 plus seven
+      newer production commits. The alpha.2 release dry run and GREEN evidence were
+      invalidated; alpha.4 was merged as 820f9b14b8 and M5 implement was reopened.
+    - All seven post-alpha.4 commits through upstream/main@c9d52de5ca were Cherry Picked
+      in order through local 24600fdefc. Five patch IDs match exactly; paginated thread
+      persistence and plugin hook trust retain intentional VSP provider/cache guards.
+    - Post-alpha.4 TUI validation exposed an IDE IPC test-fixture hang under host umask
+      002. Test socket parents are now explicitly mode 0700 and listener accepts are
+      deadline-bounded without relaxing production socket validation; the module passes 10/10.
+    - VSP updater fixtures now identify rust-v0.145.0-alpha.4 as the installed vsp.9
+      baseline. Release-only updater tests pass 18/18, cache compatibility 2/2, and
+      update action dispatch 2/2.
+    - >-
+      Final fetch advanced upstream/main from c9d52de5ca to f93c18ed0f with two
+      dependency-closed commits: model availability announcement priority behavior
+      and canonical moved-config links. GREEN was reopened before Cherry Pick.
+    - Both new commits were Cherry Picked in order as d10f954ed7 and b208579cc4 with
+      exact upstream patch IDs. Model availability tests pass 4/4; TUI check, rustfmt,
+      CI docs, and diff hygiene pass. The local branch now names the alpha.4 baseline.
+    - Final audit found a P2 listener-loss handoff gap and P3 resolution-target cleanup
+      race. Implement was reopened; the existing package candidate is invalid until the
+      fixes, regression rerun, package rebuild, and independent re-audit complete.
+    - >-
+      Listener and listener-loss connection removal now share one complete Ask handoff:
+      old-owner dismissal, answer-authority retargeting, and native/fallback replay.
+      Missing or closed listeners also clear accepted-answer resolution targets and send
+      serverRequest/resolved to the actual answering connection. Focused unit tests pass
+      5/5 and the end-to-end Request User Input matrix passes 24/24.
+    - Audit remediation was committed independently as 7ffab1c7ae so the replacement
+      release archive can record clean source provenance. Existing release and Pipeline
+      artifacts were excluded from that code commit.
+    - Final pre-commit fetch advanced upstream/main from f93c18ed0f to 5c19155cbd with
+      a production paginated-rollout ordinal commit. The release gate, GREEN, audit, and
+      archive were invalidated before publication; implement reopened for Cherry Pick.
+    - Upstream 5c19155cbd was Cherry Picked as 47bb38a787. Conflict resolution retained
+      both VSP discovery/provider coverage and official ordinal/projection behavior; local
+      and upstream numstats are identical. VSP's stale rollout test fixture was aligned in
+      independent commit ecf799926b and its provider tests pass 2/2.
+    - The user explicitly authorized accelerating publication of 0.145.0-vsp.9. Remaining
+      validation is narrowed to the new rollout/protocol delta plus archive provenance;
+      push, tag, GitLab Release, and asset upload are authorized after those checks pass.
+  - name: run_tests_green
+    status: completed
+    executor: main
+    subagent_tool: codex
+    started_at: '2026-07-11T11:41:02+08:00'
+    finished_at: '2026-07-11T14:48:42+08:00'
+    subagent_result: green
+    notes:
+    - Final Ask matrix passed 24/24 and app-server lib passed 278/278 with
+      RUST_MIN_STACK=16777216 and serial execution to avoid known test-stack and fixture races.
+    - VSP updater release tests passed 18/18, cache compatibility passed 2/2, and no
+      pending insta snapshots remain.
+    - >-
+      Upstream validation passed: memories-write 39/39, extension-api 11/11,
+      exec-server full package, core workspace-roots 2/2, reasoning 37/37 across unit
+      and integration, and review 10/10.
+    - Release-builder Python tests passed 3/3; CI docs, rustfmt, diff, YAML, JSON, and
+      conflict-marker hygiene checks passed.
+    - These results describe the superseded alpha.2 baseline and must be rerun after
+      alpha.4 plus the selected post-tag commits.
+    - Alpha.4 rerun passed Ask integration 24/24, app-server lib 280/280, updater
+      18/18 plus cache/action 2/2 each, memories 39/39, extension API 11/11,
+      exec-server all targets, core workspace-roots/reasoning/review, IDE IPC 10/10,
+      Full Access defaults/overrides, compaction visibility, and VSCode file links.
+    - Builder 4/4, CI docs, rustfmt, diff hygiene, and pending snapshot checks pass.
+      A broad Guardian review filter produced two host-workspace-injected `.snap.new`
+      files; they were rejected and removed, while the intended review integration
+      module passed 10/10.
+    - Final replacement candidate archive is 352415153 bytes with SHA256
+      bbc6ecd5abbee8ea8273e57db80086bb05d3ba4dde6804937f1f5559db121a72.
+      Source and archived binaries are byte-identical and report 0.145.0-vsp.9;
+      manifests record alpha.4, preserve seven releases, and the final fetch remains
+      5c19155cbd.
+    - Audit-remediation GREEN now includes Request User Input unit tests 5/5,
+      end-to-end Ask tests 24/24, and the complete app-server library 282/282.
+      Turn interruption now directly asserts compaction visibility cleanup.
+    - VSP Full Access defaults pass 2/2, explicit request permission overrides pass 1/1,
+      local auto-compaction passes 1/1, and strict app-server Clippy passes after allowing
+      two pre-existing, out-of-diff needless-lifetime/borrow warnings.
+    - The final rollout ordinal delta passes codex-rollout 99/99 and
+      codex-app-server-protocol 271/271. Release build, package checksum, byte identity,
+      rustfmt, CI docs, JSON/YAML, and diff hygiene pass.
+  - name: review_code
+    status: completed
+    executor: subagent
+    subagent_tool: codex
+    started_at: '2026-07-11T14:12:46+08:00'
+    finished_at: '2026-07-11T14:48:42+08:00'
+    subagent_result: pass_with_accelerated_delta_validation
+    notes:
+    - Plato was closed because the alpha.4 baseline invalidated its review scope.
+    - Fresh read-only audit worker Pascal is reviewing the final alpha.4/f93 candidate,
+      Question/update concurrency, permissions, compaction, links, nine Cherry Picks,
+      and release provenance. No remote or local release mutation is authorized.
+    - Pascal returned needs_changes with P2 listener-loss UI replay and P3
+      resolution-target cleanup findings. Both must close before re-audit.
+    - Ptolemy is independently re-auditing 7ffab1c7ae and the rebuilt candidate,
+      with explicit focus on both Pascal findings, concurrency, evidence consistency,
+      and release-gate integrity.
+    - The authoritative M5 prompt was corrected from its superseded alpha.2 wording to
+      alpha.4, the nine post-tag cutoff at f93c18ed0f, and an explicit alpha.4 builder
+      provenance argument; Ptolemy was notified to include it in the re-audit.
+    - Ptolemy returned pass with no P0-P2. Two P3 evidence findings were resolved by
+      narrowing the direct-test claim and synchronizing M5 current_step. Forced
+      closed-listener native/fallback replay and compaction Error remain explicit test gaps.
+    - Ptolemy's pass predates the final ordinal Cherry Pick. At the user's explicit request
+      to accelerate publication, that production delta was covered by full affected-crate
+      tests and range-diff/numstat review instead of starting another independent worker.
+runtime_workers:
+  workers:
+  - role: test
+    worker_id: 019f22e5-5624-7741-9b77-ebaee6c605f4
+    worker_name: 李萌 the 19th
+    status: completed_closed
+    stage: m4_write_tests
+    evidence_path: .pipeline/reviews/C10/M4/test.md
+  - role: implement
+    worker_id: 019f22f7-0f7b-73f0-a4e6-e06e5fd9bf6b
+    worker_name: 娄鑫 the 19th
+    status: completed_closed
+    stage: m4_implement
+    evidence_path: .pipeline/reports/C10/M4-connectivity.md
+  - role: test
+    worker_id: 019f22fe-98de-7ba1-b366-8dc9ebe665ad
+    worker_name: 李萌 the 20th
+    status: completed_closed
+    stage: m4_run_tests_green
+    evidence_path: .pipeline/reviews/C10/M4/test.md
+  - role: audit
+    worker_id: 019f230f-edd3-7512-8229-4f140363a587
+    worker_name: 娄鑫 the 20th
+    status: completed_closed
+    stage: m4_review_code
+    evidence_path: .pipeline/reviews/C10/M4/audit.md
+  - role: test
+    worker_id: 019f2315-902c-7b60-948d-46bb15aa8af1
+    worker_name: 李萌 the 21st
+    status: completed_closed
+    stage: m4_audit_fix_tests
+    evidence_path: .pipeline/reviews/C10/M4/test.md
+  - role: audit
+    worker_id: 019f2319-b37c-7fd2-9ddb-692b75747343
+    worker_name: 娄鑫 the 21st
+    status: completed_closed
+    stage: m4_reaudit
+    evidence_path: .pipeline/reviews/C10/M4/audit.md
+  - role: test
+    worker_id: 019f4bd3-dffa-7231-86e9-eace0c0787e4
+    worker_name: Einstein
+    status: completed_closed
+    stage: m5_sync_validation
+    evidence_path: .pipeline/reports/C10/M5-upstream-alpha4-sync.md
+  - role: audit
+    worker_id: 019f4bd3-e49f-73b3-b4c5-4ffd42feed0e
+    worker_name: Dewey
+    status: completed_closed
+    stage: m5_sync_audit
+    evidence_path: .pipeline/reports/C10/M5-upstream-alpha4-sync.md
+  - role: test
+    worker_id: 019f4c0d-2bdd-7b23-bdb6-08f2bbdb3389
+    worker_name: Faraday
+    status: completed_closed
+    stage: m5_post_tag_validation
+    evidence_path: .pipeline/reports/C10/M5-upstream-alpha4-sync.md
+  - role: audit
+    worker_id: 019f4c0d-2c4e-7463-8a7a-72bde660fda6
+    worker_name: Godel
+    status: completed_closed
+    stage: m5_post_tag_audit
+    evidence_path: .pipeline/reports/C10/M5-upstream-alpha4-sync.md
+  - role: test
+    worker_id: 019f4c50-1967-7db3-8619-d510e5d8329f
+    worker_name: McClintock
+    status: completed_closed
+    stage: m5_resume_update_tests
+    evidence_path: .pipeline/reviews/C10/M5/test.md
+  - role: implement
+    worker_id: 019f4c50-1dfc-77a2-83cd-e7c862e14cfe
+    worker_name: Lorentz
+    status: completed_closed
+    stage: m5_client_update_implementation
+    evidence_path: .pipeline/reports/C10/M5-release.md
+  - role: audit
+    worker_id: 019f4c66-dda6-7742-ad72-265894775764
+    worker_name: Hypatia
+    status: completed_closed
+    stage: m5_resume_update_audit
+    evidence_path: .pipeline/reviews/C10/M5/audit.md
+  - role: audit
+    worker_id: 019f4c96-dd76-7d00-a85f-3a20a0a3557b
+    worker_name: Ohm
+    status: completed_closed
+    stage: m5_resume_update_reaudit
+    evidence_path: .pipeline/reviews/C10/M5/audit.md
+  - role: implement
+    worker_id: 019f4cc2-20c3-7b61-a668-18cc79a768f1
+    worker_name: Confucius
+    status: completed_closed
+    stage: m5_updater_audit_remediation
+    evidence_path: .pipeline/reports/C10/M5-release.md
+  - role: audit
+    worker_id: 019f4eed-4a4f-7082-b8cb-9770e49736fa
+    worker_name: Plato
+    status: shutdown_closed
+    stage: m5_final_reaudit
+    evidence_path: .pipeline/reviews/C10/M5/audit.md
+  - role: audit
+    worker_id: 019f4f53-82c1-7870-b66b-70f9c8b449fb
+    worker_name: Pascal
+    status: completed_closed
+    stage: m5_alpha4_final_audit
+    evidence_path: .pipeline/reviews/C10/M5/audit.md
+  - role: audit
+    worker_id: 019f4fce-6fe8-7ee2-b159-ea86044b91a3
+    worker_name: Ptolemy
+    status: completed_closed
+    stage: m5_audit_remediation_reaudit
+    evidence_path: .pipeline/reviews/C10/M5/audit.md
+  role_availability: {}
+  updated_at: '2026-07-11T14:26:36+08:00'

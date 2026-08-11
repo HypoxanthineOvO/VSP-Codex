@@ -1,0 +1,158 @@
+pipeline:
+  name: "Deep Research Built-In And Codex Fork Assessment"
+  status: completed
+  prompts_total: 12
+  prompts_completed: 12
+  started: "2026-06-14T08:44:37+08:00"
+  finished: "2026-06-26T19:12:00+08:00"
+
+last_heartbeat: "2026-06-26T19:12:00+08:00"
+
+current:
+  phase: completed
+  prompt_index: 12
+  prompt_file: ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+  prompt_name: "Release Candidate Dry Run And GitLab Release Preparation"
+  step: completed
+  step_index: 5
+
+milestones:
+  - id: M1
+    name: "Checkpoint Current Workflow State And Upgrade Branch"
+    prompt: ".pipeline/prompts/c9-001-checkpoint-current-workflow-state-and-upgrade-branch.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-14T13:48:50+08:00"
+    dependencies: []
+  - id: M2
+    name: "Upstream Baseline Diff And Merge"
+    prompt: ".pipeline/prompts/c9-002-upstream-baseline-diff-and-merge.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-14T15:05:25+08:00"
+    dependencies: [M1]
+  - id: M3
+    name: "Preserve VSP Runtime Surfaces"
+    prompt: ".pipeline/prompts/c9-003-preserve-vsp-runtime-surfaces.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-17T11:55:33+08:00"
+    dependencies: [M2]
+  - id: M4
+    name: "Version Metadata And Release Surface Update"
+    prompt: ".pipeline/prompts/c9-004-version-metadata-and-release-surface-update.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-17T17:34:11+08:00"
+    dependencies: [M3]
+  - id: M5
+    name: "Broad Regression And GitLab Release"
+    prompt: ".pipeline/prompts/c9-005-broad-regression-and-gitlab-release.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-18T18:57:17+08:00"
+    dependencies: [M4]
+  - id: M6
+    name: "Deep Research Workflow Requirement Brief"
+    prompt: ".pipeline/prompts/c9-006-deep-research-workflow-requirement-brief.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T15:33:16+08:00"
+    dependencies: [M1]
+  - id: M7
+    name: "Conflict Inventory And Upstream Fix Baseline"
+    prompt: ".pipeline/prompts/c9-007-conflict-inventory-and-upstream-fix-baseline.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T15:41:47+08:00"
+    dependencies: [M6]
+  - id: M8
+    name: "SQLite Logging Convergence And Runtime I/O Smoke"
+    prompt: ".pipeline/prompts/c9-008-sqlite-logging-convergence-and-runtime-io-smoke.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T15:53:26+08:00"
+    dependencies: [M7]
+  - id: M9
+    name: "Protocol Contract And App-Server Bridge Merge"
+    prompt: ".pipeline/prompts/c9-009-protocol-contract-and-app-server-bridge-merge.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T16:06:19+08:00"
+    dependencies: [M8]
+  - id: M10
+    name: "Core Workflow Runtime And Adapter Preservation"
+    prompt: ".pipeline/prompts/c9-010-core-workflow-runtime-and-adapter-preservation.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T17:14:35+08:00"
+    dependencies: [M9]
+  - id: M11
+    name: "TUI CLI VSCode And User Surface Convergence"
+    prompt: ".pipeline/prompts/c9-011-tui-cli-vscode-and-user-surface-convergence.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T17:32:22+08:00"
+    dependencies: [M10]
+  - id: M12
+    name: "Release Candidate Dry Run And GitLab Release Preparation"
+    prompt: ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+    status: completed
+    current_step: completed
+    completed_at: "2026-06-26T19:12:00+08:00"
+    dependencies: [M11]
+
+history:
+  completed_prompts:
+    - ".pipeline/prompts/c9-001-checkpoint-current-workflow-state-and-upgrade-branch.md"
+    - ".pipeline/prompts/c9-002-upstream-baseline-diff-and-merge.md"
+    - ".pipeline/prompts/c9-003-preserve-vsp-runtime-surfaces.md"
+    - ".pipeline/prompts/c9-004-version-metadata-and-release-surface-update.md"
+    - ".pipeline/prompts/c9-005-broad-regression-and-gitlab-release.md"
+    - ".pipeline/prompts/c9-006-deep-research-workflow-requirement-brief.md"
+    - ".pipeline/prompts/c9-007-conflict-inventory-and-upstream-fix-baseline.md"
+    - ".pipeline/prompts/c9-008-sqlite-logging-convergence-and-runtime-io-smoke.md"
+    - ".pipeline/prompts/c9-009-protocol-contract-and-app-server-bridge-merge.md"
+    - ".pipeline/prompts/c9-010-core-workflow-runtime-and-adapter-preservation.md"
+    - ".pipeline/prompts/c9-011-tui-cli-vscode-and-user-surface-convergence.md"
+    - ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+  started_prompts:
+    - ".pipeline/prompts/c9-001-checkpoint-current-workflow-state-and-upgrade-branch.md"
+    - ".pipeline/prompts/c9-002-upstream-baseline-diff-and-merge.md"
+    - ".pipeline/prompts/c9-003-preserve-vsp-runtime-surfaces.md"
+    - ".pipeline/prompts/c9-004-version-metadata-and-release-surface-update.md"
+    - ".pipeline/prompts/c9-005-broad-regression-and-gitlab-release.md"
+    - ".pipeline/prompts/c9-006-deep-research-workflow-requirement-brief.md"
+    - ".pipeline/prompts/c9-007-conflict-inventory-and-upstream-fix-baseline.md"
+    - ".pipeline/prompts/c9-008-sqlite-logging-convergence-and-runtime-io-smoke.md"
+    - ".pipeline/prompts/c9-009-protocol-contract-and-app-server-bridge-merge.md"
+    - ".pipeline/prompts/c9-010-core-workflow-runtime-and-adapter-preservation.md"
+    - ".pipeline/prompts/c9-011-tui-cli-vscode-and-user-surface-convergence.md"
+    - ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+
+cycle:
+  id: C9
+  previous_cycle: C8
+  theme: "Deep Research Built-In And Codex Fork Assessment"
+
+plan:
+  phase: ready_to_start
+  p0_configure: confirmed
+  p1_discover: completed
+  technical_stack: confirmed
+  architecture: confirmed
+  decompose: confirmed
+  generate: completed
+  prompts_total: 12
+  generated_at: "2026-06-14T09:14:35+08:00"
+  appended_at: "2026-06-26T14:55:10+08:00"
+  appended_prompts_total: 6
+  appended_prompt_range: "c9-007..c9-012"
+  appended_plan_state: ".plan-state/c9-upstream-alpha25-generate.yaml"
+  prompt_audit: pending
+
+acceptance:
+  scope: cycle
+  state: active
+  cycle_id: C9
+  updated_at: "2026-06-14T15:05:25+08:00"

@@ -1,0 +1,85 @@
+p1_discover:
+  cycle: C2
+  status: in_progress
+  started_at: "2026-05-25T22:30:12+08:00"
+  feature: "基础体验优化"
+  discovery_rounds_completed: 3
+  minimum_rounds_required: 3
+  execution_subworkers_gate:
+    platform: codex
+    status: authorized_strict
+    source: project_config
+    scopes:
+      - /hw:start
+      - /hw:resume
+  initial_requirements:
+    - "去除 Subagent 使用限制：默认允许/鼓励使用、取消数量上限、使用用户提供的昵称池"
+    - "默认打开 YOLO 模式：直接运行 vsp-codex 时不需要手动传 --dangerously-bypass-approvals-and-sandbox"
+    - "汉化"
+    - "TUI 加上 Context Window 等信息"
+    - "翻译"
+    - "清除 Booting MCP server: context7"
+  accepted_decisions:
+    - "Subagent 实例昵称使用中文名字池；后续汉化需要一起处理中文宽度、截断和布局问题。"
+    - "Subagent 默认并发/数量上限采用 32，而不是完全无限制。"
+    - "TUI 增加类似状态卡片的 Subagent 展示区域，常驻展示 Subagent 列表、名字、职责和状态；不再只依赖 transcript 事件。"
+    - "MCP/context7 不贸然删除；正常启动提示从主 Working/status 区域移走，保留到更合适的位置或仅在失败/需要处理时显示。"
+    - "MCP 正常启动信息放到 /mcp 状态页或类似非主界面位置，主 Working 区域不显示。"
+    - "Subagent 卡片展示格式参考：杨超 · GPT 5.5 xhigh · Audit · 运行中 · 24h。"
+    - "汉化范围包括 TUI 文案、Slash Command 解释、设置页面内容、常见 Error/Warning；中文表述保持简洁，保留必要英文术语。"
+    - "翻译是运行时功能：接入用户指定的本机翻译模型接口，把思维输出、Subagent 命令/返回内容等动态英文内容翻译成中文。"
+    - "Context Window 信息放在底部状态栏右侧，类似截图里的 Context x%。"
+    - "Subagent 内容需要支持键盘交互查看，包括 Subagent 命令、返回内容和状态详情。"
+    - "所有 vsp-codex 入口默认 YOLO，包括 TUI 和 exec。"
+    - "翻译范围限定为 reasoning/思维输出、Subagent transcript、工具摘要/返回内容；不默认翻译全部动态内容。"
+    - "Subagent 卡片只展示活跃或未 close 的 Subagent；Subagent 完全用完并 close 后不再显示在常驻卡片中。"
+    - "翻译接口使用 Hypo-Translate native API，默认服务 http://127.0.0.1:8998，优先使用 POST /translate/stream。"
+    - "Subagent 默认采用派任务式上下文：不复制完整历史，只给任务说明或必要的最近上下文；full-history fork 保留为少数场景的显式选项。"
+    - "翻译默认开启；服务不可用时显示原文且不阻塞 TUI；提供 raw/original 切换；默认不持久化 hidden/source 原文。"
+  subagent_name_pool:
+    supervisor:
+      - "李萌"
+      - "杨超"
+    general:
+      - "娄鑫"
+      - "朱昊骋"
+      - "李超凡"
+      - "贺云翔"
+      - "吴浩宇"
+      - "丁麒涵"
+      - "李宇轩"
+      - "李铭杰"
+      - "闫启航"
+      - "张雍治"
+      - "蒋烨"
+    simple_tasks:
+      - "陈泉宇"
+      - "王珺"
+      - "沈博宇"
+  corrections:
+    - "Subagent 这个术语/名字不需要整体替换；需要替换的是 Subagent 实例昵称来源。"
+    - "默认 YOLO 的目标入口是 vsp-codex，而不是要求用户理解或手动调用底层 codex 参数。"
+    - "TUI 里的 Subagent 展示增强是可选增强项；授权限制、数量限制和昵称池是必须项。"
+  repo_findings:
+    - "Subagent 显式授权限制主要来自 multi_agents 工具说明：现有说明要求 only if user explicitly asks。应改为默认可主动拆分、鼓励并行处理。"
+    - "Subagent 数量限制由 agent_max_threads / multi_agent_v2.max_concurrent_threads_per_session 派生；默认会把根线程计入并限制可生成线程数。"
+    - "运行时硬限制：AgentRegistry.reserve_spawn_slot(max_threads) 会在达到 max_threads 时返回 AgentLimitReached；multi_agent_v2 默认把 max_concurrent_threads_per_session - 1 作为可生成 Subagent 数量。"
+    - "运行时硬限制：legacy spawn 会检查 agent_max_depth；multi_agent_v2 忽略旧 depth disable 逻辑，但 full-history fork 仍禁止 agent_type/model/reasoning_effort override。"
+    - "Model/思考强度指定能力已存在：spawn_agent 参数包含 model、reasoning_effort、service_tier；apply_requested_spawn_agent_model_overrides 会校验模型和 supported reasoning levels。"
+    - "当前 full-history fork 默认会拒绝 role/model/reasoning overrides；如果希望 Subagent 常规可指定模型/强度，可让默认 fork_turns 改为 none/最近 N 轮，或放宽 full-history override 禁止规则。"
+    - "用户确认常规使用走派任务式 Subagent；因此默认 fork 策略应避开 full-history，从而允许指定 role/model/reasoning_effort。"
+    - "Subagent 昵称池已有实现：core/src/agent/control.rs 从 agent_names.txt 或 agent_roles.nickname_candidates 取候选名；配置校验目前偏向 ASCII 名称。"
+    - "中文昵称当前会被 normalize_agent_role_nickname_candidates 拒绝，因为校验只允许 ASCII letters/digits/spaces/hyphens/underscores。"
+    - "现有 TUI 已有 spawn/wait transcript 事件、/subagents 选择器、footer 当前线程标签；新增常驻 Subagent 卡片应复用 agent_navigation / multi_agents 元数据，而不是另建一套线程状态来源。"
+    - "CollabAgentSpawnEndEvent 已携带 effective model 与 effective reasoning_effort，TUI 可直接复用这些事件来维护 Subagent 卡片中的模型/强度字段。"
+    - "TUI 不能直接控制用户终端字体；C2 能做的是放宽中文配置校验、使用 unicode-width/textwrap 处理中文宽度、避免中文截断和布局错位。"
+    - "YOLO 模式对应 approval_policy=never 且 sandbox_mode=danger-full-access / PermissionProfile::Disabled；CLI 已有 --dangerously-bypass-approvals-and-sandbox 路径，C2 目标是让 vsp-codex 默认具备该效果。"
+    - "Context window 已在 /status 里展示，状态栏 footer 也已有 Context used/left 简要展示。需求可能是把它加入启动 header 或默认状态栏。"
+    - "底部 footer/status line 已支持右侧 indicator 和 ContextRemaining/ContextUsed/ContextWindowSize 等 status line item；截图中的 Context x% 应优先复用现有 status line/footer 布局。"
+    - "汉化是静态文案替换与 snapshot 更新；翻译是新增运行时接口调用、缓存、失败降级、按需展示的功能，二者需要分开实现和测试。"
+    - "Hypo-Translate client contract: POST /translate 接收 {text, source_lang:auto, target_lang:zh-CN} 返回 {text, metadata}；POST /translate/stream 返回 SSE。"
+    - "Hypo-Translate SSE 可见事件包括 delta/revise/commit/passthrough；source_hidden 不应显示，默认不持久化 hidden Thinking text。"
+    - "MCP 启动提示由 codex-rs/tui/src/chatwidget/mcp_startup.rs 生成；单服务器时显示 Booting MCP server: <name>。"
+    - "当前 ~/.codex/config.toml 与 ~/.vsp-codex/config.toml 中没有发现显式 context7 MCP 配置；若实际启动仍显示 context7，来源可能是插件/运行时状态/旧会话或非 TOML 配置。"
+    - "汉化会触发大量 snapshot 更新，建议按高频 TUI 可见面分层推进，避免一次翻完整仓库。"
+  open_questions: []

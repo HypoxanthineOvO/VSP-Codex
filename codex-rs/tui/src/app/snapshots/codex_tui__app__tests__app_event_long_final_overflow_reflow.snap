@@ -1,0 +1,24 @@
+---
+source: tui/src/app/tests.rs
+expression: vt100_report
+---
+width 72:
+  reflow.
+  Detail row 37: canonical completion content survives overflow and
+  reflow.
+  Detail row 38: canonical completion content survives overflow and
+  reflow.
+  Detail row 39: canonical completion content survives overflow and
+  reflow.
+
+  TAIL_SENTINEL_FINAL_9F27
+width 38:
+  reflow.
+  Detail row 38: canonical completion
+  content survives overflow and
+  reflow.
+  Detail row 39: canonical completion
+  content survives overflow and
+  reflow.
+
+  TAIL_SENTINEL_FINAL_9F27

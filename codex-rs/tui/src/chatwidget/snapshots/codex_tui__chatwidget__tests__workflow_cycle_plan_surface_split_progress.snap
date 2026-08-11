@@ -1,0 +1,24 @@
+---
+source: tui/src/chatwidget/tests/plan_mode.rs
+expression: rendered
+---
+"                                                                                                        "
+"• Cycle 7 Plan (1/5 | 5/8)                                                                              "
+"  Experience Optimization And Bugfix Sweep.                                                             "
+"  ✓ M1 Resume And Scrollback Stability                                                                  "
+"  ✓ M2 Subagent Identity, Role Policy, And Name Leases                                                  "
+"  ✓ M3 Tool And Collaboration Output Rendering Boundaries                                               "
+"  ✓ M4 Subagent Prompt And Report Viewer                                                                "
+"  ✓ M5 Structured Interaction Gates And Authorization Cards                                             "
+"  ● M6 Workflow Plan/SubPlan Live Surface                                                               "
+"    Current Milestone expands its worker SubPlan.                                                       "
+"    SubPlan: M6 test worker                                                                             "
+"    ✓ Inspect current PlanState and routing tests                                                       "
+"    ● Add focused red tests                                                                             "
+"    ○ Run focused red commands                                                                          "
+"    ○ Record expected failures                                                                          "
+"    ○ Hand off to implementation worker                                                                 "
+"  ○ M7 VSP Release Channels                                                                             "
+"    Future Milestone should be collapsed.                                                               "
+"  ○ M8 Appearance Entry Point                                                                           "
+"    Future Milestone should be collapsed.                                                               "

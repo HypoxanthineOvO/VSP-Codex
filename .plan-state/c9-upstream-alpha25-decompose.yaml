@@ -1,0 +1,281 @@
+cycle: C9
+phase: decompose
+status: confirmed
+created_at: "2026-06-26T14:23:14+08:00"
+mode: append
+existing_prompts:
+  highest_existing_prompt_index: 6
+  append_from_prompt_index: 7
+sources:
+  discover: ".plan-state/c9-upstream-alpha25-discover.yaml"
+  technical_stack: ".plan-state/c9-upstream-alpha25-technical-stack.yaml"
+  architecture: ".plan-state/c9-upstream-alpha25-architecture.yaml"
+summary: "Append six serial milestones to sync Codex-VSP toward rust-v0.143.0-alpha.25 by conflict domain, preserve or replace VSP surfaces by equivalence, validate SQLite I/O at runtime, and prepare a GitLab release candidate without remote publishing."
+global_constraints:
+  upstream_target: rust-v0.143.0-alpha.25
+  merge_strategy: incremental_merge_with_conflict_groups
+  preserve_rule: "Prefer official alpha.25 when behavior is equivalent; otherwise preserve VSP behavior."
+  public_version_series: "0.140.0-vsp.8"
+  allowed_patch_version: "0.140.0-vsp.8.1"
+  remote_release_requires_later_confirmation: true
+  worker_separation:
+    mode: strict
+    roles:
+      - test
+      - implement
+      - audit
+milestones:
+  - id: M7
+    prompt_index: 7
+    name: "Conflict Inventory And Upstream Fix Baseline"
+    type: analysis_and_scaffold
+    objective: "Create an evidence-backed conflict inventory for rust-v0.143.0-alpha.25 and decide which VSP surfaces are candidates for official replacement before touching broad product code."
+    implementation_scope:
+      - "Inspect upstream alpha.25 changes by conflict domain."
+      - "Record official SQLite fix coverage and VSP equivalence candidates."
+      - "Prepare merge-group evidence under .pipeline without resolving the full merge yet."
+    expected_artifacts:
+      - ".pipeline/reports/C9/M7-upstream-alpha25-conflict-inventory.md"
+      - ".pipeline/reports/C9/M7-vsp-equivalence-matrix.yaml"
+      - "Optional .pipeline/evidence/C9/M7/* diff and conflict summaries"
+    technical_solution: "Use read-only git diff/log/merge-tree style analysis to classify conflicts before code migration. Treat VSP features as preserve-by-default until official equivalence is demonstrated with path-level evidence."
+    technical_route:
+      - "Compare current branch against rust-v0.143.0-alpha.25 for state, protocol, core, app-server, TUI, CLI, plugin, adapter, docs, and release surfaces."
+      - "Map upstream commits that address SQLite persistent logging to local code paths."
+      - "Create a replacement/preserve/defer matrix for VSP surfaces."
+      - "Define merge group order and non-goals for subsequent milestones."
+    research_required:
+      status: resolved_by_local_evidence
+      evidence:
+        - "Remote tag scan found rust-v0.143.0-alpha.25 as latest alpha and rust-v0.142.2 as latest stable."
+        - "Architecture diff count and conflict domains were collected in .plan-state/c9-upstream-alpha25-architecture.yaml."
+    risks_and_alternatives: "Alternative fresh-upstream reapply was rejected by Discover because the VSP change surface is too large. The risk is analysis drift if upstream moves again; pin the milestone to the exact alpha.25 tag."
+    validation_path:
+      owner: test
+      commands:
+        - "git diff --name-status rust-v0.143.0-alpha.25...HEAD -- . ':!.pipeline' ':!.plan-state'"
+        - "git log --oneline --decorate --max-count=20 rust-v0.143.0-alpha.25"
+        - "python3 -m json.tool .pipeline/reports/C9/M7-vsp-equivalence-matrix.yaml || true"
+      pass_signal: "Report exists, classifies all major conflict domains, and contains no unassigned high-risk VSP surface."
+      fail_signal: "Any major domain lacks owner/action, or official replacement is claimed without file/commit evidence."
+    audit_focus:
+      - "No broad product files were changed under the guise of inventory."
+      - "Equivalence claims cite concrete upstream files or commits."
+      - "Prompt numbering remains append-only from c9-007."
+    vertical_slice_quality: "Analysis-only slice with concrete evidence artifacts; it gates later implementation slices."
+
+  - id: M8
+    prompt_index: 8
+    name: "SQLite Logging Convergence And Runtime I/O Smoke"
+    type: implementation
+    objective: "Converge local SQLite persistent logging behavior with official fixes and add a real runtime I/O smoke so disk-write amplification cannot regress silently."
+    implementation_scope:
+      - "Reconcile local log_db filtering with upstream alpha.25 noisy-log fixes."
+      - "Keep or replace the VSP default_filter and in-layer guard based on official coverage."
+      - "Add or refine a runtime smoke harness that observes SQLite/WAL growth in an isolated home."
+    expected_artifacts:
+      - "Updated codex-rs/state logging code/tests if needed"
+      - "A repeatable SQLite I/O smoke script or documented command"
+      - ".pipeline/evidence/C9/M8-sqlite-io-smoke.json"
+      - ".pipeline/reports/C9/M8-sqlite-logging.md"
+    technical_solution: "Make persistent logging filtering explicit and testable at two layers: compile-time/unit-level target filtering and runtime process-level database growth observation."
+    technical_route:
+      - "Compare current hotfix against alpha.25 logging implementation."
+      - "Retain the stronger of upstream and VSP filtering for targets log, codex_otel.log_only, and codex_otel.trace_safe."
+      - "Implement a smoke command that launches VSP Codex with isolated CODEX_HOME/CODEX_SQLITE_HOME, captures logs_2.sqlite and WAL sizes before/after, and queries target counts."
+      - "Record byte-growth threshold and evidence in .pipeline."
+    research_required:
+      status: proposed_resolution_pending_decompose_confirmation
+      proposed_threshold: "For a bounded launch/minimal app-server scenario, reject if known noisy targets appear in persisted rows, or if logs_2.sqlite plus WAL grows continuously across repeated samples instead of stabilizing after startup."
+      reason: "Exact byte threshold depends on scenario duration and startup variability; Decompose confirmation accepts qualitative bounded-growth plus noisy-target rejection, with implementation allowed to make it stricter."
+    risks_and_alternatives: "A static-only test would be cheaper but was rejected in Discover. Runtime smoke may be flaky if it depends on network/provider calls, so the scenario should avoid live model traffic where possible."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-state filter -- --nocapture"
+        - "cargo check --manifest-path codex-rs/Cargo.toml -p codex-state -p codex-app-server -p codex-tui"
+        - "CODEX_HOME=$(mktemp -d) CODEX_SQLITE_HOME=$(mktemp -d) <sqlite-io-smoke-command>"
+      pass_signal: "Unit tests pass; smoke evidence shows no persisted noisy targets and no sustained WAL/database growth."
+      fail_signal: "Noisy targets persist, database/WAL grows continuously, or the smoke fabricates data instead of running a real binary path."
+    audit_focus:
+      - "Runtime smoke uses isolated homes and real binary/app-server path."
+      - "Noisy target filtering is not only applied outside the SQLite sink."
+      - "Historical local database size is not misreported as fixed disk reclamation."
+    vertical_slice_quality: "Narrow vertical runtime slice through logging layer, app-server/TUI initialization, SQLite persistence, and evidence output."
+
+  - id: M9
+    prompt_index: 9
+    name: "Protocol Contract And App-Server Bridge Merge"
+    type: implementation
+    objective: "Reconcile alpha.25 app-server protocol/schema churn with VSP Question Tool, plan update, thread/workflow metadata, and app-server bridge behavior."
+    implementation_scope:
+      - "Merge app-server-protocol schema/type changes as a coherent contract."
+      - "Preserve VSP request_user_input/Question Tool semantics unless official alpha.25 provides direct equivalence."
+      - "Adapt app-server request processors and tests to the reconciled protocol."
+    expected_artifacts:
+      - "Updated codex-rs/app-server-protocol Rust, JSON schema, and TypeScript outputs"
+      - "Updated codex-rs/app-server request processors/tests"
+      - ".pipeline/reports/C9/M9-protocol-app-server.md"
+    technical_solution: "Treat protocol as the contract root: reconcile schemas first, regenerate derived artifacts, then adapt app-server and client tests. Do not let TUI changes define protocol shape implicitly."
+    technical_route:
+      - "Compare alpha.25 protocol additions/removals with VSP ToolRequestUserInput and TurnPlanUpdated types."
+      - "Decide official replacement versus VSP preservation for Ask/Question and plan update events."
+      - "Regenerate protocol schema artifacts using the repo's schema writer."
+      - "Update app-server tests for request_user_input, thread lifecycle, initialize, and workflow markdown behavior."
+    research_required:
+      status: resolved_by_local_code_and_deferred_checks
+      evidence:
+        - "Diff showed alpha.25 adds/removes/renames protocol schema and TypeScript files."
+        - "Existing VSP tests cover request_user_input and workflow surfaces."
+      deferred_to_milestone: "Implementation must run schema generation and exact app-server protocol tests after merge resolution."
+    risks_and_alternatives: "Overwriting VSP protocol with upstream can break Hypo-Workflow clients; freezing VSP protocol can miss upstream client changes. The selected route reconciles from the contract boundary."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo run --manifest-path codex-rs/Cargo.toml -p codex-app-server-protocol --bin write_schema_fixtures"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server-protocol"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all request_user_input -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all workflow_markdown_surface -- --nocapture"
+      pass_signal: "Schema generation is clean, protocol tests pass, and VSP Question Tool behavior remains covered."
+      fail_signal: "Generated schema drift is unexplained, app-server clients lose VSP request_user_input fields, or tests only cover mocks."
+    audit_focus:
+      - "Generated artifacts match source protocol definitions."
+      - "Question Tool semantics are not downgraded without explicit evidence of official equivalence."
+      - "App-server and app-server-client remain in sync."
+    vertical_slice_quality: "Protocol-to-app-server slice with executable schema and app-server behavior tests."
+
+  - id: M10
+    prompt_index: 10
+    name: "Core Workflow Runtime And Adapter Preservation"
+    type: implementation
+    objective: "Merge core runtime changes while preserving Hypo-Workflow routing, plan freshness gates, goals, worker separation, multi-agent boundaries, plugin behavior, and OpenCode adapters."
+    implementation_scope:
+      - "Reconcile core session, compaction, tool routing, multi-agent, and goal/workflow files with alpha.25."
+      - "Preserve Hypo-Workflow command routing and strict worker separation."
+      - "Preserve or reconcile plugin/marketplace and OpenCode adapter behavior."
+    expected_artifacts:
+      - "Updated codex-rs/core and core-plugins files as needed"
+      - "Updated .opencode adapter files only if required by upstream-compatible behavior"
+      - ".pipeline/reports/C9/M10-core-adapters.md"
+    technical_solution: "Use core workflow runtime as the semantic boundary after protocol is stable. Keep VSP routing and worker-separation contracts as explicit policy, while accepting upstream internal refactors that do not change those contracts."
+    technical_route:
+      - "Merge core session/tool/compaction changes by package."
+      - "Run workflow routing, plan freshness, request_user_input spec, multi-agent, and plugin manager tests."
+      - "Update OpenCode/Hypo adapter metadata only when generated/derived behavior changes."
+      - "Record any official equivalent that allows deletion of VSP-specific code."
+    research_required:
+      status: resolved_by_existing_project_config
+      evidence:
+        - ".pipeline/config.yaml already authorizes strict worker separation and Codex start/resume subworkers."
+        - "Architecture classified workflow routing and adapters as preserve-by-default."
+    risks_and_alternatives: "Core changes can compile while subtly breaking Workflow command routing. The alternative of treating adapters as docs-only was rejected because they are active integration surfaces."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core plan_update_gate -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core request_user_input -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core-plugins"
+      pass_signal: "Core workflow and plugin tests pass with strict worker separation semantics intact."
+      fail_signal: "Workflow commands route as ordinary chat, plan freshness gates disappear, or plugin behavior regresses."
+    audit_focus:
+      - "Worker separation is not downgraded."
+      - "Adapters are not stale relative to runtime command behavior."
+      - "Upstream replacement claims are backed by equivalent tests."
+    vertical_slice_quality: "Core runtime slice that can be exercised by routing/tool/plugin tests before TUI work begins."
+
+  - id: M11
+    prompt_index: 11
+    name: "TUI CLI VSCode And User Surface Convergence"
+    type: implementation
+    objective: "Merge user-facing alpha.25 changes while preserving VSP TUI workflow UX, Question Tool cards, plan panel, provider setup, vsp-codex CLI, VSCode/Remote integration, and update behavior."
+    implementation_scope:
+      - "Reconcile TUI workflow card, plan panel, status surface, markdown, and snapshot changes."
+      - "Preserve VSP provider and `vsp-codex` command identity."
+      - "Preserve VSCode install/status/rollback behavior and update command surfaces."
+    expected_artifacts:
+      - "Updated codex-rs/tui files and snapshots"
+      - "Updated codex-rs/cli files/tests"
+      - ".pipeline/reports/C9/M11-user-surfaces.md"
+    technical_solution: "Only merge the large TUI surface after protocol/core/app-server contracts are stable. Treat snapshots as evidence of intended user-facing behavior, not as mechanical churn."
+    technical_route:
+      - "Reconcile TUI by feature area: request_user_input cards, plan panel, status/footer, provider setup, workflow slash routing, snapshots."
+      - "Reconcile CLI entrypoint and VSCode command surfaces."
+      - "Run focused TUI and CLI tests before broad TUI regression."
+      - "Update docs snippets only for confirmed behavior."
+    research_required:
+      status: resolved_by_architecture_ordering
+      evidence:
+        - "Architecture places TUI after protocol/core/app-server to reduce repeated conflicts."
+        - "Existing C9 cycle identifies VSP provider, VSCode Remote SSH, Workflow, Subagent UX, and plugin surfaces as must-preserve."
+    risks_and_alternatives: "Updating snapshots too early can hide behavior regressions. The alternative of deferring TUI entirely was rejected because release readiness requires user-facing validation."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui workflow_slash_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui request_user_input -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-cli --test vscode -- --nocapture"
+        - "cargo nextest run --manifest-path codex-rs/Cargo.toml --no-fail-fast -p codex-tui"
+      pass_signal: "Focused TUI/CLI tests pass and snapshot changes correspond to intentional user-visible behavior."
+      fail_signal: "Question cards, plan panel, provider setup, or VSCode Remote behavior regresses."
+    audit_focus:
+      - "Snapshots are reviewed for semantic UI changes."
+      - "`vsp-codex` identity and VSP provider defaults remain intact."
+      - "No official UI replacement is accepted without equivalent workflow behavior."
+    vertical_slice_quality: "User-facing vertical slice across protocol-backed TUI UI, CLI entrypoint, and VSCode smoke paths."
+
+  - id: M12
+    prompt_index: 12
+    name: "Release Candidate Dry Run And GitLab Release Preparation"
+    type: implementation
+    objective: "Prepare a local release candidate for the vsp.8 series after alpha.25 sync, run broad regression and SQLite I/O evidence, and stop before any GitLab remote publication."
+    implementation_scope:
+      - "Finalize public version string after explicit release-version confirmation."
+      - "Run broad regression, release build, package builder, manifest/sha verification, docs/release notes checks, and SQLite I/O smoke."
+      - "Prepare GitLab release notes and asset list without pushing or publishing."
+    expected_artifacts:
+      - ".pipeline/release/v<confirmed-version>/vsp-codex-preview-linux-x64-gnu.tar.gz"
+      - ".pipeline/release/v<confirmed-version>/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+      - ".pipeline/release/v<confirmed-version>/vsp-release-manifest.json"
+      - ".pipeline/release/v<confirmed-version>/release-notes.md"
+      - ".pipeline/reports/C9/M12-release-candidate.md"
+    technical_solution: "Use the existing VSP preview release builder and manifest format. Keep remote GitLab writes out of scope until a later release/update confirmation gate."
+    technical_route:
+      - "Confirm final version: v0.140.0-vsp.8 or v0.140.0-vsp.8.1."
+      - "Run hygiene, broad Rust regression, SQLite runtime I/O smoke, release build, package builder, sha256 check, manifest JSON validation, and docs consistency checks."
+      - "Record known host limitations such as libcap/bwrap separately from product failures."
+      - "Prepare release notes that explicitly record forked-from rust-v0.143.0-alpha.25."
+    research_required:
+      status: deferred_by_user
+      deferred_item: "Final release tag/package string"
+      deferred_to: "M12 pre-release confirmation gate"
+      reason: "User accepted vsp.8 series with possible vsp.8.1 patch; final tag must be confirmed after sync risk is known."
+    risks_and_alternatives: "Publishing under unchanged v0.140.0-vsp.8 can confuse users if artifacts differ from prior release. vsp.8.1 improves traceability but changes the visible version. Remote publishing remains explicitly gated."
+    validation_path:
+      owner: test
+      commands:
+        - "cargo fmt --manifest-path codex-rs/Cargo.toml --all -- --check"
+        - "pnpm format"
+        - "python3 scripts/check_ci_docs.py"
+        - "cargo nextest run --manifest-path codex-rs/Cargo.toml --no-fail-fast -p codex-state -p codex-app-server -p codex-app-server-protocol -p codex-core -p codex-cli -p codex-tui"
+        - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+        - "python3 scripts/build_vsp_preview_release.py --entrypoint-bin codex-rs/target/release/vsp-codex --force"
+        - "sha256sum -c .pipeline/release/v<confirmed-version>/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+        - "python3 -m json.tool .pipeline/release/v<confirmed-version>/vsp-release-manifest.json"
+        - "git diff --check"
+      pass_signal: "All required checks either pass or have documented environment-only limitations; release artifacts and notes are locally prepared; no remote write occurs."
+      fail_signal: "Regression failures are unexplained, SQLite smoke fails, release artifacts are missing/invalid, or remote GitLab state changes without confirmation."
+    audit_focus:
+      - "Release notes disclose upstream alpha.25 base and SQLite write-risk validation."
+      - "No tag, push, upload, or GitLab release mutation occurs before explicit release confirmation."
+      - "Local package version and manifest match the confirmed version strategy."
+    vertical_slice_quality: "Release candidate slice spans final code, broad validation, packaging, manifest, docs, and release gate evidence."
+generate_requirements:
+  prompt_numbering: "Append c9-007 through c9-012; never renumber or overwrite c9-001 through c9-006."
+  include_subworker_assignment_plan: true
+  exact_worker_roles:
+    - test
+    - implement
+    - audit
+  preserve_decompose_fields_in_prompts: true
+  final_confirmation_before_start: true

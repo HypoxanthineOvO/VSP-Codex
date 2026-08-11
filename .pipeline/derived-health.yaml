@@ -1,0 +1,83 @@
+ok: false
+checked_at: "2026-06-18T12:22:48.750Z"
+stale_count: 1
+error_count: 0
+refreshed:
+  - .pipeline/PROGRESS.compact.md
+  - .pipeline/state.compact.yaml
+  - .pipeline/log.compact.yaml
+  - .pipeline/patches.compact.md
+  - PROJECT-SUMMARY.md
+skipped:
+  -
+    id: metrics_compact
+    path: .pipeline/metrics.compact.yaml
+    reason: source_missing
+  -
+    id: reports_compact
+    path: .pipeline/reports.compact.md
+    reason: source_missing
+  -
+    id: opencode_metadata
+    path: .opencode/hypo-workflow.json
+    reason: adapter_refresh
+  -
+    id: readme_managed_blocks
+    path: README.md
+    reason: explicit_docs_repair
+failures:
+artifacts:
+  -
+    id: progress_compact
+    path: .pipeline/PROGRESS.compact.md
+    status: fresh
+    severity: ok
+    repair_hint: null
+  -
+    id: state_compact
+    path: .pipeline/state.compact.yaml
+    status: fresh
+    severity: ok
+    repair_hint: null
+  -
+    id: log_compact
+    path: .pipeline/log.compact.yaml
+    status: fresh
+    severity: ok
+    repair_hint: null
+  -
+    id: metrics_compact
+    path: .pipeline/metrics.compact.yaml
+    status: missing_sources
+    severity: ok
+    repair_hint: null
+  -
+    id: reports_compact
+    path: .pipeline/reports.compact.md
+    status: stale
+    severity: warning
+    repair_hint: "Run /hw:sync --repair to refresh .pipeline/reports.compact.md."
+  -
+    id: patches_compact
+    path: .pipeline/patches.compact.md
+    status: fresh
+    severity: ok
+    repair_hint: null
+  -
+    id: project_summary
+    path: PROJECT-SUMMARY.md
+    status: fresh
+    severity: ok
+    repair_hint: null
+  -
+    id: opencode_metadata
+    path: .opencode/hypo-workflow.json
+    status: fresh
+    severity: ok
+    repair_hint: null
+  -
+    id: readme_managed_blocks
+    path: README.md
+    status: fresh
+    severity: ok
+    repair_hint: null

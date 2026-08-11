@@ -1,0 +1,206 @@
+deep_plan:
+  id: DP001
+  slug: ask-user-tools
+  title: "Ask User Tools 与 Plan 常驻窗口"
+  status: converted
+  target_depth: implementation-ready
+  cycle: C3
+  created_at: "2026-05-26T17:11:55+08:00"
+  updated_at: "2026-05-26T17:47:33+08:00"
+  source_request: "C3 主要包含两个任务：1) 支持 Ask User Tools，让 Codex GPT 调用工具生成单选/多选/填空/排序等问答，方便 TUI 以及未来 VSCode 插件或 GUI 中 Codex 和用户沟通；2) 规范化和常驻化 Plan 显示窗口，让 Plan 窗口支持 SubPlan 接口，由 LLM 负责填写，并常驻在 TUI 输入框上面的右侧。"
+  tracks:
+    - id: product_scope
+      name: "Product scope"
+      status: decided
+    - id: protocol_contract
+      name: "Protocol contract"
+      status: decided
+    - id: tui_experience
+      name: "TUI experience"
+      status: decided
+    - id: future_clients
+      name: "Future VSCode/GUI clients"
+      status: decided
+    - id: resume_fallback
+      name: "Resume and unsupported-client fallback"
+      status: decided
+    - id: safety_privacy
+      name: "Safety and privacy"
+      status: decided
+    - id: implementation_plan
+      name: "Implementation plan"
+      status: open
+    - id: persistent_plan_panel
+      name: "Persistent Plan/SubPlan panel"
+      status: decided
+    - id: plan_protocol_contract
+      name: "Plan/SubPlan protocol contract"
+      status: decided
+  evidence:
+    - path: "codex-rs/protocol/src/request_user_input.rs"
+      finding: "Core request_user_input protocol types already exist, with questions, options, isOther, isSecret, and answer maps."
+    - path: "codex-rs/core/src/tools/handlers/request_user_input.rs"
+      finding: "Core already exposes a root-thread-only request_user_input tool that waits for a response."
+    - path: "codex-rs/core/src/tools/handlers/request_user_input_spec.rs"
+      finding: "Current tool schema is intentionally narrow: 1-3 short questions, required 2-3 mutually exclusive options, automatic Other."
+    - path: "codex-rs/app-server-protocol/src/protocol/common.rs"
+      finding: "App-server v2 already has experimental item/tool/requestUserInput RPC."
+    - path: "codex-rs/tui/src/bottom_pane/request_user_input/"
+      finding: "TUI overlay already supports option selection, notes/freeform entry, multiple questions, queueing, confirmation, and snapshots."
+    - path: "codex-rs/protocol/src/plan_tool.rs"
+      finding: "Existing update_plan protocol is a flat checklist: step plus pending/in_progress/completed status."
+    - path: "codex-rs/core/src/tools/handlers/plan.rs"
+      finding: "Existing update_plan emits EventMsg::PlanUpdate and is explicitly not allowed in Plan mode."
+    - path: "codex-rs/tui/src/history_cell/plans.rs"
+      finding: "Existing plan rendering is history-cell based: proposed plan markdown and updated checklist cells, not a persistent panel state."
+    - path: "codex-rs/core/src/session/turn.rs"
+      finding: "Plan mode proposed plans stream as PlanItem/PlanDelta from assistant text parsing, separate from update_plan."
+  decisions:
+    - id: D001
+      status: accepted
+      decision: "Treat Ask User Tools as a productized expansion of request_user_input rather than a separate parallel tool family."
+      rationale: "The repo already has core, protocol, app-server, and TUI plumbing for this interaction shape."
+    - id: D002
+      status: accepted
+      decision: "Keep app-server v2 as the cross-client API boundary for TUI, VSCode, and GUI."
+      rationale: "The existing experimental RPC already matches the client-server split needed by non-TUI frontends."
+    - id: D003
+      status: accepted
+      decision: "Represent question kind explicitly before adding multi-select, freeform-only, and ordering."
+      rationale: "The current optional-options shape cannot distinguish single-choice, multi-choice, freeform, and ordering without ambiguous inference."
+    - id: D004
+      status: accepted
+      decision: "C3 has two first-class product lanes: Ask User Tools and a persistent Plan/SubPlan panel."
+      rationale: "User clarified both are primary tasks for this Cycle; planning them together keeps tool semantics and TUI layout consistent."
+    - id: D005
+      status: accepted
+      decision: "Plan/SubPlan state should be structured and tool-driven, not parsed from proposed-plan markdown or history cells."
+      rationale: "The LLM must be responsible for filling the module through an explicit interface; markdown history is display output, not a stable state contract."
+    - id: D006
+      status: accepted
+      decision: "Refactor the existing update_plan tool into the richer structured Plan/SubPlan interface rather than adding a disconnected replacement."
+      rationale: "User prefers transforming the old tool; this keeps one canonical planning tool surface while extending it for SubPlan and persistent panel state."
+    - id: D007
+      status: accepted
+      decision: "The TUI Plan panel should live near the bottom pane/composer as a dedicated module, visually above the input box on the right when space allows."
+      rationale: "The panel should be glanceable during work without forcing the user to scroll history, while avoiding further growth of central chatwidget orchestration."
+    - id: D008
+      status: accepted
+      decision: "The Plan panel must have responsive fallbacks: compact/right-side on wide terminals, single-line/collapsed summary on narrow terminals."
+      rationale: "A permanent panel above the composer can easily overlap or starve the input area unless layout constraints are explicit."
+    - id: D009
+      status: accepted
+      decision: "SubPlan should initially be a bounded tree under root plan items, not an arbitrary graph."
+      rationale: "A tree is enough for nested execution planning and much easier for TUI, app-server, tests, and future VSCode/GUI clients to render consistently."
+    - id: D010
+      status: accepted
+      decision: "Ask User Tools must be available in the default bypass workflow, not limited to Plan mode."
+      rationale: "User normally works in default bypass mode and expects Ask answers to drive normal implementation artifacts such as .pipeline updates."
+    - id: D011
+      status: accepted
+      decision: "Subagents must not directly open user Ask prompts; user-facing questions route through the root session."
+      rationale: "User confirmed direct Subagent questioning should not be allowed."
+    - id: D012
+      status: accepted
+      decision: "C3 Ask question kinds include short_answer/free_text for per-question textual answers, including numbered 1/2/3/4/5 questionnaires."
+      rationale: "User explicitly asked whether sequential short-answer questions count as free text; C3 should support that as a first-class ask shape."
+    - id: D013
+      status: accepted
+      decision: "Plan/SubPlan first version uses one SubPlan level per Milestone/root plan item."
+      rationale: "User's desired mental model is Milestone -> one layer of SubPlan, and one level is sufficient for C3."
+    - id: D014
+      status: accepted
+      decision: "Plan panel is not manually editable in C3."
+      rationale: "User confirmed manual editing should not be added; LLM tools own updates."
+    - id: D015
+      status: accepted
+      decision: "A pending Ask must survive resume on another computer and either reappear as an Ask UI or degrade to a normal conversational question if the client does not support Ask UI."
+      rationale: "User called this very important; avoiding stuck turns across devices and unsupported clients is a hard requirement."
+    - id: D016
+      status: accepted
+      decision: "Secret/private answers should be masked with bullet characters in user-visible history, transcript, logs, and summaries."
+      rationale: "User prefers bullet masking instead of textual redaction; the actual answer may still be used for the current model/tool path when required."
+    - id: D017
+      status: accepted
+      decision: "Ranking in C3 is order-only; per-item ranking notes are deferred."
+      rationale: "User agreed per-item notes can wait and C3 should first support the ordering interaction."
+    - id: D018
+      status: accepted
+      decision: "Plan/Ask recovery may use a more complex implementation if needed; correctness across resume is more important than minimizing state machinery."
+      rationale: "User explicitly does not care about the exact implementation as long as pending Ask and Plan state can come back reliably."
+    - id: D019
+      status: accepted
+      decision: "C3 implements ranking UI as an order-only Ask question type."
+      rationale: "User expects ranking to be implemented in the first version; per-item notes remain deferred."
+    - id: D020
+      status: accepted
+      decision: "The Plan/SubPlan panel is visible during ordinary work and collapses only in Default idle."
+      rationale: "User wants the panel generally present; Default idle should avoid unnecessary visual weight by using a collapsed summary."
+    - id: D021
+      status: accepted
+      decision: "Unsupported Ask UI fallback should turn the pending Ask into a normal numbered chat question while preserving enough metadata to map the user's reply back to the original ask."
+      rationale: "Fallback must be concrete enough to avoid deadlock when a resumed client cannot render native Ask UI."
+    - id: D022
+      status: accepted
+      decision: "Default-idle collapsed Plan panel shows a one-line summary: current root item, active SubPlan title when present, and completed/total progress."
+      rationale: "User wants the panel collapsed only while idle; the collapsed state should still preserve the minimum useful orientation without becoming a second full panel."
+    - id: D023
+      status: accepted
+      decision: "C3 keeps app-server v2 Ask APIs experimental, expands the experimental payloads, and defers stabilization until the shape is validated by at least one non-TUI client path."
+      rationale: "The current method is already documented as experimental; C3 changes semantics substantially with question kinds, structured answers, resume, and fallback."
+    - id: D024
+      status: accepted
+      decision: "Native Ask support must be a distinct client capability, separate from the existing experimentalApi opt-in."
+      rationale: "A client can opt into experimental API schemas without being able to render a native Ask UI; resume must know when to replay UI and when to fallback to chat."
+    - id: D025
+      status: accepted
+      decision: "Unsupported-client fallback uses a normal chat template with numbered questions, explicit question kind labels, stable option ids, and an answer-format example."
+      rationale: "This gives the model/user enough structure to map a plain text reply back to the pending Ask without relying on hidden TUI state."
+    - id: D026
+      status: accepted
+      decision: "Ask/Plan recovery uses both durable structured events and a thread-level current-state snapshot."
+      rationale: "Events preserve auditability and replay; the snapshot makes cross-device resume fast and avoids requiring a complete replay just to restore a pending Ask or Plan panel."
+    - id: D027
+      status: accepted
+      decision: "The evolved update_plan interface remains backward-compatible with flat checklist calls while adding ids, root items, and one-level SubPlan data for the persistent panel."
+      rationale: "Existing callers should not break, but the persistent panel needs canonical structured state richer than step/status strings."
+    - id: D028
+      status: accepted
+      decision: "Ask Tools are available to the root agent in ordinary interactive turns, including default bypass; unattended or UI-less execution must use fallback or fail explicitly instead of waiting forever."
+      rationale: "This matches the user's default workflow while preventing deadlocks in clients that cannot supply an interactive answer."
+  open_questions:
+    []
+  risks:
+    - id: R001
+      risk: "Adding many question kinds at once can overfit the TUI and make VSCode/GUI compatibility harder."
+      mitigation: "Define stable protocol primitives first and phase UI richness behind shared semantics."
+    - id: R002
+      risk: "Secret/freeform answers may leak through history cells, transcripts, logs, or model-visible tool output."
+      mitigation: "Make redaction and persistence behavior explicit in protocol and tests."
+    - id: R003
+      risk: "Parallel interactive requests can deadlock or produce stale UI after turn interruption/resume."
+      mitigation: "Build on existing pending interactive replay and request queue behavior; add targeted regression tests."
+    - id: R004
+      risk: "Model may overuse ask-user tools instead of making reasonable assumptions."
+      mitigation: "Tighten tool description, availability modes, and possibly add per-turn/request limits."
+    - id: R005
+      risk: "A permanent Plan panel can crowd the composer and regress terminal layouts."
+      mitigation: "Define responsive constraints and add snapshot coverage for wide, medium, and narrow terminals."
+    - id: R006
+      risk: "SubPlan can become an unbounded tree that is hard for the model to maintain and hard for users to scan."
+      mitigation: "Start with a bounded tree and compact rendering rules; postpone graph-like dependencies."
+    - id: R007
+      risk: "Two plan systems, proposed-plan markdown and update_plan checklist, can diverge."
+      mitigation: "Declare structured Plan/SubPlan state as canonical for the persistent panel and treat markdown as history/proposal only."
+    - id: R008
+      risk: "A request_user_input call can hang forever if the user resumes on another device or client that does not support native Ask UI."
+      mitigation: "Persist pending Ask state with enough question metadata to replay it on resume; add client capability detection and a normal-chat fallback path."
+    - id: R009
+      risk: "Fallback to normal chat may produce an answer the tool call cannot structurally parse."
+      mitigation: "Generate a concise numbered prompt and accept a structured parse or explicit model handoff that continues the turn without waiting on the original UI request."
+  conversion:
+    state: converted
+    plan_context_path: ".pipeline/deep-plans/DP001-ask-user-tools/plan-context.md"
+    blockers: []
+    context_generated_at: "2026-05-26T17:47:33+08:00"
+    converted_at: "2026-05-26T18:00:00+08:00"

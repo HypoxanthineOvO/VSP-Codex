@@ -1,0 +1,33 @@
+ok: true
+checked_at: "2026-05-26T16:45:32+08:00"
+stale_count: 0
+error_count: 0
+refreshed:
+  - .pipeline/PROGRESS.md
+  - .pipeline/log.compact.yaml
+  - .pipeline/derived-health.yaml
+skipped:
+  - .pipeline/state.yaml
+  - .pipeline/cycle.yaml
+failures:
+artifacts:
+  - id: progress
+    path: .pipeline/PROGRESS.md
+    status: fresh
+    severity: ok
+    repair_hint: null
+  - id: log_compact
+    path: .pipeline/log.compact.yaml
+    status: fresh
+    severity: ok
+    repair_hint: null
+  - id: protected_state
+    path: .pipeline/state.yaml
+    status: skipped_protected_authority
+    severity: ok
+    repair_hint: null
+  - id: protected_cycle
+    path: .pipeline/cycle.yaml
+    status: skipped_protected_authority
+    severity: ok
+    repair_hint: null

@@ -1,0 +1,9 @@
+---
+source: tui/src/bottom_pane/chat_composer.rs
+expression: terminal.backend()
+---
+"                                                            "
+"› /si                                                       "
+"                                                            "
+"                                                            "
+"  /side  在临时 fork 中开始侧边对话                         " Hidden by multi-width symbols: [(10, " "), (12, " "), (14, " "), (22, " "), (24, " "), (26, " "), (28, " "), (30, " "), (32, " "), (34, " ")]

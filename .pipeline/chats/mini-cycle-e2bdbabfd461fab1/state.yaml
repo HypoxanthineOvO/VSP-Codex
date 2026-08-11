@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019f0348-f1df-7220-82a3-a53cc3af7be1
+topic_summary: <subagent_notification> {"agent_path":"019f034c-a1ca-7b60-8312-ec1d7d4cdd8c","status":{"completed":"已按 implement worker 范围完成，只改了 [codex-rs/cli/src/vscode_cmd.rs](/home/heyx/Codex-VSP/codex-rs/cli/src/vscode_cmd.rs:179)。\n\n改动要点：\n- `status()` 现在在 remote `.vscode-server` Machine scope 下，不再只看 `chatgpt.cliExecutable` 是否非空。\n- 新增 `remote_extension_shim_status()`，扫描 `~/.vscode-server/extensions/openai.chatgpt-* /bin/linux-x86_64/codex`，检查它是否是 `exec ~/.vsp-codex/vscode/vsp-codex \"$@\"` 这类指向 VSP wrapper 的 shell shim。\n- 如果官方 ChatGPT 扩展 bundled `codex` 未被 shim、无法检查、或找不到可检查的 bundled executable：\n - `warning` 会暴露诊断信息；\n - remote scope 下的 `configured` 会变成 `false`，表示远端集成不完整。\n- 复用了现有的 wrapper path、extension prefix、bundled codex relative path 和 shell unquote 逻辑；额外抽了 `read_shell_exec_target()` 供 wrapper/shim 共同使用。\n\n验证：\n- 已运行 `rustfmt codex-rs/cli/src/vscode_cmd.rs`，仅出现仓库现有 nightly-only rustfmt 配置警告。\n- 已运行 `cargo check -p codex-cli`，通过；只有其他模块既有 `dead_code` 警告。\n\n建议后续测试命令：\n```bash\nvsp-codex vscode status --json\n```\n\n在 remote `.vscode-server` 环境中，未 shim 时应看到 `configured:false` 和包含 bundled Codex shim 问题的 `warning`；执行 `vsp-codex vscode install --yes` 后再查应恢复完整配置状态。"}} </subagent_notification>
+turn_count: 18

@@ -1,0 +1,57 @@
+phase: p0_configure
+cycle: C9
+status: confirmed
+created_at: "2026-06-14T08:49:50+08:00"
+source_order:
+  - cycle_explicit
+  - previous_cycle_snapshot
+  - project_config
+  - global_config
+  - built_in_default
+resolved:
+  plan_mode:
+    value: interactive
+    source: global_config
+    evidence: "~/.hypo-workflow/config.yaml plan.default_mode"
+  interaction_depth:
+    value: medium
+    min_rounds: 3
+    source: global_config
+    evidence: "~/.hypo-workflow/config.yaml plan.interaction_depth and plan.interactive.min_rounds"
+  automation:
+    value: balanced
+    source: project_config
+    evidence: ".pipeline/config.yaml automation.level"
+  worker_separation:
+    value: strict
+    source: project_config
+    evidence: ".pipeline/config.yaml execution.worker_separation.mode"
+    required_roles:
+      - test
+      - implement
+      - audit
+  codex_execution_subworkers:
+    value: authorized
+    source: project_config
+    evidence: ".pipeline/config.yaml execution.worker_separation.codex_execution_subworkers_authorized with authorized_scopes"
+    authorized_scopes:
+      - /hw:start
+      - /hw:resume
+  acceptance:
+    value: manual_hard_gate
+    source: built_in_default
+    note: "Final Generate execution confirmation remains an explicit Question Tool / Ask gate."
+  regression:
+    value: focused_plus_risk_based
+    source: project_config
+    evidence: ".pipeline/config.yaml evaluation.checks"
+  analysis_boundary:
+    value: hybrid_for_analysis_requests
+    source: global_config
+    evidence: "~/.hypo-workflow/config.yaml execution.analysis.interaction_mode"
+pending_user_confirmation:
+  - "none"
+confirmed_at: "2026-06-14T08:52:58+08:00"
+confirmation:
+  decision: reuse
+  summary: "User confirmed reuse of current project configuration for C9 planning."

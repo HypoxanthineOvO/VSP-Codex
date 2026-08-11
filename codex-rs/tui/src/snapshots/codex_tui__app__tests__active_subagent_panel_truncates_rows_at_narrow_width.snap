@@ -1,0 +1,7 @@
+---
+source: tui/src/app/tests.rs
+expression: rendered
+---
+Subagents active (2) · Ctrl+O 详情
+  探路者 [explorer] · GPT 5.5 xhigh · 运…
+  审阅员 [reviewer] · GPT 5.5 xhigh · 等…

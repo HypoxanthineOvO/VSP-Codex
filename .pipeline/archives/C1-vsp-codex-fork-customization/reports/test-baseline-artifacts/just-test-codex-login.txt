@@ -1,0 +1,377 @@
+START 2026-05-24T19:56:56+08:00
+RUST_MIN_STACK=8388608 cargo nextest run --no-fail-fast "$@"
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on artifact directory
+   Compiling serde_json v1.0.149
+   Compiling linux-raw-sys v0.4.15
+   Compiling rustc-hash v2.1.1
+   Compiling owo-colors v4.3.0
+   Compiling clap_builder v4.5.58
+   Compiling tempfile v3.27.0
+   Compiling tokio-stream v0.1.18
+   Compiling fixed_decimal v0.7.2
+   Compiling gix-date v0.15.1
+   Compiling crypto-bigint v0.5.5
+   Compiling parking_lot v0.12.5
+   Compiling digest v0.10.7
+   Compiling lalrpop v0.19.12
+   Compiling tracing-opentelemetry v0.32.1
+   Compiling opentelemetry-appender-tracing v0.31.1
+   Compiling zerovec v0.11.6
+   Compiling universal-hash v0.5.1
+   Compiling bindgen v0.72.1
+   Compiling tracing-appender v0.2.4
+   Compiling tokio v1.49.0
+   Compiling sha1 v0.10.6
+   Compiling sha2 v0.10.9
+   Compiling moka v0.12.13
+   Compiling rustyline v14.0.0
+   Compiling prodash v31.0.0
+   Compiling hmac v0.12.1
+   Compiling gix-actor v0.40.0
+   Compiling signature v2.2.0
+   Compiling curve25519-dalek v4.1.3
+   Compiling blake2 v0.10.6
+   Compiling sec1 v0.7.3
+   Compiling rustix v0.38.44
+   Compiling futures-intrusive v0.5.0
+   Compiling nucleo v0.5.0 (https://github.com/helix-editor/nucleo.git?rev=4253de9faabb4e5c6d81d946a5e35a90f87347ee#4253de9f)
+   Compiling serial_test v3.3.1
+   Compiling rustls v0.23.36
+   Compiling sha1-checked v0.10.0
+   Compiling headers v0.4.1
+   Compiling zbus v4.4.0
+   Compiling poly1305 v0.8.0
+   Compiling icu_normalizer v2.2.0
+   Compiling icu_decimal v2.2.0
+   Compiling tinystr v0.8.3
+   Compiling potential_utf v0.1.4
+   Compiling hkdf v0.12.4
+   Compiling rfc6979 v0.4.0
+   Compiling pbkdf2 v0.12.2
+   Compiling ed25519 v2.2.3
+   Compiling gix-features v0.46.2
+   Compiling icu_locale_core v2.2.0
+   Compiling schemars v0.8.22
+   Compiling ts-rs v11.1.0
+   Compiling debugserver-types v0.5.0
+   Compiling clap v4.5.58
+   Compiling codex-utils-string v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/string)
+   Compiling schemars v1.2.1
+   Compiling crypto_secretbox v0.1.1
+   Compiling ed25519-dalek v2.2.0
+   Compiling jsonwebtoken v9.3.1
+   Compiling icu_collections v2.2.0
+   Compiling elliptic-curve v0.13.8
+   Compiling zip v2.4.2
+   Compiling assert-json-diff v2.0.2
+   Compiling idna_adapter v1.2.1
+   Compiling gix-hash v0.23.0
+   Compiling gix-fs v0.19.2
+   Compiling gix-glob v0.24.0
+   Compiling gix-transport v0.55.1
+   Compiling crypto_box v0.9.1
+   Compiling which v6.0.3
+   Compiling idna v1.1.0
+   Compiling ecdsa v0.16.9
+   Compiling primeorder v0.13.6
+   Compiling icu_provider v2.2.0
+   Compiling codex-utils-absolute-path v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/absolute-path)
+   Compiling gix-hashtable v0.13.0
+   Compiling gix-tempfile v21.0.2
+   Compiling gix-commitgraph v0.35.0
+   Compiling url v2.5.8
+   Compiling publicsuffix v2.3.0
+   Compiling gix-object v0.58.0
+   Compiling p256 v0.13.2
+   Compiling icu_properties v2.2.0
+   Compiling codex-utils-home-dir v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/home-dir)
+   Compiling gix-lock v21.0.2
+   Compiling codex-utils-path v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/path-utils)
+   Compiling codex-skills v0.0.0 (/home/heyx/Codex-VSP/codex-rs/skills)
+   Compiling codex-install-context v0.0.0 (/home/heyx/Codex-VSP/codex-rs/install-context)
+   Compiling gix-shallow v0.10.0
+   Compiling cookie_store v0.22.1
+   Compiling lsp-types v0.94.1
+   Compiling webbrowser v1.0.6
+   Compiling sentry-types v0.46.1
+   Compiling tokio-util v0.7.18
+   Compiling rama-utils v0.3.0-alpha.4
+   Compiling tokio-graceful v0.2.2
+   Compiling tokio-native-tls v0.3.1
+   Compiling hickory-proto v0.25.2
+   Compiling codex-utils-cache v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/cache)
+   Compiling process-wrap v9.0.1
+   Compiling aws-smithy-async v1.2.14
+   Compiling codex-utils-pty v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/pty)
+   Compiling codex-file-search v0.0.0 (/home/heyx/Codex-VSP/codex-rs/file-search)
+   Compiling deadpool v0.12.3
+   Compiling gix-ref v0.61.0
+   Compiling gix-revwalk v0.29.0
+   Compiling gix-pack v0.68.0
+   Compiling gix-diff v0.61.0
+   Compiling codex-utils-image v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/image)
+   Compiling aws-smithy-runtime-api v1.12.0
+   Compiling v8 v147.4.0
+   Compiling tokio-test v0.4.5
+   Compiling opentelemetry_sdk v0.31.0
+   Compiling gix-revision v0.43.0
+   Compiling gix-traverse v0.55.0
+   Compiling h2 v0.4.13
+   Compiling tower v0.5.3
+   Compiling rama-core v0.3.0-alpha.4
+   Compiling codex-async-utils v0.0.0 (/home/heyx/Codex-VSP/codex-rs/async-utils)
+   Compiling gix-refspec v0.39.0
+   Compiling tokio-rustls v0.26.4
+   Compiling codex-utils-rustls-provider v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/rustls-provider)
+   Compiling tungstenite v0.27.0 (https://github.com/openai-oss-forks/tungstenite-rs?rev=9200079d3b54a1ff51072e24d81fd354f085156f#9200079d)
+   Compiling sqlx-core v0.8.6
+   Compiling gix-odb v0.78.0
+   Compiling gix-discover v0.49.0
+   Compiling gix-config v0.54.0
+   Compiling gix-protocol v0.59.0
+   Compiling aws-credential-types v1.2.11
+   Compiling aws-smithy-http v0.62.6
+   Compiling aws-smithy-observability v0.1.5
+   Compiling tower-http v0.6.8
+   Compiling aws-types v1.3.11
+   Compiling aws-sigv4 v1.3.7
+   Compiling tokio-tungstenite v0.28.0 (https://github.com/openai-oss-forks/tokio-tungstenite?rev=132f5b39c862e3a970f731d709608b3e6276d5f6#132f5b39)
+   Compiling starlark_syntax v0.13.0
+   Compiling sentry-core v0.46.1
+   Compiling gix v0.81.0
+   Compiling secret-service v4.0.0
+   Compiling hickory-resolver v0.25.2
+   Compiling sentry-backtrace v0.46.1
+   Compiling sentry-contexts v0.46.1
+   Compiling sentry-debug-images v0.46.1
+   Compiling sqlx-sqlite v0.8.6
+   Compiling rama-http-types v0.3.0-alpha.4
+   Compiling sentry-panic v0.46.1
+   Compiling keyring v3.6.3
+   Compiling hyper v1.8.1
+   Compiling codex-keyring-store v0.0.0 (/home/heyx/Codex-VSP/codex-rs/keyring-store)
+   Compiling rama-net v0.3.0-alpha.4
+   Compiling hyper-util v0.1.20
+   Compiling sqlx-macros-core v0.8.6
+   Compiling hyper-rustls v0.27.7
+   Compiling hyper-tls v0.6.0
+   Compiling axum v0.8.8
+   Compiling hyper-timeout v0.5.2
+   Compiling wiremock v0.6.5
+   Compiling sqlx-macros v0.8.6
+   Compiling tonic v0.14.3
+   Compiling reqwest v0.12.28
+   Compiling aws-smithy-http-client v1.1.12
+   Compiling sqlx v0.8.6
+   Compiling aws-smithy-runtime v1.9.5
+   Compiling tonic-prost v0.14.3
+   Compiling opentelemetry-proto v0.31.0
+   Compiling oauth2 v5.0.0
+   Compiling codex-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-client)
+   Compiling opentelemetry-http v0.31.0
+   Compiling sentry v0.46.1
+   Compiling rama-dns v0.3.0-alpha.4
+   Compiling rama-http-headers v0.3.0-alpha.4
+   Compiling rama-udp v0.3.0-alpha.4
+   Compiling rama-unix v0.3.0-alpha.4
+   Compiling rama-tls-rustls v0.3.0-alpha.4
+   Compiling rmcp v0.15.0
+   Compiling aws-runtime v1.5.17
+   Compiling opentelemetry-otlp v0.31.0
+   Compiling rama-http v0.3.0-alpha.4
+   Compiling aws-sdk-sso v1.91.0
+   Compiling aws-sdk-ssooidc v1.93.0
+   Compiling aws-sdk-signin v1.2.0
+   Compiling aws-sdk-sts v1.95.0
+   Compiling rama-tcp v0.3.0-alpha.4
+   Compiling rama-socks5 v0.3.0-alpha.4
+   Compiling aws-config v1.8.12
+   Compiling codex-aws-auth v0.0.0 (/home/heyx/Codex-VSP/codex-rs/aws-auth)
+   Compiling starlark v0.13.0
+   Compiling rama-http-core v0.3.0-alpha.4
+   Compiling rama-http-backend v0.3.0-alpha.4
+   Compiling codex-network-proxy v0.0.0 (/home/heyx/Codex-VSP/codex-rs/network-proxy)
+   Compiling codex-execpolicy v0.0.0 (/home/heyx/Codex-VSP/codex-rs/execpolicy)
+   Compiling codex-protocol v0.0.0 (/home/heyx/Codex-VSP/codex-rs/protocol)
+   Compiling codex-shell-command v0.0.0 (/home/heyx/Codex-VSP/codex-rs/shell-command)
+   Compiling codex-api v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-api)
+   Compiling codex-file-system v0.0.0 (/home/heyx/Codex-VSP/codex-rs/file-system)
+   Compiling codex-agent-identity v0.0.0 (/home/heyx/Codex-VSP/codex-rs/agent-identity)
+   Compiling codex-sandboxing v0.0.0 (/home/heyx/Codex-VSP/codex-rs/sandboxing)
+   Compiling codex-utils-output-truncation v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/output-truncation)
+   Compiling codex-code-mode v0.0.0 (/home/heyx/Codex-VSP/codex-rs/code-mode)
+   Compiling codex-state v0.0.0 (/home/heyx/Codex-VSP/codex-rs/state)
+   Compiling codex-shell-escalation v0.0.0 (/home/heyx/Codex-VSP/codex-rs/shell-escalation)
+   Compiling codex-git-utils v0.0.0 (/home/heyx/Codex-VSP/codex-rs/git-utils)
+   Compiling codex-linux-sandbox v0.0.0 (/home/heyx/Codex-VSP/codex-rs/linux-sandbox)
+   Compiling codex-app-server-protocol v0.0.0 (/home/heyx/Codex-VSP/codex-rs/app-server-protocol)
+   Compiling codex-memories-read v0.0.0 (/home/heyx/Codex-VSP/codex-rs/memories/read)
+   Compiling codex-rollout-trace v0.0.0 (/home/heyx/Codex-VSP/codex-rs/rollout-trace)
+   Compiling codex-response-debug-context v0.0.0 (/home/heyx/Codex-VSP/codex-rs/response-debug-context)
+   Compiling codex-otel v0.0.0 (/home/heyx/Codex-VSP/codex-rs/otel)
+   Compiling codex-model-provider-info v0.0.0 (/home/heyx/Codex-VSP/codex-rs/model-provider-info)
+   Compiling codex-exec-server v0.0.0 (/home/heyx/Codex-VSP/codex-rs/exec-server)
+   Compiling codex-connectors v0.0.0 (/home/heyx/Codex-VSP/codex-rs/connectors)
+   Compiling codex-features v0.0.0 (/home/heyx/Codex-VSP/codex-rs/features)
+   Compiling codex-windows-sandbox v0.0.0 (/home/heyx/Codex-VSP/codex-rs/windows-sandbox-rs)
+   Compiling codex-config v0.0.0 (/home/heyx/Codex-VSP/codex-rs/config)
+   Compiling codex-tools v0.0.0 (/home/heyx/Codex-VSP/codex-rs/tools)
+   Compiling codex-extension-api v0.0.0 (/home/heyx/Codex-VSP/codex-rs/ext/extension-api)
+   Compiling codex-apply-patch v0.0.0 (/home/heyx/Codex-VSP/codex-rs/apply-patch)
+   Compiling codex-arg0 v0.0.0 (/home/heyx/Codex-VSP/codex-rs/arg0)
+   Compiling codex-login v0.0.0 (/home/heyx/Codex-VSP/codex-rs/login)
+   Compiling codex-rmcp-client v0.0.0 (/home/heyx/Codex-VSP/codex-rs/rmcp-client)
+   Compiling codex-utils-plugins v0.0.0 (/home/heyx/Codex-VSP/codex-rs/utils/plugins)
+   Compiling codex-feedback v0.0.0 (/home/heyx/Codex-VSP/codex-rs/feedback)
+   Compiling codex-models-manager v0.0.0 (/home/heyx/Codex-VSP/codex-rs/models-manager)
+   Compiling codex-rollout v0.0.0 (/home/heyx/Codex-VSP/codex-rs/rollout)
+   Compiling codex-plugin v0.0.0 (/home/heyx/Codex-VSP/codex-rs/plugin)
+   Compiling codex-hooks v0.0.0 (/home/heyx/Codex-VSP/codex-rs/hooks)
+   Compiling codex-model-provider v0.0.0 (/home/heyx/Codex-VSP/codex-rs/model-provider)
+   Compiling codex-thread-store v0.0.0 (/home/heyx/Codex-VSP/codex-rs/thread-store)
+   Compiling codex-analytics v0.0.0 (/home/heyx/Codex-VSP/codex-rs/analytics)
+   Compiling codex-mcp v0.0.0 (/home/heyx/Codex-VSP/codex-rs/codex-mcp)
+   Compiling codex-core-skills v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core-skills)
+   Compiling codex-core-plugins v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core-plugins)
+   Compiling codex-core v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core)
+   Compiling core_test_support v0.0.0 (/home/heyx/Codex-VSP/codex-rs/core/tests/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5m 44s
+────────────
+ Nextest run ID 1d52f7e4-2b02-4f85-94b4-934efb972051 with nextest profile: default
+    Starting 115 tests across 2 binaries
+        PASS [   0.013s] (  1/115) codex-login auth::default_client::tests::is_first_party_originator_matches_known_values
+        PASS [   0.017s] (  2/115) codex-login auth::agent_identity::tests::agent_identity_authapi_base_url_prefers_env_value
+        PASS [   0.019s] (  3/115) codex-login auth::default_client::tests::is_first_party_chat_originator_matches_known_values
+        PASS [   0.020s] (  4/115) codex-login auth::agent_identity::tests::agent_identity_authapi_base_url_uses_prod_authapi_by_default
+        PASS [   0.024s] (  5/115) codex-login auth::manager::tests::external_bearer_only_auth_manager_returns_none_when_command_fails
+        PASS [   0.026s] (  6/115) codex-login auth::default_client::tests::test_invalid_suffix_is_sanitized2
+        PASS [   0.036s] (  7/115) codex-login auth::default_client::tests::test_invalid_suffix_is_sanitized
+        PASS [   0.038s] (  8/115) codex-login auth::manager::tests::missing_auth_json_returns_none
+        PASS [   0.039s] (  9/115) codex-login auth::manager::tests::external_auth_tokens_without_chatgpt_metadata_cannot_seed_chatgpt_auth
+        PASS [   0.042s] ( 10/115) codex-login auth::manager::tests::enforce_login_restrictions_blocks_env_api_key_when_chatgpt_required
+        PASS [   0.045s] ( 11/115) codex-login auth::manager::tests::login_with_api_key_overwrites_existing_auth_json
+        PASS [   0.047s] ( 12/115) codex-login auth::manager::tests::logout_removes_auth_file
+        PASS [   0.047s] ( 13/115) codex-login auth::manager::tests::load_auth_keeps_codex_api_key_env_precedence
+        PASS [   0.048s] ( 14/115) codex-login auth::manager::tests::login_with_access_token_rejects_invalid_jwt
+        PASS [   0.032s] ( 15/115) codex-login auth::util::tests::try_parse_error_message_extracts_openai_error_message
+        PASS [   0.055s] ( 16/115) codex-login auth::default_client::tests::test_get_codex_user_agent
+        PASS [   0.037s] ( 17/115) codex-login auth::storage::tests::file_storage_load_returns_auth_dot_json
+        PASS [   0.059s] ( 18/115) codex-login auth::manager::tests::external_bearer_only_auth_manager_disables_auto_refresh_when_interval_is_zero
+        PASS [   0.063s] ( 19/115) codex-login auth::manager::tests::external_bearer_only_auth_manager_uses_cached_provider_token
+        PASS [   0.060s] ( 20/115) codex-login server::tests::redact_sensitive_url_parts_preserves_safe_url_shape
+        PASS [   0.044s] ( 21/115) codex-login token_data::tests::id_token_info_parses_email_and_plan
+        PASS [   0.063s] ( 22/115) codex-login token_data::tests::workspace_account_detection_matches_workspace_plans
+        PASS [   0.065s] ( 23/115) codex-login server::tests::parse_token_endpoint_error_falls_back_to_error_code
+        PASS [   0.065s] ( 24/115) codex-login server::tests::parse_token_endpoint_error_preserves_plain_text_for_display
+        PASS [   0.066s] ( 25/115) codex-login auth::storage::tests::keyring_auth_storage_delete_removes_keyring_and_file
+        PASS [   0.066s] ( 26/115) codex-login auth::storage::tests::keyring_auth_storage_compute_store_key_for_home_directory
+        PASS [   0.048s] ( 27/115) codex-login token_data::tests::id_token_info_parses_fedramp_account_claim
+        PASS [   0.048s] ( 28/115) codex-login auth::util::tests::try_parse_error_message_falls_back_to_raw_text
+        PASS [   0.048s] ( 29/115) codex-login token_data::tests::jwt_expiration_handles_missing_exp
+        PASS [   0.049s] ( 30/115) codex-login token_data::tests::id_token_info_handles_missing_fields
+        PASS [   0.050s] ( 31/115) codex-login auth::storage::tests::file_storage_round_trips_agent_identity_auth
+        PASS [   0.069s] ( 32/115) codex-login::all suite::login_server_e2e::login_server_includes_forced_workspaces_as_one_query_param
+        PASS [   0.051s] ( 33/115) codex-login auth::storage::tests::auto_auth_storage_load_uses_file_when_keyring_empty
+        PASS [   0.053s] ( 34/115) codex-login server::tests::redact_sensitive_query_value_only_scrubs_known_keys
+        PASS [   0.074s] ( 35/115) codex-login auth::storage::tests::file_storage_loads_agent_identity_as_jwt
+        PASS [   0.055s] ( 36/115) codex-login auth::manager::tests::unauthorized_recovery_reports_mode_and_step_names
+        PASS [   0.074s] ( 37/115) codex-login server::tests::render_login_error_page_uses_entitlement_copy
+        PASS [   0.076s] ( 38/115) codex-login token_data::tests::jwt_expiration_parses_exp_claim
+        PASS [   0.058s] ( 39/115) codex-login auth::storage::tests::keyring_auth_storage_load_returns_deserialized_auth
+        PASS [   0.078s] ( 40/115) codex-login auth::manager::tests::refresh_without_id_token
+        PASS [   0.060s] ( 41/115) codex-login auth::revoke::tests::derives_revoke_url_from_refresh_token_override
+        PASS [   0.061s] ( 42/115) codex-login server::tests::parse_token_endpoint_error_prefers_error_description
+        PASS [   0.061s] ( 43/115) codex-login server::tests::render_login_error_page_escapes_dynamic_fields
+        PASS [   0.061s] ( 44/115) codex-login auth::storage::tests::auto_auth_storage_save_prefers_keyring
+        PASS [   0.061s] ( 45/115) codex-login token_data::tests::jwt_expiration_rejects_malformed_jwt
+        PASS [   0.062s] ( 46/115) codex-login auth::storage::tests::ephemeral_storage_save_load_delete_is_in_memory_only
+        PASS [   0.064s] ( 47/115) codex-login token_data::tests::id_token_info_parses_go_plan
+        PASS [   0.083s] ( 48/115) codex-login auth::storage::tests::file_storage_save_persists_auth_dot_json
+        PASS [   0.066s] ( 49/115) codex-login token_data::tests::id_token_info_parses_usage_based_business_plans
+        PASS [   0.068s] ( 50/115) codex-login auth_env_telemetry::tests::collect_auth_env_telemetry_buckets_provider_env_key_name
+        PASS [   0.087s] ( 51/115) codex-login server::tests::compose_success_url_includes_streamlined_success_when_requested
+        PASS [   0.087s] ( 52/115) codex-login token_data::tests::id_token_info_parses_hc_plan_as_enterprise
+        PASS [   0.088s] ( 53/115) codex-login server::tests::sanitize_url_for_logging_redacts_sensitive_issuer_parts
+        PASS [   0.070s] ( 54/115) codex-login auth::storage::tests::auto_auth_storage_load_prefers_keyring_value
+        PASS [   0.089s] ( 55/115) codex-login server::tests::persist_tokens_async_does_not_revoke_reused_refresh_token
+        PASS [   0.073s] ( 56/115) codex-login auth::storage::tests::keyring_auth_storage_save_persists_and_removes_fallback_file
+        PASS [   0.074s] ( 57/115) codex-login server::tests::parse_token_endpoint_error_reads_nested_error_message_and_code
+        PASS [   0.075s] ( 58/115) codex-login auth::storage::tests::auto_auth_storage_load_falls_back_when_keyring_errors
+        PASS [   0.075s] ( 59/115) codex-login server::tests::compose_success_url_omits_streamlined_success_by_default
+        PASS [   0.076s] ( 60/115) codex-login auth::storage::tests::file_storage_delete_removes_auth_file
+        PASS [   0.077s] ( 61/115) codex-login auth::storage::tests::auto_auth_storage_save_falls_back_when_keyring_errors
+        PASS [   0.077s] ( 62/115) codex-login auth::storage::tests::auto_auth_storage_delete_removes_keyring_and_file
+        PASS [   0.092s] ( 63/115) codex-login auth::manager::tests::unauthorized_recovery_uses_external_refresh_for_bearer_manager
+        PASS [   0.114s] ( 64/115) codex-login::all suite::login_server_e2e::oauth_access_denied_unknown_reason_uses_generic_error_page
+        PASS [   0.141s] ( 65/115) codex-login auth::manager::tests::login_with_access_token_writes_only_token
+        PASS [   0.146s] ( 66/115) codex-login auth::manager::tests::enforce_login_restrictions_allows_matching_workspace
+        PASS [   0.127s] ( 67/115) codex-login::all suite::login_server_e2e::oauth_access_denied_missing_entitlement_blocks_login_with_clear_error
+        PASS [   0.152s] ( 68/115) codex-login auth::manager::tests::enforce_login_restrictions_allows_any_matching_workspace_in_list
+        PASS [   0.133s] ( 69/115) codex-login::all suite::auth_refresh::returns_fresh_tokens_as_is
+        PASS [   0.157s] ( 70/115) codex-login auth::manager::tests::enforce_login_restrictions_allows_api_key_if_login_method_not_set_but_forced_chatgpt_workspace_id_is_set
+        PASS [   0.142s] ( 71/115) codex-login::all suite::login_server_e2e::forced_chatgpt_workspace_id_mismatch_blocks_login
+        PASS [   0.166s] ( 72/115) codex-login auth::manager::tests::loads_api_key_from_auth_json
+        PASS [   0.128s] ( 73/115) codex-login auth::revoke::tests::revoke_request_times_out
+        PASS [   0.150s] ( 74/115) codex-login::all suite::device_code_login::device_code_login_integration_handles_usercode_http_failure
+        PASS [   0.176s] ( 75/115) codex-login auth::default_client::tests::test_create_client_sets_default_headers
+        PASS [   0.178s] ( 76/115) codex-login auth::manager::tests::plan_type_maps_known_plan
+        PASS [   0.180s] ( 77/115) codex-login auth::manager::tests::login_with_access_token_rejects_unsigned_jwt
+        PASS [   0.182s] ( 78/115) codex-login auth::manager::tests::plan_type_maps_enterprise_cbp_usage_based_plan
+        PASS [   0.192s] ( 79/115) codex-login auth::manager::tests::plan_type_maps_self_serve_business_usage_based_plan
+        PASS [   0.188s] ( 80/115) codex-login auth::manager::tests::missing_plan_type_maps_to_unknown
+        PASS [   0.177s] ( 81/115) codex-login::all suite::auth_refresh::refresh_token_returns_permanent_error_for_expired_refresh_token
+        PASS [   0.199s] ( 82/115) codex-login auth::manager::tests::enforce_login_restrictions_logs_out_for_workspace_mismatch
+        PASS [   0.222s] ( 83/115) codex-login auth::manager::tests::enforce_login_restrictions_logs_out_for_method_mismatch
+        PASS [   0.186s] ( 84/115) codex-login::all suite::auth_refresh::unauthorized_recovery_requires_chatgpt_auth
+        PASS [   0.190s] ( 85/115) codex-login auth::manager::tests::plan_type_maps_unknown_to_unknown
+        PASS [   0.193s] ( 86/115) codex-login auth::manager::tests::pro_account_with_no_api_key_uses_chatgpt_auth
+        PASS [   0.214s] ( 87/115) codex-login::all suite::login_server_e2e::end_to_end_login_flow_persists_auth_json
+        PASS [   0.197s] ( 88/115) codex-login::all suite::device_code_login::device_code_login_integration_handles_error_payload
+        PASS [   0.203s] ( 89/115) codex-login server::tests::persist_tokens_async_revokes_previous_auth_without_failing_login
+        PASS [   0.210s] ( 90/115) codex-login::all suite::auth_refresh::refresh_token_returns_transient_error_on_server_failure
+        PASS [   0.265s] ( 91/115) codex-login auth::manager::tests::agent_identity_plan_type_maps_raw_enterprise_alias
+        PASS [   0.250s] ( 92/115) codex-login::all suite::auth_refresh::auth_reloads_disk_auth_without_calling_expired_refresh_token
+        PASS [   0.256s] ( 93/115) codex-login::all suite::device_code_login::device_code_login_rejects_workspace_mismatch
+        PASS [   0.257s] ( 94/115) codex-login::all suite::login_server_e2e::creates_missing_codex_home_dir
+        PASS [   0.298s] ( 95/115) codex-login auth::manager::tests::agent_identity_plan_type_maps_raw_education_alias
+        PASS [   0.269s] ( 96/115) codex-login auth::manager::tests::refresh_failure_is_scoped_to_the_matching_auth_snapshot
+        PASS [   0.289s] ( 97/115) codex-login::all suite::logout::logout_with_revoke_removes_auth_when_revoke_fails
+        PASS [   0.289s] ( 98/115) codex-login::all suite::device_code_login::device_code_login_integration_succeeds
+        PASS [   0.293s] ( 99/115) codex-login::all suite::device_code_login::device_code_login_integration_persists_without_api_key_on_exchange_failure
+        PASS [   0.294s] (100/115) codex-login::all suite::auth_refresh::refresh_token_errors_on_account_mismatch
+        PASS [   0.328s] (101/115) codex-login::all suite::logout::logout_with_revoke_revokes_refresh_token_then_removes_auth
+        PASS [   0.310s] (102/115) codex-login::all suite::auth_refresh::auth_reloads_disk_auth_when_cached_auth_is_stale
+        PASS [   0.334s] (103/115) codex-login::all suite::logout::auth_manager_logout_with_revoke_uses_cached_auth
+        PASS [   0.337s] (104/115) codex-login::all suite::auth_refresh::refresh_token_succeeds_updates_storage
+        PASS [   0.339s] (105/115) codex-login auth::manager::tests::load_auth_reads_access_token_from_env
+        PASS [   0.322s] (106/115) codex-login::all suite::auth_refresh::refresh_token_skips_refresh_when_auth_changed
+        PASS [   0.334s] (107/115) codex-login::all suite::auth_refresh::unauthorized_recovery_errors_on_account_mismatch
+        PASS [   0.360s] (108/115) codex-login::all suite::auth_refresh::refresh_token_does_not_retry_after_permanent_failure
+        PASS [   0.454s] (109/115) codex-login auth::manager::tests::enforce_login_restrictions_logs_out_for_agent_identity_workspace_mismatch
+        PASS [   0.423s] (110/115) codex-login::all suite::auth_refresh::refresh_token_refreshes_when_auth_is_unchanged
+        PASS [   0.429s] (111/115) codex-login::all suite::login_server_e2e::cancels_previous_login_server_when_port_is_in_use
+        PASS [   0.455s] (112/115) codex-login::all suite::auth_refresh::unauthorized_recovery_reloads_then_refreshes_tokens
+        PASS [   0.437s] (113/115) codex-login::all suite::auth_refresh::refresh_token_reloads_changed_auth_after_permanent_failure
+        PASS [   0.466s] (114/115) codex-login::all suite::auth_refresh::refreshes_token_when_access_token_is_expired
+        PASS [   2.078s] (115/115) codex-login::all suite::login_server_e2e::falls_back_to_registered_fallback_port_when_default_port_is_in_use
+────────────
+     Summary [   2.119s] 115 tests run: 115 passed, 0 skipped
+just bench-smoke
+just bench -- --test
+cargo bench --workspace --bench '*' "$@"
+    Finished `bench` profile [optimized] target(s) in 0.51s
+     Running benches/prompt_images.rs (target/release/deps/prompt_images-4624ed2fe8de2cc5)
+prompt_images
+├─ large_jpeg_photo_fresh_attachment
+├─ large_png_screenshot_fresh_attachment
+├─ small_png_screenshot_fresh_attachment
+╰─ small_png_screenshot_repeated_attachment
+
+END 2026-05-24T20:02:46+08:00
+DURATION_SECONDS 350
+STATUS 0

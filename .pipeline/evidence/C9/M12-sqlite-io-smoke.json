@@ -1,0 +1,18 @@
+{
+  "command": "/home/heyx/Codex-VSP/codex-rs/target/release/vsp-codex app-server --listen off",
+  "returncode": 1,
+  "elapsed_seconds": 0.157,
+  "stdout_tail": "",
+  "stderr_tail": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/m12-sqlite-smoke-wx7fdgfo/home/.vsp-codex\"))\n2026-06-26T10:25:55.926249Z ERROR codex_app_server: Project-local config, hooks, and exec policies are disabled in the following folders until the project is trusted, but skills still load.\n    1. /home/heyx/Codex-VSP/.codex\n       To load project-local config, hooks, and exec policies, add /home/heyx/Codex-VSP as a trusted project in /tmp/m12-sqlite-smoke-wx7fdgfo/home/.vsp-codex/config.toml.\n\nError: no transport configured; use --listen or enable remote control\n",
+  "logs_2_sqlite_exists": true,
+  "logs_2_sqlite_bytes": 49152,
+  "logs_2_wal_bytes": 0,
+  "total_rows": 0,
+  "noisy_rows": 0,
+  "targets": [],
+  "tables": [
+    "_sqlx_migrations",
+    "sqlite_sequence",
+    "logs"
+  ]
+}

@@ -1,0 +1,113 @@
+name: vsp-preview-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Release channel
+        required: true
+        default: alpha
+        type: choice
+        options:
+          - alpha
+          - lab
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vsp-preview-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            archive: vsp-codex-preview-linux-x64-gnu.tar.gz
+          - runner: macos-15
+            target: aarch64-apple-darwin
+            archive: vsp-codex-preview-macos-arm64.tar.gz
+          - runner: windows-2025
+            target: x86_64-pc-windows-msvc
+            archive: vsp-codex-preview-windows-x64-msvc.tar.gz
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - if: ${{ runner.os == 'Linux' }}
+        name: Install Linux package dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libcap-dev
+      - uses: dtolnay/rust-toolchain@e081816240890017053eacbb1bdf337761dc5582 # 1.95.0
+        with:
+          targets: ${{ matrix.target }}
+      - name: Configure rusty_v8 artifacts
+        uses: ./.github/actions/setup-rusty-v8
+        with:
+          target: ${{ matrix.target }}
+      - name: Build preview package
+        shell: bash
+        env:
+          LIBSQLITE3_FLAGS: ${{ runner.os == 'Windows' && 'SQLITE_DISABLE_INTRINSIC' || '' }}
+        run: |
+          python scripts/build_vsp_preview_release.py \
+            --target "${{ matrix.target }}" \
+            --channel "${{ inputs.channel }}" \
+            --archive-name "${{ matrix.archive }}" \
+            --release-dir "dist/${{ matrix.target }}" \
+            --skip-stable-manifest \
+            --force
+      - name: Upload target package
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: vsp-preview-${{ matrix.target }}
+          path: dist/${{ matrix.target }}/*
+          if-no-files-found: error
+
+  aggregate:
+    name: Aggregate release bundle
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Download target packages
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: vsp-preview-*
+          path: collected
+      - name: Build aggregate manifest
+        shell: bash
+        run: |
+          version="$(python - <<'PY'
+          from pathlib import Path
+          from scripts.build_vsp_preview_release import read_release_version
+          print(read_release_version(Path('codex-rs/Cargo.toml'), Path('codex-cli/package.json')))
+          PY
+          )"
+          release_dir="release/v${version}"
+          mkdir -p "$release_dir"
+          manifest_args=()
+          while IFS= read -r -d '' manifest; do
+            manifest_args+=(--manifest "$manifest")
+          done < <(find collected -name vsp-release-manifest.json -print0 | sort -z)
+          python scripts/merge_vsp_release_manifests.py \
+            "${manifest_args[@]}" \
+            --output "$release_dir/vsp-release-manifest.json"
+          find collected -type f ! -name vsp-release-manifest.json -exec cp {} "$release_dir"/ \;
+      - name: Upload aggregate release bundle
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: vsp-preview-release
+          path: release/*/*
+          if-no-files-found: error

@@ -1,0 +1,10 @@
+---
+source: tui/src/chatwidget/tests/user_simulation.rs
+expression: popup
+---
+  Select Provider
+  Provider controls Base URL and credentials. Use /model for model.
+
+› 1. VSP Provider (vsp)  https://provider.example/v1 | API Key configured
+
+  Press enter to confirm or esc to go back

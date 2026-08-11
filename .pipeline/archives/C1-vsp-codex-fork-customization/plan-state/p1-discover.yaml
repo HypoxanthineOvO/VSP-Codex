@@ -1,0 +1,152 @@
+p1_discover:
+  status: completed
+  started_at: "2026-05-24T19:24:00+08:00"
+  mode: interactive
+  min_rounds_required: 3
+  rounds_completed: 6
+  explicit_end_signal_received: true
+  completed_at: "2026-05-24T19:53:00+08:00"
+  end_signal: "好的，进入 P2"
+  feature:
+    title: "Laboratory Codex Agent Fork customization"
+    workflow_kind: build
+  p0_summary:
+    worker_separation_mode: strict
+    execution_subworkers_authorized: true
+    acceptance_mode: full_local_regression_first
+  round_1:
+    user_answers:
+      product_positioning: "Laboratory-internal Codex Agent, later adapted to the user's own Workflow."
+      default_auth_and_provider: "Custom Base URL + API Key by default."
+      retained_capabilities:
+        - MCP
+        - Skills
+        - Plugins
+        - URL/API model interface
+      capabilities_to_clean:
+        - Official Cloud
+        - OAuth
+        - Codex Remote
+        - Other official-first surfaces
+      removal_preference: "Prefer deletion, but willing to hide/disable instead if deletion materially increases upstream merge cost."
+    current_interpretation:
+      fork_strategy: "Fork-first UX, upstream-merge-conscious implementation."
+      likely_technical_policy: "Disable/hide official-first surfaces at CLI/TUI/app-facing boundaries first; preserve lower-level crates until tests and merge strategy are stable."
+      open_questions:
+        - "Exact branding and Chinese style."
+        - "Which official features should remain as config-only advanced escape hatches."
+        - "Depth and budget of regression/TUI user simulation tests."
+  round_2:
+    user_answers:
+      branding:
+        product_name: "VSP Codex"
+        language_style: "Concise Chinese; professional English terms may remain untranslated."
+      cleanup_scope:
+        remove_or_hide:
+          - "codex cloud"
+          - "ChatGPT/OAuth login flow"
+          - "ChatGPT apps/app-link"
+          - "Plugin marketplace ChatGPT app auth"
+          - "Update checks"
+          - "Feedback upload"
+          - "Official docs / official plan type prompts"
+        uncertain:
+          - "codex exec-server --remote"
+      regression_strategy: "D: build component snapshots, VT100 simulated user flows, and tmux/real binary end-to-end smoke where practical; user accepts a test-heavy cycle."
+    exec_server_remote_explanation:
+      summary: "`codex exec-server` is a small JSON-RPC process/filesystem service. Local mode exposes process and filesystem RPC over websocket or stdio. `--remote` registers this local exec-server as a remote environment with an environment registry, then connects to a service-provided rendezvous websocket so another harness can drive commands/files in this environment."
+      auth_dependency: "Remote registration requires ChatGPT auth or Agent Identity via CODEX_ACCESS_TOKEN. That makes the `--remote` path official-service-coupled."
+      planning_implication: "For VSP Codex, local exec-server may be useful as infrastructure, but `exec-server --remote` should likely be hidden/disabled unless the lab has a replacement registry/rendezvous backend."
+      evidence:
+        - "codex-rs/exec-server/README.md"
+        - "codex-rs/cli/src/main.rs"
+    current_interpretation:
+      fork_strategy: "Brand and UX should become VSP Codex with concise Chinese UI. Official-service surfaces should disappear from normal user view."
+      likely_technical_policy: "Keep local exec-server infrastructure; treat official remote registration as disabled or hidden because it depends on ChatGPT auth/Agent Identity."
+      open_questions:
+        - "Whether VSP will eventually provide its own remote registry/rendezvous replacement."
+        - "Exact CLI compatibility policy for hidden official subcommands."
+        - "Default Base URL/API key onboarding flow."
+  round_3:
+    user_answers:
+      config_home:
+        desired_default: "~/.vsp-codex/"
+        behavior: "Read configuration from the VSP Codex home directory by default."
+      provider_management:
+        desired_tui_command: "/provider"
+        provider_shape: "Each provider is a Base URL + API key pair, compatible with the OpenAI Responses protocol."
+        initial_scope: "Only one key/provider is needed for now; it can be written into config."
+      official_cli_cleanup:
+        selected_strategy: "A"
+        behavior: "Hide official commands from help, but if invoked show a concise VSP Codex disabled message."
+        rationale: "Lower cost and lower upstream merge conflict than deleting clap subcommands."
+      test_first:
+        requirement: "First establish regression tests and confirm they pass before any behavior change."
+    current_interpretation:
+      default_home_policy: "VSP Codex should use ~/.vsp-codex instead of ~/.codex for normal config/auth/state unless a compatibility or migration reason is found."
+      provider_policy: "Add VSP provider management as a TUI slash command and config-backed provider selection; keep OpenAI-compatible Responses API assumptions."
+      first_milestone_bias: "Testing baseline before functional edits."
+      open_questions:
+        - "Whether VSP should support migration/import from ~/.codex."
+        - "Whether /provider is TUI-only at first or also needs CLI support."
+        - "Exact config schema for multiple providers and active provider."
+  round_4:
+    user_answers:
+      vsp_home_migration:
+        selected_strategy: "B"
+        behavior: "On first launch, ask whether to import existing configuration from ~/.codex into ~/.vsp-codex."
+      provider_command_scope:
+        selected_strategy: "B"
+        behavior: "/provider first version should support selecting among multiple configured providers."
+      test_baseline:
+        selected_strategy: "D"
+        behavior: "First investigate test runtime and current failures, then decide the final baseline scope."
+      milestone_gating:
+        behavior: "The upcoming testing milestone must be interactively confirmed before continuing execution."
+    current_interpretation:
+      migration_policy: "Do not silently migrate ~/.codex. VSP Codex should ask on first launch and write new state/config to ~/.vsp-codex."
+      provider_policy: "Use config-backed multiple providers and active-provider selection in /provider; editing provider credentials can be deferred."
+      test_policy: "Create a test-discovery milestone before feature changes. Its output should identify which tests are reliable, slow, ignored, flaky, or blocked."
+      open_questions:
+        - "Exact first-launch import surface: TUI prompt only, CLI prompt, or both."
+        - "Whether provider selection should persist globally or per thread/session."
+        - "Which visible UI areas should be localized in the first UI change milestone."
+  round_5:
+    user_answers:
+      cli_scope_clarification:
+        answer: "User currently only plans to use TUI; CLI prompts are not a priority."
+        interpretation: "CLI means command-line surfaces including root codex subcommands such as exec/login/cloud/app-server, not only codex exec."
+      first_launch_import_surface:
+        behavior: "Add a simple TUI selection view, consistent with current UI style, to ask whether to import from ~/.codex."
+      provider_selection_persistence:
+        selected_strategy: "C"
+        behavior: "Support both global default provider persistence and per-thread/session temporary override."
+      first_localization_scope:
+        selected_strategy: "D"
+        behavior: "First stage focuses on branding and official prompt cleanup; broader Chinese localization can be deferred to a later Cycle."
+    current_interpretation:
+      tui_priority: "Implementation and testing should prioritize TUI flows over CLI UX, while CLI official commands can still be hidden/disabled cheaply."
+      migration_ui: "Use existing TUI selection/list view patterns rather than a new UI framework."
+      provider_policy: "Provider command should support global selection plus temporary session/thread override."
+      localization_policy: "Milestone scope should avoid a broad string-by-string translation pass in this Cycle."
+  round_6:
+    user_answers:
+      binary_and_entrypoint:
+        selected_strategy: "C"
+        behavior: "Fully rename the local fork entrypoint to vsp-codex because the existing local Codex cannot be uninstalled yet."
+        implication: "Plan must cover binary/package/visible command naming, not only UI branding."
+      disabled_official_feature_message:
+        selected_strategy: "B"
+        message_style: "This feature depends on OpenAI official services and is not supported by VSP Codex for now."
+      delivery_order:
+        accepted: true
+        order:
+          - "Investigate test baseline."
+          - "Strengthen TUI test framework."
+          - "Design VSP home and provider configuration."
+          - "Hide/disable official entrypoints."
+          - "Clean branding and official prompts."
+    current_interpretation:
+      rename_scope: "This Cycle should include an explicit vsp-codex binary/entrypoint strategy, while keeping upstream merge cost visible."
+      disabled_feature_policy: "Official-service features should be hidden from normal UI/help and produce concise dependency-based unsupported messages if invoked."
+      p1_status: "Discovery has enough substance for P2 once the user explicitly confirms ending P1."

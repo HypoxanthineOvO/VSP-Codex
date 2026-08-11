@@ -1,0 +1,250 @@
+pipeline:
+  name: "基础体验优化"
+  status: completed
+  prompts_total: 6
+  prompts_completed: 6
+  started: "2026-05-25T23:49:50+08:00"
+  finished: "2026-05-26T07:07:17+08:00"
+
+last_heartbeat: "2026-05-26T14:49:47+08:00"
+
+current:
+  phase: completed
+  prompt_index: 6
+  prompt_file: .pipeline/prompts/006-integration-regression.md
+  prompt_name: "M6 集成回归与实际验收"
+  step: completed
+  step_index: 7
+
+milestones:
+  - id: M1
+    title: "默认 YOLO 与底栏 Context"
+    status: completed
+    prompt_file: .pipeline/prompts/001-default-yolo-context.md
+    started: "2026-05-25T23:49:50+08:00"
+    completed: "2026-05-26T02:09:21+08:00"
+    workers:
+      test: "019e5fd4-e8ba-78a2-aea2-db5d86943c61"
+      implement: "019e5feb-7bc2-77e2-9ad6-cce8d2e818b3"
+      audit: "019e6000-614b-7833-99f3-2047e988914c"
+      test_followup: "019e601d-69d2-7710-88f6-2b323c4ae477"
+      implement_followup: "019e6024-ebfe-7b50-bb05-0e564d75b119"
+      audit_followup: "019e603c-d16a-7c03-9743-c6f8569da52e"
+    worker_status:
+      test: completed
+      implement: completed
+      audit: completed
+      test_followup: completed
+      implement_followup: completed
+      audit_followup: completed
+    validation:
+      - "just fmt: passed"
+      - "just test -p codex-cli --test vsp_entrypoint: passed"
+      - "just test -p codex-exec: passed"
+      - "just test -p codex-tui: passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: passed"
+      - "git diff --check: passed"
+      - "just fix -p codex-cli -p codex-exec -p codex-tui: passed"
+    reports:
+      - .pipeline/reports/001-default-yolo-context.md
+      - .pipeline/reviews/001-default-yolo-context-audit.md
+  - id: M2
+    title: "Subagent 核心策略"
+    status: completed
+    prompt_file: .pipeline/prompts/002-subagent-core-policy.md
+    started: "2026-05-26T02:09:21+08:00"
+    completed: "2026-05-26T03:06:52+08:00"
+    workers:
+      test: "019e6057-13cc-7830-a6f9-edc72dc0f0b3"
+      implement: "019e6067-a0af-7901-9a17-799e756aa923"
+      implement_followup: "019e6071-61b1-7893-80d2-7bc1439fac8b"
+      test_followup: "019e6071-91ba-7bf0-9959-27b9e2f7f414"
+      audit: "019e607a-cd8b-7ff2-bcc3-d5e208ad2d57"
+    worker_status:
+      test: completed
+      implement: closed_after_partial_workspace_patch
+      implement_followup: completed
+      test_followup: completed
+      audit: completed
+    validation:
+      - "just fmt: passed"
+      - "just test -p codex-core default_config_enables_collab_with_32_agent_threads built_in_roles_use_vsp_chinese_nickname_candidates multi_agent_v2_default_session_thread_cap_counts_root multi_agent_v2_spawn_none_fork_preserves_explicit_model_metadata_in_events: passed"
+      - "just test -p codex-tui open_agent_picker_shows_empty_state_when_collab_is_disabled memories_enable_prompt_updates_feature_without_notice memories_enable_prompt_snapshot: passed"
+      - "just test -p codex-tui: passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: passed"
+      - "git diff --check: passed"
+      - "just fix -p codex-core -p codex-tui: passed"
+    reports:
+      - .pipeline/reports/002-subagent-core-policy.md
+      - .pipeline/reviews/002-subagent-core-policy-audit.md
+  - id: M3
+    title: "Subagent 常驻卡片与键盘查看"
+    status: completed
+    prompt_file: .pipeline/prompts/003-subagent-panel-navigation.md
+    started: "2026-05-26T03:06:52+08:00"
+    completed: "2026-05-26T03:47:18+08:00"
+    workers:
+      test: "019e608a-bc5d-7121-97db-73e9ef6e3bc5"
+      implement: "019e608a-f945-72e3-a6ce-2f3fab808277"
+      test_followup: "019e6094-5f09-7bd0-b5a8-65f02d54763c"
+      audit: "019e60a2-0fce-7042-b542-2cac7d8e0b56"
+    worker_status:
+      test: completed
+      implement: completed
+      test_followup: completed
+      audit: completed
+    validation:
+      - "just fmt: passed"
+      - "M3 focused codex-tui tests: passed"
+      - "just test -p codex-tui: passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: passed"
+      - "git diff --check: passed"
+      - "just fix -p codex-tui: passed"
+    reports:
+      - .pipeline/reports/003-subagent-panel-navigation.md
+      - .pipeline/reviews/003-subagent-panel-navigation-audit.md
+  - id: M4
+    title: "Hypo-Translate 运行时翻译"
+    status: completed
+    prompt_file: .pipeline/prompts/004-hypo-translate-runtime.md
+    started: "2026-05-26T03:47:18+08:00"
+    completed: "2026-05-26T05:27:33+08:00"
+    workers:
+      test: "019e60b4-ac18-7d83-ab78-8362428ada56"
+      implement: "019e60b7-59d7-7fc1-8378-be1cb836bfb6"
+      test_followup: "019e60cb-1f15-77b3-b408-65a2c32d9111"
+      implement_followup: "019e60cf-d55a-75f2-9317-157d5fa1a7e0"
+      audit: "019e60d6-ac42-7be1-b568-960c7a0c95fe"
+      test_followup_2: "019e60da-9990-7eb3-a241-49d1b16e5c37"
+      implement_followup_2: "019e60da-d303-7b63-9c5a-9e3ae933eec8"
+      test_followup_3: "019e60df-0ebb-73c3-aae5-1f312e3b55b8"
+      audit_followup: "019e60fa-961a-7153-9a6f-9aa68c55aec4"
+    worker_status:
+      test: blocked_no_runtime_api
+      implement: completed
+      test_followup: completed_red
+      implement_followup: completed
+      audit: completed_needs_changes
+      test_followup_2: completed_red
+      implement_followup_2: completed
+      test_followup_3: completed_red
+      main_delta_fix: completed
+      audit_followup: completed_pass
+    validation:
+      - "implement worker reported just fmt: passed"
+      - "implement worker reported cargo check -p codex-tui: passed"
+      - "implement worker reported just test -p codex-tui: passed"
+      - "test follow-up reported just test -p codex-tui translated_history_cell: passed"
+      - "test follow-up reported just test -p codex-tui hypo_translate: failed as expected; SSE data.type without event was not parsed"
+      - "implement follow-up reported just fmt: passed"
+      - "implement follow-up reported just test -p codex-tui hypo_translate: passed"
+      - "implement follow-up reported just test -p codex-tui translated_history_cell: passed"
+      - "main just test -p codex-tui hypo_translate: passed"
+      - "main just test -p codex-tui translated_history_cell: passed"
+      - "main just test -p codex-tui: passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: passed"
+      - "git diff --check: passed"
+      - "test follow-up 2 reported just test -p codex-tui hypo_translate: failed as expected; event:message data.type and long-connection fragment red tests"
+      - "implement follow-up 2 reported just test -p codex-tui hypo_translate: passed"
+      - "implement follow-up 2 reported just test -p codex-tui translated_history_cell: passed"
+      - "test follow-up 3 reported just test -p codex-tui hypo_translate: failed as expected; delta-only stream should stay pending"
+      - "main just fmt: passed"
+      - "main just test -p codex-tui hypo_translate: passed"
+      - "main just test -p codex-tui translated_history_cell: passed"
+      - "audit follow-up pass; no blocking or medium-severity issues"
+    reports:
+      - .pipeline/reports/004-hypo-translate-runtime.md
+      - .pipeline/reviews/004-hypo-translate-runtime-audit.md
+  - id: M5
+    title: "MCP 提示迁移与静态汉化"
+    status: completed
+    prompt_file: .pipeline/prompts/005-mcp-localization.md
+    started: "2026-05-26T04:32:50+08:00"
+    completed: "2026-05-26T05:27:33+08:00"
+    workers:
+      test: "019e60d6-f692-7cf1-8eb5-1b632f559064"
+      implement: "019e60df-9edf-7bf2-b55e-2f4a50e4e58a"
+      audit: "019e60fa-d2b5-7120-aa48-963be5e63e9d"
+      audit_followup: "019e6106-c8a4-7a42-9ef1-85505cb48710"
+    worker_status:
+      test: completed_red
+      implement: completed
+      audit: completed_needs_followup
+      followup: completed
+      audit_followup: completed_pass
+    validation:
+      - "just test -p codex-tui mcp_startup: 17 passed"
+      - "just test -p codex-tui slash_command: 138 passed"
+      - "just test -p codex-tui: 2646 passed, 4 skipped"
+      - "M5 follow-up focused tests: 5 passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: No pending snapshots"
+      - "git diff --check: passed"
+      - "just fix -p codex-tui: passed"
+    reports:
+      - .pipeline/reports/005-mcp-localization.md
+      - .pipeline/reviews/005-mcp-localization-audit.md
+  - id: M6
+    title: "集成回归与实际验收"
+    status: completed
+    prompt_file: .pipeline/prompts/006-integration-regression.md
+    started: "2026-05-26T05:27:33+08:00"
+    completed: "2026-05-26T07:07:17+08:00"
+    workers:
+      test: "019e6109-8703-7712-966b-d4ce46a45918"
+      implement: "019e6110-44b1-7b61-b1af-02839c4ead12"
+      audit: "019e6134-eb1c-7212-88db-e8ac3353d2cb"
+    worker_status:
+      test: completed
+      implement: completed
+      audit: completed_needs_followup
+      main_integration_fix: completed
+      audit_followup: completed
+    validation:
+      - "M6 test worker reported just test -p codex-cli --test vsp_entrypoint: 8 passed"
+      - "M6 test worker reported just test -p codex-exec: 116 passed"
+      - "M6 test worker reported focused codex-core tests: 4 passed, 2548 skipped"
+      - "M6 test worker reported cargo insta pending-snapshots --manifest-path tui/Cargo.toml: No pending snapshots"
+      - "M6 test worker reported global vsp-codex --version from another directory at that point: vsp-codex 0.134.0-vsp.1; C2 release prep later verified vsp-codex 0.134.0-vsp.2"
+      - "M6 implement worker reported just test -p codex-tui default_vsp_interactive_permissions*: 4 passed"
+      - "M6 implement worker reported just test -p codex-cli --test vsp_entrypoint: 8 passed"
+      - "main just test -p codex-model-provider-info: 21 passed"
+      - "main just test -p codex-core-plugins startup_remote_plugin_sync: 2 passed"
+      - "main just test -p codex-core-plugins remote-plugin gated negative tests: 3 passed"
+      - "main just test -p codex-core-plugins remote-plugin positive sync/featured tests: 7 passed"
+      - "main just test -p codex-core-plugins remote_installed_marketplaces_skip_fetch_when_remote_plugin_disabled: 1 passed"
+      - "main cargo build -p codex-cli --bin vsp-codex: passed after initial timeout retry"
+      - "main actual TUI smoke: no OAuth/API Key/Base URL startup prompt; approval_policy=never; sandbox_policy=danger-full-access; raw provider token not leaked; remote plugin auth noise absent"
+      - "cargo insta pending-snapshots --manifest-path codex-rs/tui/Cargo.toml: No pending snapshots"
+      - "git diff --check: passed"
+      - "just fix -p codex-model-provider-info: passed"
+      - "just fix -p codex-core-plugins: passed with pre-existing large_enum_variant warning in manifest.rs"
+      - "final audit found P2: transcript_only reasoning could be translated/revealed through transcript overlay"
+      - "main follow-up just fmt: passed"
+      - "main follow-up just test -p codex-tui translated_history_cell transcript_only_reasoning_is_not_translated_or_revealed translated_replace_cell_does_not_reveal_fully_hidden_inner_cell_in_transcript reasoning_summary_block*: 10 passed"
+      - "main follow-up just fix -p codex-tui: passed"
+      - "main follow-up cargo insta pending-snapshots --manifest-path codex-rs/tui/Cargo.toml: No pending snapshots"
+      - "main follow-up git diff --check: passed"
+      - "main follow-up cargo build -p codex-cli --bin vsp-codex: passed"
+      - "release prep fixed resume initial replay scrollback cap and Context used/window percent display"
+      - "release prep just fmt: passed"
+      - "release prep just test -p codex-tui: 2655 passed, 4 skipped"
+      - "release prep just test -p codex-tui plan_mode: 63 passed, 2596 skipped"
+      - "release prep cargo insta pending-snapshots --manifest-path tui/Cargo.toml: No pending snapshots"
+      - "release prep just fix -p codex-tui: passed"
+      - "release prep git diff --check: passed"
+      - "release prep Context residual scan: no Context 100% left, 100% context left, Context: ... used, or Context ... used in codex-rs/tui/src"
+      - "release prep focused app-server remote/cloud tests: 6 passed, 779 skipped"
+      - "release prep full workspace CODEX_SKIP_BWRAP_BUILD=1 just test attempted: 9786 passed, 155 failed, 5 timed out, 21 skipped; failures are documented as local environment/load/legacy official path risk, not C2 target blockers"
+    reports:
+      - .pipeline/reports/006-integration-regression.md
+      - .pipeline/reviews/006-integration-regression-audit.md
+      - .pipeline/reports/007-release-prep-runtime.md
+
+history:
+  completed_prompts:
+    - .pipeline/prompts/001-default-yolo-context.md
+    - .pipeline/prompts/002-subagent-core-policy.md
+    - .pipeline/prompts/003-subagent-panel-navigation.md
+    - .pipeline/prompts/004-hypo-translate-runtime.md
+    - .pipeline/prompts/005-mcp-localization.md
+    - .pipeline/prompts/006-integration-regression.md

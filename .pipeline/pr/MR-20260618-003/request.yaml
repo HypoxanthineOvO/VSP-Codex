@@ -1,0 +1,22 @@
+provider: gitlab
+kind: merge_request
+host: gitlab.vsplab.cn
+owner: heyx
+repository: Codex
+number: 3
+id: 6
+url: https://gitlab.vsplab.cn/heyx/Codex/-/merge_requests/3
+title: 'fix: preserve installer release directory during metadata write'
+state: opened
+source_branch: fix-installer-metadata-stage-dir
+target_branch: main
+author: lichf
+sha: be8e4676ea65bd109a50150f5234490e56a70329
+created_at: '2026-06-14T10:57:01.522Z'
+updated_at: '2026-06-14T10:57:02.650Z'
+status_snapshot:
+  detailed_merge_status: checking
+  has_conflicts: false
+  blocking_discussions_resolved: true
+  pipelines_count: 2
+archive_created_at: '2026-06-18T19:05:00+08:00'

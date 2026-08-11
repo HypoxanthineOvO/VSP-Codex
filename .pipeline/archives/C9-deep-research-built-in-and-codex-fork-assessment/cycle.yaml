@@ -1,0 +1,432 @@
+cycle:
+  number: 9
+  name: "Deep Research Built-In And Codex Fork Assessment"
+  type: feature
+  status: completed
+  started: "2026-06-14T08:44:37+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources:
+    - archive
+    - knowledge
+  previous_cycle: C8
+  summary: "Upgrade the VSP-Codex upstream base to `rust-v0.140.0-alpha.18`, preserve VSP runtime and release surfaces, publish a GitLab release after validation and explicit gates, produce a Deep Research Workflow requirement brief, and append a follow-up plan to sync toward `rust-v0.143.0-alpha.25` with SQLite persistent-log runtime validation while preserving the VSP vsp.8 series."
+  lessons: null
+  plan:
+    phase: ready_to_start
+    generated_at: "2026-06-14T08:44:37+08:00"
+    appended_at: "2026-06-26T14:55:10+08:00"
+    prompt_audit_completed_at: null
+    confirmed_at: "2026-06-14T09:14:35+08:00"
+    prompts_total: 12
+    appended_prompts_total: 6
+    appended_prompt_range: "c9-007..c9-012"
+    appended_plan_state: ".plan-state/c9-upstream-alpha25-generate.yaml"
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+    blocked_on: null
+  execution:
+    phase: completed
+    current_milestone: M12
+    current_prompt: ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+    current_step: completed
+    started_at: "2026-06-14T09:18:20+08:00"
+    completed_at: "2026-06-26T19:12:00+08:00"
+    last_completed_milestone: M12
+    last_completed_at: "2026-06-26T19:12:00+08:00"
+  lifecycle_policy:
+    reject:
+      default_action: needs_revision
+    accept:
+      next: follow_up_plan
+  continuations:
+    - id: alpha25_upstream_sync_vsp8
+      status: completed
+      generated_at: "2026-06-26T14:55:10+08:00"
+      completed_at: "2026-06-26T19:12:00+08:00"
+      prompt_range: "c9-007..c9-012"
+      upstream_target_tag: "rust-v0.143.0-alpha.25"
+      public_version_series: "0.140.0-vsp.8"
+      selected_release_version: "v0.140.0-vsp.8.1"
+      release_version_options:
+        - "v0.140.0-vsp.8"
+        - "v0.140.0-vsp.8.1"
+      remote_release_requires_later_confirmation: false
+      plan_state: ".plan-state/c9-upstream-alpha25-generate.yaml"
+      prompts:
+        - ".pipeline/prompts/c9-007-conflict-inventory-and-upstream-fix-baseline.md"
+        - ".pipeline/prompts/c9-008-sqlite-logging-convergence-and-runtime-io-smoke.md"
+        - ".pipeline/prompts/c9-009-protocol-contract-and-app-server-bridge-merge.md"
+        - ".pipeline/prompts/c9-010-core-workflow-runtime-and-adapter-preservation.md"
+        - ".pipeline/prompts/c9-011-tui-cli-vscode-and-user-surface-convergence.md"
+        - ".pipeline/prompts/c9-012-release-candidate-dry-run-and-gitlab-release-preparation.md"
+  execution_context:
+    checkpoint_commit: "178f9a5b4e"
+    upgrade_branch: "c9-upstream-0.140.0-alpha.18"
+    upstream_target_tag: "rust-v0.140.0-alpha.18"
+    upstream_target_commit: "dfd4b2b658"
+    merge_conflicts_detected_at: "2026-06-14T13:54:03+08:00"
+    merge_conflict_count: 0
+    merge_conflicts_resolved_at: "2026-06-14T15:03:28+08:00"
+    structural_validation:
+      fmt_check: passed
+      diff_check: passed
+      unresolved_conflicts: none
+      conflict_markers: none
+      cargo_check_vsp_codex: passed_with_warnings
+    m2_audit:
+      verdict: pass_with_risks
+      report: ".pipeline/reviews/C9/M2/audit.md"
+      completed_at: "2026-06-14T15:05:25+08:00"
+      realtime_caveat: "TUI /realtime currently degrades to unavailable in this build; M3/M5 must not treat realtime voice as restored."
+    m3_surface_policy:
+      started_at: "2026-06-17T11:19:28+08:00"
+      must_preserve:
+        - "VSP provider/config and official-service disablement"
+        - "vsp-codex CLI naming and VSP release manifest updater"
+        - "VSCode Remote SSH install/status/rollback settings behavior"
+        - "Hypo-Workflow /hw routing, request_user_input metadata, Workflow Markdown, and plan freshness"
+        - "Subagent UX, active panel, Prompt/Report viewer behavior"
+        - "plugin/skills compatibility under VSP source rules"
+        - "sandbox/permissions improvements without changing VSP safety defaults"
+      non_retained:
+        - "voice/realtime"
+        - "remote-control as a user-facing VSP capability"
+    m3_validation:
+      completed_at: "2026-06-17T11:55:33+08:00"
+      verdict: pass_with_warnings
+      test_worker_report: ".pipeline/reviews/C9/M3/test.md"
+      resolved_blockers:
+        - "core workflow_routing test target compile/runtime blocker"
+        - "app-server request_user_input test target compile blocker"
+        - "app-server workflow_markdown_surface test target compile blocker"
+      passed_commands:
+        - "cargo fmt --manifest-path codex-rs/Cargo.toml --all"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all request_user_input -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all workflow_markdown_surface -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui workflow_slash_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-cli --test vscode -- --nocapture"
+      warnings:
+        - "stable rustfmt warns that imports_granularity is nightly-only"
+        - "codex-core/codex-tui/codex-cli emit existing dead-code or unused warnings"
+        - "voice/realtime and remote-control remain non-retained surfaces by user decision"
+    m4_release_surface:
+      completed_at: "2026-06-17T17:34:11+08:00"
+      verdict: pass_with_warnings
+      version: "0.140.0-vsp.0"
+      upstream_tag: "rust-v0.140.0-alpha.18"
+      release_dir: ".pipeline/release/v0.140.0-vsp.0"
+      archive: ".pipeline/release/v0.140.0-vsp.0/vsp-codex-preview-linux-x64-gnu.tar.gz"
+      sha256: "90086fcdcb607439178a60680c3e12c80fdacf752de7a3111e2a2c8954c3792b"
+      stable_manifest: ".pipeline/release/vsp-release-manifest.json"
+      test_report: ".pipeline/reviews/C9/M4/test.md"
+      audit_report: ".pipeline/reviews/C9/M4/audit.md"
+      passed_commands:
+        - "cargo metadata --manifest-path codex-rs/Cargo.toml --no-deps --format-version=1"
+        - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+        - "codex-rs/target/release/vsp-codex --version"
+        - "python3 scripts/build_vsp_preview_release.py --entrypoint-bin codex-rs/target/release/vsp-codex --bwrap-bin /usr/bin/bwrap --cargo-profile release --force"
+        - "sha256sum -c .pipeline/release/v0.140.0-vsp.0/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+        - "git diff --check"
+      warnings:
+        - "Initial packaging without --bwrap-bin failed because libcap.pc is absent on this host."
+        - "No push, tag, GitLab release, or remote asset upload was performed."
+    m5_local_release_readiness:
+      completed_at: "2026-06-17T18:09:17+08:00"
+      verdict: local_release_ready_with_broad_suite_risk
+      release_gate: pending_user_confirmation
+      test_report: ".pipeline/reviews/C9/M5/test.md"
+      audit_report: ".pipeline/reviews/C9/M5/audit.md"
+      version: "0.140.0-vsp.0"
+      archive: ".pipeline/release/v0.140.0-vsp.0/vsp-codex-preview-linux-x64-gnu.tar.gz"
+      sha256: "90086fcdcb607439178a60680c3e12c80fdacf752de7a3111e2a2c8954c3792b"
+      passed_commands:
+        - "cargo fmt --manifest-path codex-rs/Cargo.toml --all --check"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_routing -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server-protocol tool_request_user_input -- --nocapture"
+        - "RUST_MIN_STACK=16777216 cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --lib in_process_start_clamps_zero_channel_capacity -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server-protocol"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-arg0"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-rollout"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core-plugins"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-cli --test vscode -- --nocapture"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-tui workflow_slash_routing -- --nocapture"
+        - "cargo build --manifest-path codex-rs/Cargo.toml --release --bin vsp-codex"
+        - "codex-rs/target/release/vsp-codex --version"
+        - "sha256sum -c .pipeline/release/v0.140.0-vsp.0/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+        - "python3 -m json.tool .pipeline/release/vsp-release-manifest.json"
+        - "python3 -m json.tool .pipeline/release/v0.140.0-vsp.0/vsp-release-manifest.json"
+        - "git diff --check"
+      warnings:
+        - "Full workspace test without CODEX_SKIP_BWRAP_BUILD fails on this host because libcap.pc is absent."
+        - "Full app-server integration suite remains broad-suite risk: 245 passed, 376 failed, 2 ignored, dominated by initialize/websocket deadline timeouts."
+        - "No release commit, tag, push, GitLab release, or asset upload was performed."
+    m5_gitlab_release:
+      completed_at: "2026-06-18T18:57:17+08:00"
+      verdict: released
+      version: "0.140.0-vsp.0"
+      release_commit: "89358b9cf3efb6e63d250af168d267e6125360aa"
+      tag: "v0.140.0-vsp.0"
+      release_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.0"
+      branch: "c9-upstream-0.140.0-alpha.18"
+      main_ref: "89358b9cf3efb6e63d250af168d267e6125360aa"
+      archive_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.0/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz"
+      sha256_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.0/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+      sha256: "90086fcdcb607439178a60680c3e12c80fdacf752de7a3111e2a2c8954c3792b"
+      notes:
+        - "Release branch, main, and tag were pushed to GitLab."
+        - "Direct GitLab uploads endpoint rejected the 298 MB tarball with HTTP 413; asset upload succeeded through the Generic Package Registry."
+        - "Release direct download URLs return HTTP 200 after redirect; archive content length is 298026215 bytes."
+    sqlite_log_write_amplification:
+      completed_at: "2026-06-26T13:40:37+08:00"
+      verdict: hotfix_verified_full_upstream_merge_deferred
+      report: ".pipeline/debug/20260626T134037+0800-sqlite-log-write-amplification.md"
+      local_version_preserved: "0.140.0-vsp.8"
+      current_branch: "c9-upstream-0.143.0-alpha.25-vsp8"
+      latest_prerelease_tag: "rust-v0.143.0-alpha.25"
+      latest_stable_tag: "rust-v0.142.2"
+      upstream_full_merge_attempt:
+        target: "rust-v0.143.0-alpha.25"
+        result: aborted_after_conflict_assessment
+        reason: "Broad conflicts across app-server protocol, app-server request processors, core session/compaction, rollout, exec, TUI plugin/status/resize surfaces, snapshots, and docs."
+      local_evidence:
+        vsp_logs_db_bytes: 1747955712
+        vsp_logs_wal_bytes: 548153672
+        codex_logs_db_bytes: 1127620608
+        codex_logs_wal_bytes: 51310512
+        largest_targets:
+          - "log"
+          - "codex_core::stream_events_utils"
+          - "codex_otel.log_only"
+          - "codex_otel.trace_safe"
+      upstream_fixes:
+        - commit: "d81fcdf8ef"
+          summary: "Reduce SQLite contention from OpenTelemetry SDK debug logs"
+          included_in: "rust-v0.142.2 and rust-v0.143.0-alpha.25"
+        - commit: "e98d43ac37"
+          summary: "Filter noisy targets from persistent logs"
+          included_in: "rust-v0.142.2 and rust-v0.143.0-alpha.25"
+        - commit: "91e6da943b"
+          summary: "Stop logging every Responses WebSocket event"
+          included_in: "rust-v0.142.2 and rust-v0.143.0-alpha.25"
+        - commit: "63f8f547c0"
+          summary: "Stop persisting bridged log events"
+          included_in: "rust-v0.143.0-alpha.6 through rust-v0.143.0-alpha.25"
+      modified_files:
+        - "codex-rs/state/src/log_db.rs"
+        - "codex-rs/state/src/log_db_filter_tests.rs"
+        - "codex-rs/app-server/src/lib.rs"
+        - "codex-rs/tui/src/lib.rs"
+      passed_commands:
+        - "cargo fmt --manifest-path codex-rs/Cargo.toml --all --check"
+        - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-state filter -- --nocapture"
+        - "cargo check --manifest-path codex-rs/Cargo.toml -p codex-app-server -p codex-tui"
+        - "git diff --check"
+      warnings:
+        - "Existing logs_2.sqlite/WAL files are historical data and require a separate safe checkpoint/vacuum or rotation to reclaim disk space."
+        - "Already-running app-server or VSCode/plugin processes need restart after a rebuilt binary is deployed."
+        - "Full upstream sync to rust-v0.143.0-alpha.25 remains a larger merge task."
+    m6_deep_research_requirement_brief:
+      completed_at: "2026-06-26T15:33:16+08:00"
+      verdict: pass_with_follow_up
+      deliverable_scope: "design_only_requirement_brief"
+      source_brief: ".pipeline/architecture/c9-upstream-base-upgrade-and-deep-research-brief.md"
+      machine_readable_handoff: ".pipeline/plan-state/deep-research-brief.yaml"
+      test_report: ".pipeline/reviews/C9/M6/test.md"
+      audit_report: ".pipeline/reviews/C9/M6/audit.md"
+      reviewed_refs:
+        - ".pipeline/prompts/c9-006-deep-research-workflow-requirement-brief.md"
+        - ".pipeline/architecture/c9-upstream-base-upgrade-and-deep-research-brief.md"
+      validation:
+        coverage_check: passed
+        yaml_handoff_parse: passed
+        scope_boundary: "C9 does not implement production Deep Research behavior in Codex-VSP or Hypo-Workflow."
+      follow_up:
+        - "Before production implementation, create an implementation-ready spec for command semantics, artifact schemas, state machine, budget/pruning rules, Subagent lifecycle, failure/resume behavior, and acceptance matrix."
+        - "Keep release and summary wording as requirement brief/design-only, not feature availability."
+    m7_upstream_alpha25_conflict_inventory:
+      completed_at: "2026-06-26T15:41:47+08:00"
+      verdict: pass_with_conditions
+      target_upstream_tag: "rust-v0.143.0-alpha.25"
+      target_upstream_commit: "d634f56262d9af9398fee0573a29dd178ddcb1ac"
+      conflict_inventory: ".pipeline/reports/C9/M7-upstream-alpha25-conflict-inventory.md"
+      equivalence_matrix: ".pipeline/reports/C9/M7-vsp-equivalence-matrix.yaml"
+      test_report: ".pipeline/reviews/C9/M7/test.md"
+      audit_report: ".pipeline/reviews/C9/M7/audit.md"
+      matrix_counts:
+        replace: 2
+        preserve: 8
+        defer: 7
+      conclusions:
+        - "SQLite persistent logging and telemetry noise reduction are the only M8 replacement candidates, and only after equivalence plus runtime I/O smoke."
+        - "Question Tool, Hypo-Workflow routing/state contract, TUI, CLI/VSCode Remote, plugins/adapters, and GitLab/VSP release tooling remain preserve-or-defer surfaces."
+        - "M7 performed no product source merge, version edit, release artifact refresh, push, tag, upload, or release."
+      follow_up:
+        - "M8 must compare official alpha.25 logging behavior to the VSP hotfix and record whether the local in-layer target=log guard remains required."
+        - "M9-M12 must use the matrix as a preserve-by-default boundary and revalidate equivalence with code-level tests before replacement."
+    m8_sqlite_logging_convergence:
+      completed_at: "2026-06-26T15:53:26+08:00"
+      verdict: pass
+      report: ".pipeline/reports/C9/M8-sqlite-logging.md"
+      evidence: ".pipeline/evidence/C9/M8-sqlite-io-smoke.json"
+      test_report: ".pipeline/reviews/C9/M8/test.md"
+      audit_report: ".pipeline/reviews/C9/M8/audit.md"
+      source_files:
+        - "codex-rs/state/src/log_db.rs"
+        - "codex-rs/state/src/log_db_filter_tests.rs"
+        - "codex-rs/app-server/src/lib.rs"
+        - "codex-rs/tui/src/lib.rs"
+      unit_validation:
+        command: "cargo test --manifest-path codex-rs/Cargo.toml -p codex-state filter -- --nocapture"
+        result: "8 passed; 0 failed"
+      runtime_smoke:
+        command: "CODEX_HOME=<tmp>/codex-home CODEX_SQLITE_HOME=<tmp>/sqlite-home RUST_LOG=trace timeout -s INT 5s codex-rs/target/debug/vsp-codex app-server --listen off"
+        binary_version: "vsp-codex 0.140.0-vsp.8"
+        logs_db_bytes_delta: 49152
+        logs_wal_bytes_delta: 0
+        total_rows: 0
+        noisy_target_total: 0
+        verdict: pass
+      decisions:
+        - "Retain the VSP in-layer `target == \"log\"` guard because it is a stronger local protection against tracing-log bridge bypass."
+        - "M8 did not clean, vacuum, rotate, or delete historical SQLite databases."
+        - "M8 did not perform release, push, tag, publish, upload, or full alpha.25 merge."
+      follow_up:
+        - "Historical SQLite DB cleanup/checkpoint/vacuum/rotation remains a separate maintenance action."
+        - "A longer high-traffic/provider-streaming SQLite smoke can be added later if needed."
+    m9_protocol_app_server:
+      started_at: "2026-06-26T15:53:26+08:00"
+      completed_at: "2026-06-26T16:06:19+08:00"
+      verdict: pass_with_deferred_follow_up
+      test_report: ".pipeline/reviews/C9/M9/test.md"
+      report: ".pipeline/reports/C9/M9-protocol-app-server.md"
+      audit_report: ".pipeline/reviews/C9/M9/audit.md"
+      baseline:
+        verdict: pass
+        passed_commands:
+          - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server-protocol"
+          - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all request_user_input -- --nocapture"
+          - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-app-server --test all workflow_markdown_surface -- --nocapture"
+      guardrails:
+        - "Rust protocol is the source of truth; regenerate schemas after Rust contract changes."
+        - "Preserve VSP request_user_input, Question Tool, workflow markdown, TurnPlanUpdated, native Ask UI, fallback, and Workflow metadata semantics."
+        - "Do not use TUI snapshots as protocol/app-server contract substitutes."
+      validation:
+        schema_fixtures: passed
+        protocol_tests: "240 unit tests + 2 schema fixture tests passed"
+        request_user_input_tests: "18 passed"
+        workflow_markdown_surface_tests: "2 passed"
+        diff_check: passed
+      decisions:
+        - "M9 is protocol/app-server contract safety reconciliation, not a full alpha.25 protocol/app-server merge."
+        - "No product source was newly modified in M9; schema generator was clean and generated no diff."
+        - "Deferred alpha.25 runtime/UI/release/plugin differences must carry into M10-M12."
+    m10_core_workflow_runtime_adapters:
+      started_at: "2026-06-26T16:06:19+08:00"
+      completed_at: "2026-06-26T17:14:35+08:00"
+      verdict: pass_with_follow_up_risks
+      current_step: completed
+      test_report: ".pipeline/reviews/C9/M10/test.md"
+      report: ".pipeline/reports/C9/M10-core-adapters.md"
+      audit_report: ".pipeline/reviews/C9/M10/audit.md"
+      baseline:
+        verdict: blocked_then_resolved
+        passed:
+          - "cargo test --manifest-path codex-rs/Cargo.toml -p codex-core workflow_routing -- --nocapture"
+          - "git diff --check"
+        blockers:
+          - "plan_update_gate filtered tests abort with stack overflow"
+          - "request_user_input filtered tests abort with stack overflow"
+          - "codex-core-plugins `remote_installed_marketplaces_skip_fetch_when_remote_plugin_disabled` fails with AuthRequired"
+      resolved:
+        - "plan_update_gate and request_user_input heavy async tests now use scoped large-stack harnesses without weakening assertions."
+        - "create_goal/update_goal now use state-db persisted goals runtime via Session::create_thread_goal and Session::set_thread_goal."
+        - "Goal runtime lifecycle is wired through turn start, tool finish, turn finish, abort, and idle continuation checks."
+        - "Disabled remote plugin marketplaces skip remote fetch/auth."
+      validation:
+        workflow_routing: "14 passed"
+        plan_update_gate: "3 passed"
+        request_user_input: "18 lib tests + 10 tests/all.rs tests passed"
+        core_plugins: "232 passed"
+        goal_continuation_guards: "pending request_user_input and active idle continuation tests passed"
+        diff_check: passed
+      guardrails:
+        - "Preserve strict worker separation and `/hw:start`/`/hw:resume` subworker authorization."
+        - "Preserve Workflow routing, plan freshness/update_plan gates, goals, request_user_input semantics, and plugin disabled-remote behavior."
+        - "Do not edit M9 protocol/app-server generated schema or M11/M12 surfaces."
+      risks:
+        - "External goal mutation, resume, and usage-limit lifecycle variants still show dead-code warnings; do not claim full alpha.25 goal-runtime equivalence."
+        - "M8 SQLite logging changes in state/app-server/TUI remain separate from M10 core runtime work."
+    m11_user_surface_convergence:
+      started_at: "2026-06-26T17:14:35+08:00"
+      completed_at: "2026-06-26T17:32:22+08:00"
+      verdict: pass_with_follow_up_risks
+      current_step: completed
+      test_report: ".pipeline/reviews/C9/M11/test.md"
+      report: ".pipeline/reports/C9/M11-user-surfaces.md"
+      audit_report: ".pipeline/reviews/C9/M11/audit.md"
+      validation:
+        workflow_slash_routing: "9 passed"
+        request_user_input: "89 passed"
+        vscode: "16 passed"
+        vsp_entrypoint: "8 passed"
+        update: "1 passed"
+        diff_check: passed
+      resolved:
+        - "Plain `vsp-codex update` now follows VSP official-service-disabled policy before debug-build updater fallback."
+        - "Explicit VSP manifest update path remains available for release-mode manifest updates."
+        - "The stale request_user_input remapped interrupt snapshot now trims trailing ratatui buffer padding without changing visible Ask card semantics."
+      risks:
+        - "Broad TUI nextest remains historically red with snapshot failures and stack overflows; carry this into M12 as release-candidate risk."
+        - "Do not describe M11 as a full alpha.25 TUI merge or broad TUI clean run."
+    m12_release_and_distribution:
+      started_at: "2026-06-26T17:32:22+08:00"
+      completed_at: "2026-06-26T19:12:00+08:00"
+      verdict: released_and_locally_distributed
+      version: "0.140.0-vsp.8.1"
+      release_commit: "26ca6333792c0b6ea0f2504658617447389ba27f"
+      tag: "v0.140.0-vsp.8.1"
+      tag_object: "153e1b4bd7be7bfe921f4d0511cf2547a58a8301"
+      release_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.1"
+      branch: "c9-upstream-0.143.0-alpha.25-vsp8"
+      main_ref: "26ca6333792c0b6ea0f2504658617447389ba27f"
+      archive: ".pipeline/release/v0.140.0-vsp.8.1/vsp-codex-preview-linux-x64-gnu.tar.gz"
+      archive_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.1/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz"
+      sha256_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.1/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz.sha256"
+      sha256: "0ff6e0d34daf6265e23cb99d21b69d9acbbcce4df2067c168f72f0e7a82e567e"
+      test_report: ".pipeline/reviews/C9/M12/test.md"
+      report: ".pipeline/reports/C9/M12-release-candidate.md"
+      audit_report: ".pipeline/reviews/C9/M12/audit.md"
+      validation:
+        release_build: passed
+        package_build: passed
+        sha256_check: passed
+        remote_sha256_download: passed
+        stable_manifest_first_entry: "0.140.0-vsp.8.1"
+        vscode_tests: "17 passed"
+        sqlite_filter_tests: "8 passed"
+        sqlite_runtime_smoke: "0 rows; noisy target total 0"
+        local_distribution: passed
+        local_entrypoints:
+          standalone_current: "vsp-codex 0.140.0-vsp.8.1"
+          vsp_codex: "vsp-codex 0.140.0-vsp.8.1"
+          codex: "vsp-codex 0.140.0-vsp.8.1"
+        gitlab_main_pipeline: "success #216"
+      notes:
+        - "Release asset upload used the GitLab Generic Package Registry-backed Release asset path."
+        - "The published tag remains on the release artifact commit; later status-doc commits must not move it."
+        - "VSCode Remote Machine settings still warn about application-scoped keys; bundled shims were repointed, and local VSCode User settings should keep the same cliExecutable value."
+        - "Already-running VSCode/Remote APP app-server processes may need reload or restart to pick up the new binary."
+        - "This release is not a full upstream alpha.25 merge and not a full-workspace nextest-clean claim."
+  scope:
+    topics:
+      - "Upgrade VSP-Codex base to upstream `rust-v0.140.0-alpha.18`."
+      - "Preserve VSP provider, VSCode Remote SSH, Workflow, Subagent, installer, and release surfaces."
+      - "Publish a new GitLab VSP release after validation and explicit execution gates."
+      - "Write a Deep Research Workflow requirement brief for later Hypo-Workflow implementation."
+    initial_notes:
+      - "Deep Research must preserve Workflow decision boundaries: required clarification uses Question Tool, while external/network/destructive side effects still need the appropriate gates."
+      - "Research output should default under `.pipeline` but support caller-selected locations for Writer or project-specific workflows."
+      - "Codex update assessment should compare current fork baseline against recent upstream changes before proposing cherry-picks or fork work."

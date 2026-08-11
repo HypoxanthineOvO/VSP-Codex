@@ -1,0 +1,78 @@
+phase: discover
+cycle: C10
+status: completed
+created_at: "2026-07-02T16:03:40+08:00"
+completed_at: "2026-07-02T16:30:00+08:00"
+rounds: 3
+p0_configure:
+  decision: reuse
+  source: previous_cycle_snapshot
+  evidence: ".pipeline/plan-state/p0-configure.yaml (C9, confirmed 2026-06-14)"
+  notes: "User confirmed reuse of C9 planning/execution configuration: interactive/medium/3-round minimum, strict worker separation (test/implement/audit), execution subworkers authorized for /hw:start and /hw:resume, balanced automation, focused+risk-based regression."
+context_sources:
+  - debug
+  - archive
+  - knowledge
+injected_context:
+  - ".pipeline/debug/20260627T211653+0800-vscode-desktop-provider-connectivity.md"
+  - ".pipeline/debug/20260627T212448+0800-official-db-and-backend-hijack-repair.md"
+  - ".pipeline/archives/C9-deep-research-built-in-and-codex-fork-assessment/summary.md"
+  - ".pipeline/knowledge/knowledge.compact.md"
+task_category: "Upstream fork full merge plus client connectivity version-adaptation fixes"
+decisions:
+  upstream_strategy:
+    value: full_merge_to_alpha_33
+    target_tag: "rust-v0.143.0-alpha.33"
+    target_commit: "5395e1494c"
+    staging: two_stage
+    stages:
+      - "Stage 1: merge upstream rust-v0.143.0-alpha.25 (reuse C9 M7 conflict inventory and equivalence matrix)"
+      - "Stage 2: merge rust-v0.143.0-alpha.25..rust-v0.143.0-alpha.33 (70 commits, 419 files)"
+    evidence:
+      - "Real merge base is rust-v0.140.0-alpha.18; distance to alpha.33 is 487 commits"
+      - "Latest stable rust-v0.142.5 (2026-06-30); latest prerelease rust-v0.143.0-alpha.33 (2026-07-01)"
+  version_series:
+    value: "0.143.0-vsp.9"
+    note: "New public series aligned with upstream base; current workspace version is 0.140.0-vsp.8.2"
+  delivery_endpoint:
+    value: gitlab_release_after_gates
+    note: "Publish GitLab release after validation and explicit execution gates; local distribution included"
+  vsp_surface_policy:
+    value: reuse_c9_equivalence_matrix
+    notes:
+      - "voice/realtime and remote-control remain non-user-facing for VSP"
+      - "VSP provider/official-service disablement, CLI naming, release channel, Workflow/Subagent surfaces preserve-by-default"
+      - "Upstream 'enable remote plugins by default' must yield to VSP disabled-remote policy"
+      - "multi-agent v2 / Rendezvous WebSocket follow upstream internally but are not exposed as VSP-committed capabilities"
+  connectivity_adaptation_scope:
+    - "Productize 2026-06-27 hotfixes: vscode repair self-heal, app-server socket remap ~/.codex -> ~/.vsp-codex, compat codex wrapper with CODEX_HOME pinning, installer wrapper generation; add regression tests"
+    - "Align app-server protocol capabilities expected by newest VSCode extension: environment info RPC, increased read timeouts, rollout turn items, shutdown log structure"
+    - "Evaluate whether the local systemd vsp-codex-repair.timer can be retired once productized self-heal is reliable"
+  conflict_fallback:
+    value: stop_and_ask
+    note: "On uncontrollable merge conflicts (e.g., upstream refactor breaking core Workflow runtime), pause and report options via Question Tool; no silent downgrade to equivalence convergence"
+validation_contract:
+  methods:
+    - name: focused_tests_plus_smoke
+      commands:
+        - "cargo test -p codex-core workflow_routing"
+        - "cargo test -p codex-app-server --test all request_user_input"
+        - "cargo test -p codex-app-server --test all workflow_markdown_surface"
+        - "cargo test -p codex-tui workflow_slash_routing"
+        - "cargo test -p codex-cli --test vscode"
+        - "cargo test -p codex-state filter"
+        - "SQLite runtime IO smoke (0 noisy rows expected)"
+      pass_signal: "All focused suites green; smoke shows zero noisy-target rows"
+    - name: real_client_connection_acceptance
+      scenario: "On this machine, VSCode Remote Plugin and Desktop/Remote APP connect to VSP-Codex; verify no drift back to official binary/socket; sockets only under ~/.vsp-codex/app-server-control"
+      pass_signal: "vsp-codex vscode status --json configured; all entrypoints report the new version; connections succeed"
+      owner: independent test worker + user manual confirmation for UI clients
+    - name: drift_regression_scenarios
+      scenario: "Simulate extension auto-update/official binary regression and verify repair chain self-heals against real shims"
+      fake_test_rejection: "Audit must reject tests that only mock and never touch real shim/wrapper/socket paths"
+  full_workspace_suite: "Known historically red on this host (libcap.pc missing, app-server integration timeouts); not a release gate, focused+smoke+scenario is the contract"
+worker_separation:
+  mode: strict
+  execution_subworkers: authorized (/hw:start, /hw:resume)
+  required_roles: [test, implement, audit]
+end_signal: "User answered '够了，继续后续阶段' in round 3"

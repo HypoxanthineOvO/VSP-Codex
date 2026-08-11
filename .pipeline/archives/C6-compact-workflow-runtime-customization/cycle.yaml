@@ -1,0 +1,29 @@
+cycle:
+  number: 6
+  name: "Compact 机制、上下文管理与 Workflow 定制化接入"
+  type: feature
+  status: completed
+  started: "2026-05-29T00:00:00+08:00"
+  completed: "2026-05-29T18:16:02+08:00"
+  closed_at: "2026-06-14T08:44:37+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources:
+    - archive
+    - deferred
+  previous_cycle: C5
+  summary: "Completed compact fallback context, structured Workflow file helpers, native Workflow routing, ordinary conversation capture, and Workflow command/status UX polish."
+  lessons: "Historical archive metadata was reconstructed from reports, prompts, reviews, and PROGRESS because C6 had not been archived when originally completed."
+  plan:
+    phase: archived_reconstructed
+    prompts_total: 5
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+    blocked_on: null
+  lifecycle_policy:
+    reject:
+      default_action: needs_revision
+    accept:
+      next: follow_up_plan
+  continuations: []

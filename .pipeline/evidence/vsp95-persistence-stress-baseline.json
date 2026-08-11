@@ -1,0 +1,411 @@
+{
+  "aggregate": {
+    "compatibilityReadLatencyMs": {
+      "count": 2400,
+      "max": 6152,
+      "min": 521,
+      "p50": 654,
+      "p95": 723,
+      "p99": 748
+    },
+    "maxRssDeltaKiB": 110852,
+    "metadataWriteLatencyMs": {
+      "count": 240,
+      "max": 1642,
+      "min": 1575,
+      "p50": 1586,
+      "p95": 1592,
+      "p99": 1610
+    },
+    "stateReadLatencyMs": {
+      "count": 2400,
+      "max": 18,
+      "min": 0,
+      "p50": 1,
+      "p95": 1,
+      "p99": 1
+    },
+    "threadStartLatencyMs": {
+      "count": 240,
+      "max": 159,
+      "min": 112,
+      "p50": 147,
+      "p95": 154,
+      "p99": 157
+    },
+    "writeLatencyMs": {
+      "count": 240,
+      "max": 1787,
+      "min": 1693,
+      "p50": 1732,
+      "p95": 1744,
+      "p99": 1764
+    }
+  },
+  "codexBin": "/home/heyx/.vsp-codex/packages/standalone/releases/0.145.0-vsp.9.5-x86_64-unknown-linux-gnu/bin/vsp-codex",
+  "generatedAt": "2026-08-01T12:54:00.552583+00:00",
+  "idleFileSizes": {
+    "after": {
+      "logs_2.sqlite": 7221248,
+      "logs_2.sqlite-shm": 32768,
+      "logs_2.sqlite-wal": 4746272,
+      "state_5.sqlite": 528384,
+      "state_5.sqlite-shm": 32768,
+      "state_5.sqlite-wal": 4375472
+    },
+    "before": {
+      "logs_2.sqlite": 7221248,
+      "logs_2.sqlite-shm": 32768,
+      "logs_2.sqlite-wal": 4746272,
+      "state_5.sqlite": 528384,
+      "state_5.sqlite-shm": 32768,
+      "state_5.sqlite-wal": 4375472
+    },
+    "growth": {
+      "logs_2.sqlite": 0,
+      "logs_2.sqlite-shm": 0,
+      "logs_2.sqlite-wal": 0,
+      "state_5.sqlite": 0,
+      "state_5.sqlite-shm": 0,
+      "state_5.sqlite-wal": 0
+    }
+  },
+  "lockErrors": [],
+  "parameters": {
+    "idleSeconds": 10.0,
+    "postStartDelayMs": 0,
+    "processes": 6,
+    "readIterationsPerProcess": 400,
+    "sharedCodexHome": true,
+    "timeoutSeconds": 20.0,
+    "writeIterationsPerProcess": 40
+  },
+  "runId": "98ffd292-ff40-436a-8dc7-95d80affbca4",
+  "schemaVersion": 1,
+  "sqlite": {
+    "logs_2": {
+      "bytes": 7221248,
+      "exists": true,
+      "freelistCount": 113,
+      "journalMode": "wal",
+      "pageCount": 1763,
+      "quickCheck": "ok",
+      "rowCount": 9240
+    },
+    "state_5": {
+      "bytes": 528384,
+      "exists": true,
+      "freelistCount": 0,
+      "journalMode": "wal",
+      "pageCount": 140,
+      "quickCheck": "ok",
+      "rowCount": 280
+    }
+  },
+  "status": "passed",
+  "stderrTailByWorker": {
+    "0": "ing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:15.852801Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:16.471713Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:16.471800Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:16.471876Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:17.102288Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:17.102386Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:17.102417Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n",
+    "1": "ing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:40.328878Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:40.995458Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:40.995583Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:40.995613Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:41.710200Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:41.710307Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:41.710336Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n",
+    "2": "ing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:38.629819Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:39.297699Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:39.297806Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:39.297837Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:39.977088Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:39.977203Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:39.977236Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n",
+    "3": "ing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:27.486370Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:28.082907Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:28.083012Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:28.083062Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:28.706281Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:28.706379Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:28.706408Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n",
+    "4": "ing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:20.943125Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:21.547676Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:21.547776Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:21.547805Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:22.150188Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:22.150294Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:22.150366Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n",
+    "5": "ing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:48.677284Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:49.351384Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:49.351506Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:49.351534Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:50.030779Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f92bc-df5d-7512-a292-666f56172583\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:50.030893Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f928f-6d56-7330-a37a-7d8a55e5bc5e\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n2026-08-01T12:53:50.030924Z  WARN codex_app_server::request_processors::thread_processor: replacing unknown API thread model provider with configured fallback thread_id=\"019f8f63-cbdc-79e3-83cd-2fe78b6bc33a\" model_provider=\"vsp\" fallback_model_provider=\"stress\"\n"
+  },
+  "workerErrors": [],
+  "workers": [
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 6017,
+        "min": 521,
+        "p50": 621,
+        "p95": 686,
+        "p99": 710
+      },
+      "error": null,
+      "initializeMs": 152,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 1600,
+        "min": 1577,
+        "p50": 1586,
+        "p95": 1592,
+        "p99": 1593
+      },
+      "pid": 135377,
+      "rssAfterReadsKiB": 172292,
+      "rssBeforeReadsKiB": 61440,
+      "rssDeltaKiB": 110852,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 2,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 159,
+        "min": 125,
+        "p50": 148,
+        "p95": 154,
+        "p99": 159
+      },
+      "worker": 0,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 1752,
+        "min": 1714,
+        "p50": 1733,
+        "p95": 1742,
+        "p99": 1748
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 6152,
+        "min": 556,
+        "p50": 679,
+        "p95": 728,
+        "p99": 757
+      },
+      "error": null,
+      "initializeMs": 156,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 1637,
+        "min": 1575,
+        "p50": 1585,
+        "p95": 1591,
+        "p99": 1596
+      },
+      "pid": 135379,
+      "rssAfterReadsKiB": 148492,
+      "rssBeforeReadsKiB": 67584,
+      "rssDeltaKiB": 80908,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 2,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 152,
+        "min": 129,
+        "p50": 145,
+        "p95": 152,
+        "p99": 152
+      },
+      "worker": 1,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 1787,
+        "min": 1710,
+        "p50": 1730,
+        "p95": 1737,
+        "p99": 1741
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 6083,
+        "min": 537,
+        "p50": 673,
+        "p95": 723,
+        "p99": 741
+      },
+      "error": null,
+      "initializeMs": 151,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 1642,
+        "min": 1577,
+        "p50": 1586,
+        "p95": 1593,
+        "p99": 1610
+      },
+      "pid": 135381,
+      "rssAfterReadsKiB": 165008,
+      "rssBeforeReadsKiB": 64512,
+      "rssDeltaKiB": 100496,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 3,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 159,
+        "min": 112,
+        "p50": 147,
+        "p95": 154,
+        "p99": 154
+      },
+      "worker": 2,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 1783,
+        "min": 1693,
+        "p50": 1730,
+        "p95": 1744,
+        "p99": 1764
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 5825,
+        "min": 539,
+        "p50": 640,
+        "p95": 694,
+        "p99": 730
+      },
+      "error": null,
+      "initializeMs": 148,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 1632,
+        "min": 1579,
+        "p50": 1585,
+        "p95": 1590,
+        "p99": 1591
+      },
+      "pid": 135383,
+      "rssAfterReadsKiB": 160388,
+      "rssBeforeReadsKiB": 64512,
+      "rssDeltaKiB": 95876,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 18,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 2
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 153,
+        "min": 122,
+        "p50": 147,
+        "p95": 152,
+        "p99": 152
+      },
+      "worker": 3,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 1775,
+        "min": 1705,
+        "p50": 1734,
+        "p95": 1741,
+        "p99": 1741
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 6070,
+        "min": 541,
+        "p50": 622,
+        "p95": 700,
+        "p99": 742
+      },
+      "error": null,
+      "initializeMs": 179,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 1593,
+        "min": 1581,
+        "p50": 1587,
+        "p95": 1592,
+        "p99": 1593
+      },
+      "pid": 135385,
+      "rssAfterReadsKiB": 153656,
+      "rssBeforeReadsKiB": 61440,
+      "rssDeltaKiB": 92216,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 16,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 2
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 157,
+        "min": 123,
+        "p50": 147,
+        "p95": 153,
+        "p99": 155
+      },
+      "worker": 4,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 1750,
+        "min": 1707,
+        "p50": 1734,
+        "p95": 1744,
+        "p99": 1745
+      }
+    },
+    {
+      "compatibilityReadLatencyMs": {
+        "count": 400,
+        "max": 6123,
+        "min": 638,
+        "p50": 694,
+        "p95": 734,
+        "p99": 749
+      },
+      "error": null,
+      "initializeMs": 173,
+      "metadataWriteLatencyMs": {
+        "count": 40,
+        "max": 1606,
+        "min": 1580,
+        "p50": 1586,
+        "p95": 1591,
+        "p99": 1593
+      },
+      "pid": 135387,
+      "rssAfterReadsKiB": 167964,
+      "rssBeforeReadsKiB": 70656,
+      "rssDeltaKiB": 97308,
+      "stateReadLatencyMs": {
+        "count": 400,
+        "max": 15,
+        "min": 0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "threadStartLatencyMs": {
+        "count": 40,
+        "max": 156,
+        "min": 124,
+        "p50": 148,
+        "p95": 155,
+        "p99": 156
+      },
+      "worker": 5,
+      "writeLatencyMs": {
+        "count": 40,
+        "max": 1760,
+        "min": 1707,
+        "p50": 1734,
+        "p95": 1744,
+        "p99": 1744
+      }
+    }
+  ]
+}

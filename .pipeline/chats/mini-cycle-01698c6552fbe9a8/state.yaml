@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019f18c8-5016-74d1-80ff-7d2d43d596ed
+topic_summary: OK，OK，你先做一下吧。 1. 摸底与测试：要测试什么的你都可以测，先不要直接开始改，先把它的所有东西都摸清楚。 2. 修改原则：如果没有风险，只是调整提示词什么的，你就直接改就好。 3. 优化 workflow：因为里面内置了一个 workflow，你可以先把内置的 workflow 更新一下，然后再看有没有其他可以增强优化的地方。 先把计划定清楚，然后再开始做，好吧？
+turn_count: 17

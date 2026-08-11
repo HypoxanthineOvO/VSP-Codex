@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "test_root": "/tmp/vsp11-install-e2e.lOVEWW",
+  "archives": {
+    "baseline_sha256": "9554fa9609326d29387f4df875b3be4445c850862ea216c0bbfc66b6f080b3a8",
+    "candidate_sha256": "f5ddd9265b3275bbb9c26cbbef419a94fd7b1431785a92a6819d18c4ec740dad"
+  },
+  "stages": [
+    {
+      "action": "install-baseline",
+      "version": "vsp-codex 0.145.0-vsp.9.5",
+      "current": "/tmp/vsp11-install-e2e.lOVEWW/vsp-home/packages/standalone/releases/0.145.0-vsp.9.5-x86_64-unknown-linux-gnu",
+      "marker": "preserve-across-upgrades"
+    },
+    {
+      "action": "upgrade-candidate",
+      "version": "vsp-codex 0.145.0-vsp.11.0-alpha.1",
+      "current": "/tmp/vsp11-install-e2e.lOVEWW/vsp-home/packages/standalone/releases/0.145.0-vsp.11.0-alpha.1-x86_64-unknown-linux-gnu",
+      "marker": "preserve-across-upgrades"
+    },
+    {
+      "action": "rollback-baseline",
+      "version": "vsp-codex 0.145.0-vsp.9.5",
+      "current": "/tmp/vsp11-install-e2e.lOVEWW/vsp-home/packages/standalone/releases/0.145.0-vsp.9.5-x86_64-unknown-linux-gnu",
+      "marker": "preserve-across-upgrades"
+    }
+  ],
+  "user_home_files": [
+    "user-marker.txt"
+  ]
+}

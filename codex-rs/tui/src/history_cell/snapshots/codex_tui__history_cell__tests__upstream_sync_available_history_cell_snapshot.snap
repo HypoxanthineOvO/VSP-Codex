@@ -1,0 +1,15 @@
+---
+source: tui/src/history_cell/tests.rs
+expression: rendered
+---
+╭────────────────────────────────────────────────────────────────────╮
+│ Upstream sync available                                            │
+│ VSP baseline: rust-v0.145.0-alpha.2                                │
+│ Latest upstream: rust-v0.145.0-alpha.3                             │
+│                                                                    │
+│ Review upstream and Cherry Pick compatible commits into VSP.       │
+│ Do not install the official Codex binary over VSP.                 │
+│                                                                    │
+│ Official release:                                                  │
+│ https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.3 │
+╰────────────────────────────────────────────────────────────────────╯

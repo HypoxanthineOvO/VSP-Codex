@@ -1,0 +1,41 @@
+cycle:
+  number: 2
+  name: "基础体验优化"
+  type: feature
+  status: completed
+  started: "2026-05-25T22:30:12+08:00"
+  completed: "2026-05-26T07:07:17+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources: []
+  previous_cycle: C1
+  summary: "Completed C2 foundation experience optimization: default YOLO, Subagent policy/panel, Hypo-Translate, Context Window display, MCP startup noise reduction, static localization, integration smoke, and audit follow-ups."
+  lessons:
+    - "Actual TUI smoke is necessary because unit tests did not catch startup auth noise or provider token logging."
+    - "Runtime translation must treat hidden/transcript-only content as private and avoid sending it to translation services."
+    - "Official remote plugin paths need explicit feature gates in VSP to avoid ChatGPT auth noise while preserving local plugins, Skills, and MCP."
+  plan:
+    phase: ready_to_start
+    generated_at: "2026-05-25T23:42:15+08:00"
+    prompts_total: 6
+    requires_user_confirmation_before_start: false
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+  lifecycle_policy:
+    worker_separation: strict
+    required_roles:
+      - test
+      - implement
+      - audit
+    subworkers_authorized: true
+    reject:
+      default_action: needs_revision
+    accept:
+      next_action: start_execution
+    gates:
+      after_start: none
+      stop_only_for:
+        - real_blocker
+        - repeated_validation_failure
+        - missing_external_input
+        - final_user_acceptance

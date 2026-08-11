@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019eb53a-ce7e-77a1-8b06-58fb0f61de57
+topic_summary: 现在的 VSP-Codex 在输入 hw:xxx 的时候经常会跑出来两个一样的补全提示，似乎一个是老版本一个是新版本，请帮我排查一下，把老版本干掉
+turn_count: 12

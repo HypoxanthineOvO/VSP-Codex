@@ -1,0 +1,61 @@
+cycle:
+  number: 10
+  name: "Upstream Sync And VSP Client Connectivity Adaptation"
+  type: feature
+  status: completed
+  started: "2026-07-02T16:03:40+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources:
+    - debug
+    - archive
+    - knowledge
+  previous_cycle: C9
+  summary: "Merge the VSP fork through rust-v0.145.0-alpha.4, validate VSCode Plugin/Desktop/Remote APP connectivity, select the dependency-closed post-tag production fixes, and prepare 0.145.0-vsp.9 behind explicit release gates."
+  lessons: "Freeze the upstream cutoff only after the final release build; when main advances, invalidate GREEN and artifacts before publication. Large GitLab assets should continue through Generic Package Registry so stable release download URLs avoid uploads endpoint limits."
+  plan:
+    phase: completed
+    generated_at: "2026-07-02T16:40:00+08:00"
+    confirmed_at: "2026-07-02T16:43:45+08:00"
+    prompts_total: 5
+    prompt_range: "c10-001..c10-005"
+    plan_state:
+      - ".pipeline/plan-state/c10-discover.yaml"
+      - ".pipeline/plan-state/c10-decompose.yaml"
+    p0_configure: "reuse C9 snapshot (.pipeline/plan-state/p0-configure.yaml)"
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: true
+    continuous_execution_after_start: true
+    execution_handoff:
+      platform: codex
+      note: "User will start execution from Codex directly (2026-07-02). Plan approved as complete; /hw:start (or resume) issued inside Codex is the execution confirmation. Codex execution subworkers are already authorized in project config for /hw:start and /hw:resume with strict separation."
+    blocked_on: null
+  execution_context:
+    upstream_target_tag: "rust-v0.145.0-alpha.4"
+    upstream_target_commit: "8a6381616f"
+    post_tag_cherry_picks:
+      - "610f09abcf"
+      - "bfe31598c7"
+      - "dffe1f02a3"
+      - "076a110eb8"
+      - "dfefd8aa8b"
+      - "08ba14b03d"
+      - "c9d52de5ca"
+      - "203d530cc6"
+      - "f93c18ed0f"
+      - "5c19155cbd"
+    stage1_tag: "rust-v0.143.0-alpha.25"
+    merge_base_before_c10: "rust-v0.140.0-alpha.18"
+    upgrade_branch: "c10-upstream-0.145.0-alpha.4"
+    public_version_target: "0.145.0-vsp.9"
+    conflict_fallback: stop_and_ask
+    release_gate: explicit_question_tool_confirmation
+  scope:
+    topics:
+      - "Sync the VSP-Codex fork to rust-v0.145.0-alpha.4 and select only dependency-closed post-tag production fixes before the VSP release dry run."
+      - "Check and fix version-adaptation issues for clients connecting to VSP-Codex: VSCode Plugin, Codex Desktop / Remote APP, and app-server socket/protocol surfaces."
+      - "Preserve VSP runtime and release surfaces per the C9 equivalence matrix (preserve-by-default)."
+    initial_notes:
+      - "2026-06-27 debug records (vscode-desktop-provider-connectivity, official-db-and-backend-hijack-repair) document launch-path and socket-home drift fixes plus a local repair timer; C10 should turn hotfix-level mitigations into durable, versioned behavior where appropriate."
+      - "C9 conflict inventory showed a full alpha.25 merge has broad conflicts; reassess against the newest upstream tag before deciding full merge vs continued equivalence convergence."
+      - "Current published baseline is v0.140.0-vsp.8.1 with local hotfix series up to v0.140.0-vsp.8.2."

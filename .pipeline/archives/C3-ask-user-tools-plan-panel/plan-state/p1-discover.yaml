@@ -1,0 +1,123 @@
+p1_discover:
+  status: completed
+  started_at: "2026-05-26T18:00:00+08:00"
+  source_context:
+    - ".pipeline/deep-plans/DP001-ask-user-tools/plan-context.md"
+    - ".pipeline/config.yaml"
+    - ".pipeline/cycle.yaml"
+  workflow_kind: build
+  interaction:
+    mode: interactive
+    minimum_rounds: 3
+    completed_rounds: 3
+    exit_signal_received: true
+    exit_signal: "用户明确要求：进入 P2。"
+  p0_configure_ref: ".pipeline/plan-state/p0-configure.yaml"
+  discovered:
+    task_category: "Rust Codex-VSP feature work touching protocol, core, app-server, and TUI."
+    expected_effect:
+      - "Ask User Tools become a structured, recoverable, cross-client interaction primitive."
+      - "Plan/SubPlan becomes a persistent structured TUI panel instead of history-only plan cells."
+    validation_method:
+      status: partially_confirmed
+      draft:
+        - "Run app-server protocol schema generation/tests when v2 payload changes."
+        - "Run focused core tests for request_user_input and plan state behavior."
+        - "Run codex-tui tests and insta snapshot review for visible TUI changes."
+      user_confirmed:
+        - "Local focused tests, TUI snapshots, and schema fixtures are acceptable implementation validation."
+        - "Final C3 acceptance cannot pass until the user performs a real cross-device resume test."
+      acceptance_gate:
+        manual_cross_device_resume_required: true
+        owner: user
+        note: "The implementation can be code/test complete before this, but Cycle acceptance remains blocked until the user actually switches computers and verifies pending Ask resume behavior."
+    milestone_granularity:
+      status: confirmed
+      selected: "approximately 7 milestones as proposed in plan-context.md"
+    native_ask_capability:
+      status: deferred_to_implementation
+      note: "User has no preferred field name; implementation should choose a repo-consistent experimental capability name."
+    ask_usage_policy:
+      status: confirmed
+      hard_per_turn_limit: false
+      summary: "Ask is a general collaboration primitive, not only a Workflow Plan tool. It must support confirmations, gates, acceptance, and ordinary moments where asking is appropriate."
+      desired_shape: "A question plus a short explanatory summary plus an answer module, with enough context for the user to answer well."
+    final_acceptance:
+      status: confirmed
+      cross_device_resume_required_in_cycle: true
+      failure_policy: "If real cross-device resume fails, C3 cannot be accepted; extend milestones inside this Cycle and fix it."
+    plan_panel_interaction:
+      status: confirmed
+      default_idle_collapsed: true
+      manual_expand_shortcut_required: true
+      note: "Default idle can collapse to a one-line summary, but the user must have a shortcut to expand and inspect details."
+    ask_description_model:
+      status: confirmed
+      request_summary_required: true
+      per_question_description_supported: true
+      note: "Ask should support both a request-level summary and optional per-question explanatory text."
+    plan_app_server_exposure:
+      status: confirmed
+      expose_structured_plan_state_in_v2: true
+      note: "Plan/SubPlan state must be available to future VSCode/GUI clients through app-server v2, not only rendered inside the TUI."
+  worker_separation_gate:
+    status: satisfied
+    source: ".pipeline/config.yaml"
+    mode: strict
+    codex_execution_subworkers_authorized: true
+    authorized_scopes:
+      - /hw:start
+      - /hw:resume
+  rounds:
+    - round: 1
+      answered_at: "2026-05-26T18:05:00+08:00"
+      questions:
+        - id: P1-Q001
+          answer: "可以使用本地 focused tests、TUI snapshots 和 schema fixtures 作为主要实现验证，但最终验收通过前必须由用户真实换电脑测试 resume。"
+        - id: P1-Q002
+          answer: "同意按建议拆成约 7 个 milestone。"
+        - id: P1-Q003
+          answer: "native Ask capability 字段名没有特别意见，留给实现阶段按代码风格命名。"
+    - round: 2
+      answered_at: "2026-05-26T18:10:00+08:00"
+      questions:
+        - id: P1-Q004
+          answer: "不需要每 turn/问题数硬限制。Ask 不是只给 Workflow Plan 用，Confirm Gate、验收和普通合适时机都可以用。期望形态是问题 + 简述 + 回答模块，模型能写足够信息帮助用户回答。"
+        - id: P1-Q005
+          answer: "未回答，继续追问。"
+        - id: P1-Q006
+          answer: "跨设备 resume 必须在 C3 内通过；失败时不能接受 Cycle，可以 Extend Milestone 回修。"
+    - round: 3
+      answered_at: "2026-05-26T18:15:00+08:00"
+      questions:
+        - id: P1-Q005
+          answer: "Default idle 折叠态可以提供快捷键展开。"
+        - id: P1-Q007
+          answer: "Ask 的 request 总说明和每个 question 自己的说明都要支持。"
+        - id: P1-Q008
+          answer: "Plan/SubPlan 常驻状态也要通过 app-server v2 暴露给未来 VSCode/GUI。"
+  open_questions:
+    - id: P1-Q001
+      question: "真实验收验证的优先级和边界是否接受使用本地 focused tests + TUI snapshots + schema fixtures，而不是要求人工跨设备实测？"
+      status: answered
+    - id: P1-Q002
+      question: "C3 的 execution granularity 是否按建议拆成 7 个 milestone，还是希望更少的粗粒度 milestone？"
+      status: answered
+    - id: P1-Q003
+      question: "app-server native Ask capability 的设计是否可以由实现阶段命名，还是需要现在指定字段名？"
+      status: answered
+    - id: P1-Q004
+      question: "Ask Tools 的模型使用边界是否要加硬性限制，例如每 turn 最多一次 Ask 或每次最多 5 个问题？"
+      status: answered
+    - id: P1-Q005
+      question: "Plan/SubPlan 面板的 Default idle 折叠态是否需要可手动展开，还是只在非 idle 自动展开？"
+      status: answered
+    - id: P1-Q006
+      question: "真实换电脑验收失败时，C3 是整体 reject 回修，还是允许先接受非 resume 部分并开后续 Cycle 修复？"
+      status: answered
+    - id: P1-Q007
+      question: "Ask 的“简述”应该是每个 Ask request 一个总说明，还是每个 question 都可以带自己的说明？"
+      status: answered
+    - id: P1-Q008
+      question: "Plan/SubPlan 面板是否也要通过 app-server 暴露给未来 VSCode/GUI，还是 C3 先只做 TUI 常驻面板？"
+      status: answered

@@ -1,0 +1,43 @@
+schema_version: 1
+category: config-notes
+entries:
+  -
+    record_id: C9-DECISION-official-session-compatibility-boundary-20260607
+    type: chat
+    source: C9-session-compatibility-audit
+    created_at: "2026-06-07T17:35:00+08:00"
+    summary: VSP sessions must remain official-compatible; raw official session migration requires explicit user authorization and backups.
+    tags:
+      - c9
+      - official-codex
+      - sessions
+      - compatibility
+      - privacy
+    refs:
+      files:
+        - codex-rs/protocol/src/protocol.rs
+        - codex-rs/rollout/src/recorder.rs
+        - codex-rs/rollout/src/official_codex_discovery.rs
+        - codex-rs/rollout/tests/official_codex_discovery.rs
+    items:
+  -
+    record_id: C9-PATCH-vscode-provider-runtime-boundaries-20260607
+    type: patch
+    source: P001
+    created_at: "2026-06-07T17:35:00+08:00"
+    summary: Empty provider and inherited CODEX_HOME are separate VSCode compatibility boundaries.
+    tags:
+      - c9
+      - vscode
+      - provider
+      - codex-home
+      - sessions
+      - compatibility
+    refs:
+      files:
+        - codex-rs/app-server/src/request_processors/thread_processor.rs
+        - codex-rs/app-server/src/request_processors/turn_processor.rs
+        - codex-rs/cli/src/vscode_cmd.rs
+        - codex-rs/cli/tests/vscode.rs
+        - .pipeline/patches/P001-vscode-wrapper-pins-vsp-home.md
+    items:

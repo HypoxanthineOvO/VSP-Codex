@@ -1,0 +1,534 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "selection": "Choose the smallest group that protects the behavior changed in the current task. Combine groups only when the change crosses their contracts.",
+    "failure": "Fix failures caused by the current change and rerun the group. If a failure is unrelated, prove that with the smallest focused reproduction and stop on a real blocker; do not hand off a raw failure inventory.",
+    "fullSuite": "upstream-all is not routine validation. Run it only when the user explicitly requests it, a shared test harness changes, or a mechanical workspace-wide change makes focused selection unreliable. A reason is mandatory."
+  },
+  "groups": {
+    "smoke": {
+      "tier": "required",
+      "ciBlocking": true,
+      "purpose": "Prove that the current VSP binary builds and reaches minimal CLI, TUI, and app-server interactions.",
+      "value": "Catches broken builds, wrong binary wiring, startup crashes, blank TUI first frames, and app-server handshake regressions.",
+      "useWhen": [
+        "Before handing off Rust product, CI, or packaging changes",
+        "When startup, CLI routing, TUI bootstrap, or app-server launch changes"
+      ],
+      "prerequisites": [
+        "Rust toolchain and locked Cargo dependencies",
+        "Linux or macOS because the TUI probe uses a PTY"
+      ],
+      "commands": [
+        {
+          "cwd": ".",
+          "argv": ["just", "vsp-ci"]
+        }
+      ]
+    },
+    "build-contracts": {
+      "tier": "contract",
+      "ciBlocking": false,
+      "purpose": "Validate compile-drift fixtures, Cargo/Bazel binary unit-test parity, enabled doctests, and Bazel package loading.",
+      "value": "Prevents API fixtures and binary-root tests from compiling under Cargo while being silently missing or unloadable under Bazel.",
+      "useWhen": [
+        "Cargo targets, Config/protocol fixtures, Bazel crate rules, or test binary dependencies change",
+        "A test exists in a binary root and must remain visible to both Cargo and Bazel"
+      ],
+      "prerequisites": [
+        "Rust toolchain and Cargo",
+        "Bazel",
+        "Native bwrap behavior is validated separately; Cargo commands in this group skip its embedded build"
+      ],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {"CODEX_SKIP_BWRAP_BUILD": "1"},
+          "argv": [
+            "cargo",
+            "test",
+            "-p",
+            "codex-install-context",
+            "-p",
+            "codex-app-server-client",
+            "-p",
+            "codex-thread-manager-sample"
+          ]
+        },
+        {
+          "cwd": "codex-rs",
+          "env": {"CODEX_SKIP_BWRAP_BUILD": "1"},
+          "argv": [
+            "cargo",
+            "test",
+            "-p",
+            "codex-cli",
+            "-p",
+            "codex-state",
+            "-p",
+            "codex-app-server",
+            "-p",
+            "codex-exec",
+            "--bin",
+            "vsp-codex",
+            "--bin",
+            "logs_client",
+            "--bin",
+            "codex-app-server",
+            "--bin",
+            "codex-exec"
+          ]
+        },
+        {
+          "cwd": "codex-rs",
+          "env": {"CODEX_SKIP_BWRAP_BUILD": "1"},
+          "argv": [
+            "cargo",
+            "test",
+            "-p",
+            "codex-core",
+            "-p",
+            "codex-state",
+            "--doc"
+          ]
+        },
+        {
+          "cwd": ".",
+          "argv": ["bazel", "query", "//codex-rs/..."]
+        },
+        {
+          "cwd": ".",
+          "argv": [
+            "bazel",
+            "test",
+            "--test_output=errors",
+            "//codex-rs/cli:cli-vsp-codex-unit-tests",
+            "//codex-rs/state:state-logs_client-unit-tests",
+            "//codex-rs/app-server:app-server-codex-app-server-unit-tests",
+            "//codex-rs/exec:exec-codex-exec-unit-tests"
+          ]
+        }
+      ]
+    },
+    "cli": {
+      "tier": "focused",
+      "ciBlocking": false,
+      "purpose": "Validate one named CLI parsing, doctor, update, or command-routing behavior.",
+      "value": "Protects user-facing diagnostics and command semantics without running unrelated core or TUI integration tests.",
+      "useWhen": [
+        "Files under codex-rs/cli change",
+        "Command flags, doctor output, update policy, or top-level routing changes"
+      ],
+      "prerequisites": ["A test-name filter tied to the changed CLI behavior"],
+      "requiresFilter": true,
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {
+            "RUST_MIN_STACK": "8388608",
+            "NEXTEST_PROFILE": "local"
+          },
+          "argv": [
+            "cargo",
+            "nextest",
+            "run",
+            "--no-fail-fast",
+            "--no-tests=fail",
+            "-p",
+            "codex-cli",
+            "{filter}"
+          ]
+        }
+      ]
+    },
+    "core": {
+      "tier": "focused",
+      "ciBlocking": false,
+      "purpose": "Validate one named codex-core behavior across request construction, tools, config, goals, conversation state, or host integration.",
+      "value": "Core has a very large suite; a required name filter preserves high-signal behavioral coverage without importing unrelated failures.",
+      "useWhen": [
+        "Files under codex-rs/core change",
+        "A shared protocol or tool change alters core behavior"
+      ],
+      "prerequisites": ["A test-name filter tied to the changed behavior"],
+      "requiresFilter": true,
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {
+            "RUST_MIN_STACK": "8388608",
+            "NEXTEST_PROFILE": "local"
+          },
+          "argv": [
+            "cargo",
+            "nextest",
+            "run",
+            "--no-fail-fast",
+            "--no-tests=fail",
+            "-p",
+            "codex-core",
+            "{filter}"
+          ]
+        }
+      ]
+    },
+    "app-server": {
+      "tier": "focused",
+      "ciBlocking": false,
+      "purpose": "Validate one named public JSON-RPC behavior in the app-server implementation or remote client.",
+      "value": "Protects externally observable request, notification, process, and handoff behavior without running the whole app-server suite.",
+      "useWhen": [
+        "Files under codex-rs/app-server or codex-rs/app-server-client change",
+        "Public JSON-RPC behavior or app-server/core routing changes"
+      ],
+      "prerequisites": ["A test-name filter tied to the changed API behavior"],
+      "requiresFilter": true,
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {
+            "RUST_MIN_STACK": "8388608",
+            "NEXTEST_PROFILE": "local"
+          },
+          "argv": [
+            "cargo",
+            "nextest",
+            "run",
+            "--no-fail-fast",
+            "--no-tests=fail",
+            "-p",
+            "codex-app-server",
+            "-p",
+            "codex-app-server-client",
+            "{filter}"
+          ]
+        }
+      ]
+    },
+    "exec": {
+      "tier": "focused",
+      "ciBlocking": false,
+      "purpose": "Validate one named headless exec parsing, event projection, final-output, or resume behavior.",
+      "value": "Protects machine-readable and terminal exec output, where stale or missing final messages can silently break automation.",
+      "useWhen": [
+        "Files under codex-rs/exec change",
+        "Headless event projection, final message, JSONL, resume, or CLI execution behavior changes"
+      ],
+      "prerequisites": ["A test-name filter tied to the changed exec behavior"],
+      "requiresFilter": true,
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {
+            "RUST_MIN_STACK": "8388608",
+            "NEXTEST_PROFILE": "local"
+          },
+          "argv": [
+            "cargo",
+            "nextest",
+            "run",
+            "--no-fail-fast",
+            "--no-tests=fail",
+            "-p",
+            "codex-exec",
+            "{filter}"
+          ]
+        }
+      ]
+    },
+    "protocol": {
+      "tier": "contract",
+      "ciBlocking": false,
+      "purpose": "Validate the complete app-server protocol wire model and generated-schema contract.",
+      "value": "The crate is small and its tests catch Rust/TypeScript/JSON shape drift at the public API boundary.",
+      "useWhen": [
+        "Files under codex-rs/app-server-protocol change",
+        "A public request, response, notification, field, enum, or experimental marker changes"
+      ],
+      "prerequisites": ["Regenerated schema fixtures when API shapes change"],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "test", "-p", "codex-app-server-protocol"]
+        }
+      ]
+    },
+    "tui": {
+      "tier": "focused",
+      "ciBlocking": false,
+      "purpose": "Validate one named TUI rendering, input, streaming, replay, or routing behavior and surface snapshot changes for review.",
+      "value": "Focused TUI tests preserve user-visible behavior while avoiding known unrelated failures in the broad upstream suite.",
+      "useWhen": [
+        "Files under codex-rs/tui change",
+        "User-visible terminal output, interaction, streaming, replay, or routing changes"
+      ],
+      "prerequisites": [
+        "A test-name filter tied to the changed UI behavior",
+        "Review every generated .snap.new file before acceptance"
+      ],
+      "requiresFilter": true,
+      "postChecks": ["noPendingSnapshots"],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {
+            "RUST_MIN_STACK": "8388608",
+            "NEXTEST_PROFILE": "local"
+          },
+          "argv": [
+            "cargo",
+            "nextest",
+            "run",
+            "--no-fail-fast",
+            "--no-tests=fail",
+            "-p",
+            "codex-tui",
+            "{filter}"
+          ]
+        }
+      ]
+    },
+    "persistence": {
+      "tier": "contract",
+      "ciBlocking": false,
+      "purpose": "Validate rollout persistence plus VSP session compatibility and resume classification.",
+      "value": "Protects durable user history and cross-version session behavior, where regressions can strand or misclassify existing sessions.",
+      "useWhen": [
+        "Rollout, history, session metadata, resume, migration, or compatibility logic changes",
+        "Release work changes serialized state"
+      ],
+      "prerequisites": ["Rust and Python 3"],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "test", "-p", "codex-rollout"]
+        },
+        {
+          "cwd": ".",
+          "argv": [
+            "{python}",
+            "-m",
+            "unittest",
+            "scripts.test_vsp_session_compat"
+          ]
+        }
+      ]
+    },
+    "release": {
+      "tier": "release",
+      "ciBlocking": false,
+      "purpose": "Validate package, installer, session-compatibility, and preview-release logic without publishing or installing.",
+      "value": "Catches artifact metadata, archive layout, installer policy, and release assembly regressions before release operations.",
+      "useWhen": [
+        "Packaging, installer, version, release, or artifact scripts change",
+        "Before preparing a VSP preview release"
+      ],
+      "prerequisites": ["Python 3"],
+      "commands": [
+        {
+          "cwd": ".",
+          "argv": ["just", "vsp-release-check"]
+        }
+      ]
+    },
+    "sdk-typescript": {
+      "tier": "focused",
+      "ciBlocking": false,
+      "purpose": "Validate one TypeScript SDK Jest file against the current VSP binary.",
+      "value": "Protects SDK process, streaming, abort, and option behavior while keeping the runtime under explicit VSP control.",
+      "useWhen": [
+        "Files under sdk/typescript change",
+        "CLI JSONL, process, streaming, or abort behavior used by the SDK changes"
+      ],
+      "prerequisites": [
+        "pnpm install completed from pnpm-lock.yaml",
+        "A Jest test-file path filter"
+      ],
+      "requiresFilter": true,
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "build", "-p", "codex-cli", "--bin", "vsp-codex"]
+        },
+        {
+          "cwd": ".",
+          "env": {
+            "CODEX_PATH": "{repo}/codex-rs/target/debug/vsp-codex{binary_suffix}"
+          },
+          "argv": [
+            "pnpm",
+            "--dir",
+            "sdk/typescript",
+            "exec",
+            "jest",
+            "{filter}",
+            "--runInBand"
+          ]
+        }
+      ]
+    },
+    "sdk-python": {
+      "tier": "contract",
+      "ciBlocking": false,
+      "purpose": "Validate the Python SDK resolver and public app-server handshake against the current checkout binary.",
+      "value": "Separates published-runtime compatibility from source-tree compatibility so an old pinned wheel cannot make current code look tested.",
+      "useWhen": [
+        "Files under sdk/python change",
+        "App-server initialize, model-list, process launch, or binary packaging behavior changes"
+      ],
+      "prerequisites": [
+        "Rust toolchain and Cargo",
+        "uv with the sdk/python lockfile available"
+      ],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "build", "-p", "codex-cli", "--bin", "vsp-codex"]
+        },
+        {
+          "cwd": ".",
+          "env": {
+            "CODEX_PATH": "{repo}/codex-rs/target/debug/vsp-codex{binary_suffix}"
+          },
+          "argv": [
+            "uv",
+            "run",
+            "--project",
+            "sdk/python",
+            "--frozen",
+            "pytest",
+            "sdk/python/tests/test_artifact_workflow_and_binaries.py",
+            "sdk/python/tests/test_current_checkout_integration.py"
+          ]
+        }
+      ]
+    },
+    "security": {
+      "tier": "contract",
+      "ciBlocking": false,
+      "purpose": "Validate the apply-patch parser and filesystem mutation boundary.",
+      "value": "These tests protect a compact, security-sensitive parser and mutation surface with real filesystem effects.",
+      "useWhen": [
+        "Apply-patch parsing or filesystem mutation changes",
+        "Tool execution changes affect patch application semantics"
+      ],
+      "prerequisites": ["Rust toolchain"],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "test", "-p", "codex-apply-patch"]
+        }
+      ]
+    },
+    "linux-sandbox": {
+      "tier": "platform",
+      "ciBlocking": false,
+      "purpose": "Validate the native Linux sandbox and embedded bubblewrap build on a provisioned Linux host.",
+      "value": "Proves real filesystem and socket denial behavior instead of accepting missing commands, DNS failures, or generic non-zero exits.",
+      "useWhen": [
+        "Linux sandbox, permission-profile, bubblewrap, or network-isolation code changes",
+        "Preparing a Linux release candidate"
+      ],
+      "prerequisites": [
+        "Linux host with sandbox kernel features enabled",
+        "pkg-config and libcap development headers",
+        "/bin/bash"
+      ],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "test", "-p", "codex-bwrap", "--no-run"]
+        },
+        {
+          "cwd": "codex-rs",
+          "argv": [
+            "cargo",
+            "test",
+            "-p",
+            "codex-linux-sandbox",
+            "sandbox_blocks_loopback_socket_with_permission_error"
+          ]
+        }
+      ]
+    },
+    "v8-runtime": {
+      "tier": "experimental",
+      "ciBlocking": false,
+      "purpose": "Validate real embedded V8 initialization, evaluation, CRDTP parsing, and sandbox linkage.",
+      "value": "Keeps the experimental runtime grounded in linked V8 behavior instead of static labels or configuration strings.",
+      "useWhen": [
+        "Files under codex-rs/v8-poc change",
+        "The pinned V8 artifact, linkage, sandbox feature, or CRDTP behavior changes"
+      ],
+      "prerequisites": ["Pinned rusty_v8 artifact is available"],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": ["cargo", "test", "-p", "codex-v8-poc"]
+        }
+      ]
+    },
+    "hypo-external": {
+      "tier": "manual",
+      "ciBlocking": false,
+      "purpose": "Validate cross-repository Hypo-Workflow release-manifest and fixture compatibility.",
+      "value": "Detects drift between the host fork and the external Workflow contract without pretending a missing checkout is a pass.",
+      "useWhen": [
+        "Host contract, Workflow command surface, projected status, or Hypo-Workflow release integration changes"
+      ],
+      "prerequisites": [
+        "HYPO_WORKFLOW_ROOT points to a compatible Hypo-Workflow checkout"
+      ],
+      "requiredEnv": ["HYPO_WORKFLOW_ROOT"],
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "argv": [
+            "cargo",
+            "test",
+            "-p",
+            "codex-core",
+            "--test",
+            "all",
+            "hypo_workflow_host_contract",
+            "--",
+            "--ignored"
+          ]
+        }
+      ]
+    },
+    "upstream-all": {
+      "tier": "diagnostic",
+      "ciBlocking": false,
+      "purpose": "Run the complete inherited upstream nextest workspace suite for an explicitly owned investigation.",
+      "value": "Useful only when focused selection is unreliable; it is not a VSP correctness score and known failures must not be dumped as an unowned report.",
+      "useWhen": [
+        "The user explicitly requests the full upstream suite",
+        "A shared test harness changes",
+        "A mechanical workspace-wide change makes focused selection unreliable"
+      ],
+      "prerequisites": [
+        "cargo-nextest",
+        "Enough time and disk for the full workspace",
+        "A written reason and ownership of resulting failures"
+      ],
+      "requiresReason": true,
+      "commands": [
+        {
+          "cwd": "codex-rs",
+          "env": {
+            "RUST_MIN_STACK": "8388608",
+            "NEXTEST_PROFILE": "local"
+          },
+          "argv": [
+            "cargo",
+            "nextest",
+            "run",
+            "--no-fail-fast",
+            "--no-tests=fail"
+          ]
+        }
+      ]
+    }
+  }
+}

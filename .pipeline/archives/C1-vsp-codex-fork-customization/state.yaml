@@ -1,0 +1,129 @@
+pipeline:
+  name: "Codex-VSP"
+  status: running
+  prompts_total: 3
+  prompts_completed: 2
+  started: "2026-05-24T19:40:25+08:00"
+
+last_heartbeat: "2026-05-25T13:17:26+08:00"
+
+current:
+  phase: follow_up_planning
+  prompt_index: 6
+  prompt_file: null
+  prompt_name: "M6 VSP branding and official prompt cleanup"
+  step: m6_branding_completed_awaiting_review
+  step_index: 1
+
+milestones:
+  - id: M1
+    title: "Current test baseline investigation and run matrix"
+    status: completed
+    prompt_file: .pipeline/prompts/001-test-baseline.md
+    report_file: .pipeline/reports/test-baseline.md
+    audit_file: .pipeline/reviews/001-test-baseline-audit.md
+  - id: M2
+    title: "TUI simulated user regression framework"
+    status: completed
+    prompt_file: .pipeline/prompts/002-tui-user-simulation-tests.md
+    workers:
+      test: "019e5a0b-d30f-7533-b5d4-c5c828c462f1"
+      implement: "019e5a0c-1ac9-74c2-8b8e-74e2c1d62805"
+      audit: "019e5a17-3054-7bf1-85b4-f3bfe2f0f9c7"
+    reviews:
+      implement: .pipeline/reviews/002-tui-user-simulation-implement.md
+      test: .pipeline/reviews/002-tui-user-simulation-test.md
+      audit: .pipeline/reviews/002-tui-user-simulation-audit.md
+    validation:
+      - "just fmt: passed"
+      - "just test -p codex-tui chatwidget::tests::user_simulation: passed"
+      - "just test -p codex-tui: passed"
+      - "cargo insta pending-snapshots: no pending snapshots"
+      - "git diff --check: passed"
+      - "just fix -p codex-tui: passed"
+      - "glab ci lint .gitlab-ci.yml: valid"
+      - "GitLab pipeline #136: passed"
+  - id: M3
+    title: "vsp-codex entrypoint and VSP home"
+    status: completed_pushed_ci_passed
+    prompt_file: .pipeline/prompts/003-vsp-entrypoint-home.md
+    workers:
+      test: "019e5a52-4dd3-7173-b8a3-58f707954dad"
+      implement: "019e5a53-7ce4-70a3-beef-15d99319b479"
+      implement_retry: "019e5a5a-e800-74f0-8ae5-2f05251eec0d"
+      implement_entrypoint: "019e5a65-8701-79d2-a46c-ce958cb35d63"
+      implement_import: "019e5a65-875c-7773-b9bc-e8f5ea0f4a5b"
+  - id: M4
+    title: "Provider config and /provider"
+    status: completed_local_awaiting_review
+    workers:
+      test: "019e5b25-6470-78b1-9883-3b5d5364cf7d"
+      implement: "019e5b44-116b-7242-963d-0f91088820d1"
+      audit: "019e5b55-c609-7451-867f-61aa32b3e539"
+    validation:
+      - "just fmt: passed"
+      - "just test -p codex-app-server thread_settings_update: passed"
+      - "just test -p codex-tui chatwidget::tests::user_simulation: passed"
+      - "just test -p codex-app-server-protocol: passed"
+      - "cargo check -p codex-tui -p codex-core -p codex-app-server -p codex-app-server-protocol: passed"
+      - "cargo insta pending-snapshots --workspace-root .: no pending snapshots"
+      - "git diff --check: passed"
+      - "just fix -p codex-app-server-protocol: passed"
+      - "just fix -p codex-tui: passed"
+      - "just fix -p codex-protocol -p codex-core -p codex-app-server: passed"
+  - id: M5
+    title: "Hide or disable official-service entrypoints"
+    status: completed_local_awaiting_review
+    workers:
+      audit: "019e5d3c-71cb-7da1-a3f6-ea6530c79210"
+    reviews:
+      audit: .pipeline/reviews/005-official-service-entrypoints-audit.md
+    validation:
+      - "just fmt: passed"
+      - "cargo check -p codex-cli -p codex-tui: passed"
+      - "just test -p codex-cli official_service_cli_commands_are_disabled: passed"
+      - "just test -p codex-cli vsp_codex_help_uses_vsp_codex_usage: passed"
+      - "just test -p codex-cli login_with_api_key_is_disabled_in_vsp: passed"
+      - "just test -p codex-cli login_with_access_token_is_disabled_in_vsp: passed"
+      - "just test -p codex-cli update_check_does_not_probe_official_release_channels: passed"
+      - "just test -p codex-tui official_service_commands_are_hidden: passed"
+      - "just test -p codex-tui official_service_commands_do_not_resolve_for_dispatch: passed"
+      - "just test -p codex-tui slash_logout_is_disabled_in_vsp: passed"
+      - "just test -p codex-tui slash_feedback_is_disabled_in_vsp: passed"
+      - "just test -p codex-tui user_typing_provider_slash_command_opens_provider_picker: passed"
+      - "just test -p codex-tui prefetch_rate_limits_is_gated_on_chatgpt_auth_provider: passed"
+      - "just test -p codex-tui official_openai_auth_providers_are_hidden_from_vsp_selection: passed"
+      - "just test -p codex-tui vsp_provider_is_allowed_even_when_complete: passed"
+      - "just test -p codex-tui status_model_provider_uses_bedrock_runtime_base_url_and_gates_usage_link: passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: no pending snapshots"
+      - "just fix -p codex-cli -p codex-tui: passed"
+      - "git diff --check: passed"
+  - id: M6
+    title: "VSP branding and official prompt cleanup"
+    status: completed_local_awaiting_review
+    reviews:
+      summary: .pipeline/reviews/006-vsp-branding-resume.md
+    validation:
+      - "just fmt: passed"
+      - "just test -p codex-tui status_snapshot: passed"
+      - "just test -p codex-tui session_header: passed"
+      - "just test -p codex-tui clear_ui: passed"
+      - "just test -p codex-tui plugins_popup: passed"
+      - "just test -p codex-tui vsp_local_picker_does_not_filter_by_current_provider: passed"
+      - "just test -p codex-tui prepare_startup_tooltip_override_is_disabled_for_vsp: passed"
+      - "just test -p codex-tui model_migration_prompt_shows_for_hidden_model: passed"
+      - "just test -p codex-tui app_link_view: passed"
+      - "just test -p codex-tui session_info_availability_nux_tooltip_snapshot: passed"
+      - "just test -p codex-tui marketplace_add_success_refreshes_to_new_marketplace_tab: passed"
+      - "just test -p codex-tui plugin_detail_popup: passed"
+      - "just test -p codex-tui tooltips: passed"
+      - "cargo check -p codex-exec -p codex-login -p codex-tui: passed"
+      - "cargo insta pending-snapshots --manifest-path tui/Cargo.toml: no pending snapshots"
+      - "just fix -p codex-tui -p codex-exec -p codex-login: passed"
+      - "cargo build --bin vsp-codex: passed"
+      - "git diff --check: passed"
+
+history:
+  completed_prompts:
+    - .pipeline/prompts/001-test-baseline.md
+    - .pipeline/prompts/002-tui-user-simulation-tests.md

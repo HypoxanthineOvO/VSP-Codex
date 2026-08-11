@@ -1,0 +1,15 @@
+---
+source: tui/src/chatwidget/provider_model_popups_tests.rs
+expression: "render_bottom_popup(&chat, 44)"
+---
+  Alpha
+  Provider: alpha
+
+  [Alpha]  Beta  OpenAI
+
+  Search models
+› Alpha Shared (current)  shared-model |
+                          Context window:
+                          100000 tokens
+
+  Press enter to confirm or esc to go back

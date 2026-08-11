@@ -1,0 +1,25 @@
+---
+source: tui/src/markdown_render_tests.rs
+expression: rendered
+---
+Text::from_iter([
+    Line::from(Span::from("                                        ").light_cyan().on_dark_gray().bold()),
+    Line::from_iter([
+        Span::from("            ").light_cyan().on_dark_gray().bold(),
+        Span::from("Primary heading").light_cyan().on_dark_gray().bold(),
+        Span::from("             ").light_cyan().on_dark_gray().bold(),
+    ]),
+    Line::from(Span::from("                                        ").light_cyan().on_dark_gray().bold()),
+    Line::default(),
+    Line::from_iter([
+        Span::from("──────────").light_blue().dim(),
+        Span::from(" "),
+        Span::from("Secondary heading").magenta().bold(),
+        Span::from(" "),
+        Span::from("──────────").light_blue().dim(),
+    ]),
+    Line::default(),
+    Line::from(Span::from("Tertiary heading").green().bold()),
+    Line::default(),
+    Line::from(Span::from("────────────────────────────────────────").dark_gray()),
+])

@@ -1,0 +1,31 @@
+cycle:
+  number: 4
+  name: "体验优化 + 发布"
+  type: feature
+  status: completed
+  started: "2026-05-27T17:05:53+08:00"
+  preset: tdd
+  workflow_kind: build
+  context_sources:
+    - deferred
+    - archive
+  previous_cycle: C3
+  completed: "2026-05-28T19:57:25+08:00"
+  summary: "Completed the preview release cycle: VSCode hijack/install path, canonical rename, reasoning capability gate, VSCode-terminal-safe keymap, Markdown color refinement, performance evidence, release validation, README install flow, and v0.134.0-vsp.4 hotfix release."
+  lessons: "Carry forward the deferred C5 work as productized theme selection, richer keyboard/focus/copy UX, and resume metadata caching instead of stretching the C4 preview scope."
+  plan:
+    phase: generated
+    prompts_total: 7
+    requires_user_confirmation_before_start: true
+    start_command_is_execution_confirmation: false
+    continuous_execution_after_start: false
+    blocked_on: null
+  lifecycle_policy:
+    reject:
+      default_action: needs_revision
+    accept:
+      next: follow_up_plan
+  continuations:
+    - "full Color Theme picker and persisted theme groups"
+    - "command palette, full focus stack, and keyboard copy/selection system"
+    - "resume metadata cache and progressive stale-cache verification"

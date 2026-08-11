@@ -1,0 +1,6 @@
+kind: mini_cycle
+status: active
+source: ordinary_conversation_capture
+latest_source_turn_id: 019f028f-9faa-7851-8d52-e2344a0607a6
+topic_summary: '我恢复了一个挂起的 Ask 请求，但原进程的等待状态已经不可用。请把下面这些用户答案作为继续当前任务的上下文。 technical_stack_gate: confirm_enter_architecture'
+turn_count: 18
