@@ -143,87 +143,8 @@ impl ChatWidget {
         });
     }
 
-    #[cfg(not(target_os = "linux"))]
-    pub(crate) fn open_realtime_audio_device_selection(&mut self, kind: RealtimeAudioDeviceKind) {
-        match list_realtime_audio_device_names(kind) {
-            Ok(device_names) => {
-                self.open_realtime_audio_device_selection_with_names(kind, device_names);
-            }
-            Err(err) => {
-                self.add_error_message(format!(
-                    "加载 realtime {} devices 失败：{err}",
-                    kind.noun()
-                ));
-            }
-        }
-    }
-
-    #[cfg(target_os = "linux")]
     pub(crate) fn open_realtime_audio_device_selection(&mut self, kind: RealtimeAudioDeviceKind) {
         let _ = kind;
-    }
-
-    #[cfg(not(target_os = "linux"))]
-    pub(super) fn open_realtime_audio_device_selection_with_names(
-        &mut self,
-        kind: RealtimeAudioDeviceKind,
-        device_names: Vec<String>,
-    ) {
-        let current_selection = self.current_realtime_audio_device_name(kind);
-        let current_available = current_selection
-            .as_deref()
-            .is_some_and(|name| device_names.iter().any(|device_name| device_name == name));
-        let mut items = vec![SelectionItem {
-            name: "System default".to_string(),
-            description: Some("使用操作系统默认设备。".to_string()),
-            is_current: current_selection.is_none(),
-            actions: vec![Box::new(move |tx| {
-                tx.send(AppEvent::PersistRealtimeAudioDeviceSelection { kind, name: None });
-            })],
-            dismiss_on_select: true,
-            ..Default::default()
-        }];
-
-        if let Some(selection) = current_selection.as_deref()
-            && !current_available
-        {
-            items.push(SelectionItem {
-                name: format!("Unavailable: {selection}"),
-                description: Some("已配置设备当前不可用。".to_string()),
-                is_current: true,
-                is_disabled: true,
-                disabled_reason: Some("请重新连接设备或选择其他设备。".to_string()),
-                ..Default::default()
-            });
-        }
-
-        items.extend(device_names.into_iter().map(|device_name| {
-            let persisted_name = device_name.clone();
-            let actions: Vec<SelectionAction> = vec![Box::new(move |tx| {
-                tx.send(AppEvent::PersistRealtimeAudioDeviceSelection {
-                    kind,
-                    name: Some(persisted_name.clone()),
-                });
-            })];
-            SelectionItem {
-                is_current: current_selection.as_deref() == Some(device_name.as_str()),
-                name: device_name,
-                actions,
-                dismiss_on_select: true,
-                ..Default::default()
-            }
-        }));
-
-        let mut header = ColumnRenderable::new();
-        header.push(Line::from(format!("选择 {}", kind.title()).bold()));
-        header.push(Line::from("保存的设备仅用于 realtime voice。".dim()));
-
-        self.bottom_pane.show_selection_view(SelectionViewParams {
-            header: Box::new(header),
-            footer_hint: Some(standard_popup_hint_line()),
-            items,
-            ..Default::default()
-        });
     }
 
     pub(crate) fn open_realtime_audio_restart_prompt(&mut self, kind: RealtimeAudioDeviceKind) {

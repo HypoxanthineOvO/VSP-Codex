@@ -202,8 +202,6 @@ mod updates;
 #[cfg(any(not(debug_assertions), test))]
 mod updates_cache;
 mod version;
-#[cfg(not(target_os = "linux"))]
-mod voice;
 pub(crate) mod vsp_provider;
 mod width;
 #[cfg(any(target_os = "windows", test))]

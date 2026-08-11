@@ -983,8 +983,7 @@ impl ChatWidget {
     }
 
     fn realtime_conversation_enabled(&self) -> bool {
-        self.config.features.enabled(Feature::RealtimeConversation)
-            && cfg!(not(target_os = "linux"))
+        false
     }
 
     fn realtime_audio_device_selection_enabled(&self) -> bool {
