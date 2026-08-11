@@ -19,6 +19,8 @@ env:
   SNAPSHOT_COMMIT: d79afe3613cadfda8ac3fd7ff81940586574c026
   SNAPSHOT_TREE: 70b88316f84fbffab0e5321bc99d3812b5c836a9
   UPSTREAM_TAG: rust-v0.145.0-alpha.4
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+  CARGO_NET_RETRY: "5"
 
 jobs:
   build:
@@ -95,6 +97,10 @@ jobs:
         uses: ./.github/actions/setup-rusty-v8
         with:
           target: ${{ matrix.target }}
+
+      - name: Configure libyuv source mirror
+        shell: bash
+        run: git config --global url.https://github.com/lemenkov/libyuv.git.insteadOf https://chromium.googlesource.com/libyuv/libyuv
 
       - name: Build preview package
         shell: bash
