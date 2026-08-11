@@ -374,43 +374,6 @@ fn spawn_agent_output_schema_v1() -> Value {
 }
 
 fn spawn_agent_output_schema_v2(hide_agent_metadata: bool) -> Value {
-    let routing = json!({
-        "type": "object",
-        "properties": {
-            "requested_class": {"type": ["string", "null"]},
-            "policy_version": {"type": "string"},
-            "candidate_id": {"type": ["string", "null"]},
-            "effective_provider": {"type": "string"},
-            "effective_model": {"type": ["string", "null"]},
-            "effective_reasoning": {"type": ["string", "null"]},
-            "effective_service_tier": {"type": ["string", "null"]},
-            "fallback": {"type": ["string", "null"]},
-            "skipped_candidates": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "candidate_id": {"type": ["string", "null"]},
-                        "reason": {"type": "string"}
-                    },
-                    "required": ["candidate_id", "reason"],
-                    "additionalProperties": false
-                }
-            }
-        },
-        "required": [
-            "requested_class",
-            "policy_version",
-            "candidate_id",
-            "effective_provider",
-            "effective_model",
-            "effective_reasoning",
-            "effective_service_tier",
-            "fallback",
-            "skipped_candidates"
-        ],
-        "additionalProperties": false
-    });
     if hide_agent_metadata {
         return json!({
             "type": "object",
@@ -418,10 +381,9 @@ fn spawn_agent_output_schema_v2(hide_agent_metadata: bool) -> Value {
                 "task_name": {
                     "type": "string",
                     "description": "Canonical task name for the spawned agent."
-                },
-                "routing": routing
+                }
             },
-            "required": ["task_name", "routing"],
+            "required": ["task_name"],
             "additionalProperties": false
         });
     }
@@ -436,10 +398,9 @@ fn spawn_agent_output_schema_v2(hide_agent_metadata: bool) -> Value {
             "nickname": {
                 "type": ["string", "null"],
                 "description": "User-facing nickname for the spawned agent when available."
-            },
-            "routing": routing
+            }
         },
-        "required": ["task_name", "nickname", "routing"],
+        "required": ["task_name", "nickname"],
         "additionalProperties": false
     })
 }
@@ -643,26 +604,6 @@ fn spawn_agent_common_properties_v2(agent_type_description: &str) -> BTreeMap<St
         (
             "agent_type".to_string(),
             JsonSchema::string(Some(agent_type_description.to_string())),
-        ),
-        (
-            "routing_class".to_string(),
-            JsonSchema::string_enum(
-                [
-                    "mechanical",
-                    "long_context",
-                    "standard",
-                    "explore",
-                    "critical",
-                    "escalation",
-                ]
-                .into_iter()
-                .map(|value| json!(value))
-                .collect(),
-                Some(
-                    "Semantic model, reasoning, and cost class for the new agent. Defaults to standard when no explicit model, reasoning_effort, or service_tier override is provided. Cannot be combined with explicit overrides."
-                        .to_string(),
-                ),
-            ),
         ),
         (
             "fork_turns".to_string(),

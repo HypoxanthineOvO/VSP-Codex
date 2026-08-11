@@ -2,7 +2,7 @@
 kind: execution
 cycle: C28-prompt-stack-quality-redesign
 status: active
-updated: 2026-08-11T00:28:05+08:00
+updated: 2026-08-11T18:52:23+08:00
 ---
 
 # C28 Execution
@@ -369,3 +369,17 @@ updated: 2026-08-11T00:28:05+08:00
 - release audit发现单target builder会覆盖同版本其他target且默认Linux archive名；已新增target-specific naming、strict aggregate script、三平台原生GitHub Actions workflow与tests。
 - release checks从48扩展为52并全部通过；`cargo check`、required smoke、format、diff、YAML syntax通过。完整证据见`M3-FINAL-VALIDATION.md`。
 - M4采用`0.145.0-vsp.11.1-alpha.6`，targets为Linux x64 GNU、macOS ARM64、Windows x64 MSVC。GitLab无macOS/Windows runner，需GitHub mirror运行native matrix。
+
+## M4 Native Build Diagnostics
+
+- 已创建公开source-build mirror `HypoxanthineOvO/VSP-Codex`；GitHub description/homepage明确GitLab为canonical history与release，mirror `main`为无历史、无LFS payload的alpha.6 source snapshot。
+- GitHub Actions run `31471403149`确认三平台jobs均被调度。Linux/macOS因snapshot无tag而无法自动解析upstream baseline；workflow现增加显式`upstream_tag`输入，默认`rust-v0.145.0-alpha.4`。
+- Run `31471584439`确认Windows checkout受两条`.opencode/commands/hw:plan:*` colon路径阻塞。它们不参与source build，已仅从GitHub snapshot移除；GitLab canonical源码保持完整。
+- macOS ARM64原生编译推进到`codex-tui`后发现merge残留：upstream已删除`cpal`、audio-device模块与realtime app command，但`voice.rs`仍在非Linux cfg下编译。修复不恢复已删除transport，而是停止编译孤立voice模块，并让realtime capability/device picker在所有平台统一为不可用。
+- `just test-group run tui --filter user_typing_provider_slash_command_opens_provider_picker`完成完整TUI test-target编译并通过1/1；3195项未选择。`cargo fmt --check`与`git diff --check`通过，无snapshot更新。
+- Run `31474763600`确认Windows checkout修复有效，随后setup action因请求不存在的`librusty_v8_release_x86_64-pc-windows-msvc.a.gz`返回curl 22。OpenAI release对MSVC只发布`rusty_v8_ptrcomp_sandbox_release_*.lib.gz` pair；action现按target选择正确archive/binding/checksum。三个matrix target的asset名称全部存在，三个checksum manifest均为严格两行。
+- Run `31475827303`进一步确认MSVC下载成功，但官方checksum文本为CRLF；Git Bash `sha256sum`将尾随`\r`解释为filename一部分。action现校验前移除checksum文本中的CR，本地重新下载官方archive/binding并执行相同归一化后，两项SHA256均通过。
+- Run `31476110232`在build-only SHA `dc0a24f8c1`完成Linux x64 GNU、Windows x64 MSVC、macOS ARM64和aggregate四个成功job。path-excluded diff及关键blob哈希证明该build tree与GitLab canonical `f61aacca62`的产品/构建源码一致，仅省略`.pipeline`和`.opencode`历史资料。
+- 下载的aggregate artifact ID `9097925225`为611,396,708 bytes，外层SHA256为`3c568ab26eec17ff16fb96e734547b9c10091c66e9acbfe4f45069085ca3f32d`且全ZIP CRC通过。三份archive SHA与sidecar/manifest一致，布局、target metadata、ELF/Mach-O/PE格式和native package version均通过。
+- M4 release candidate进入`waiting-review`；tag、GitLab Release和stable manifest均保持未修改，等待用户显式批准。完整证据、问题和风险见`M4-RELEASE-CANDIDATE.md`。
+- 发布批准后首次上传的manifest在公开下载复验中被发现只有一个target（错误地对已聚合manifest再次执行单输入merge）；三份archive和SHA均正确。已恢复原始三target aggregate、准备替换Generic Package Registry中的manifest，并保留immutable tag不移动。

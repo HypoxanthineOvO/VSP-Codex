@@ -182,3 +182,19 @@
 | 14:08 | Stage | M2 Stage E waiting-review | trusted semantic Worker Routing已接入V2 spawn；offline resolver、cross-provider child config、fallback/skip、role/explicit冲突、fork、output/telemetry完成；focused core 35项执行通过。 |
 | 14:14 | Stage | M2 Stage E accepted / M3 started | 用户接受Worker Routing完整结果；M2完成，直接进入omissions audit、真实prompt/token、focused regression与smoke。 |
 | 14:40 | Validation | M3/S6 completed / M4 started | accepted scope regressions与required smoke通过；原token/char目标因Stage C延期未达，live Subagent被VSPLab 502阻断；multi-target release覆盖遗漏已补齐并通过52项release checks。 |
+| 16:45 | Build | M4 native diagnostics / rerun pending | GitHub source-build mirror已建立；两轮native matrix定位snapshot tag、Windows colon路径和macOS TUI voice cfg遗漏。workflow/snapshot/TUI窄修已完成，focused TUI 1/1通过；等待新revision三平台重跑。 |
+| 16:59 | Build | M4 Windows V8 artifact fix | 第三轮Windows checkout通过；setup action的Unix-only archive命名导致curl 22。MSVC已改用官方ptrcomp_sandbox `.lib.gz` pair，三个target asset/checksum contract远端验证通过。 |
+| 17:03 | Build | M4 Windows checksum fix | 第四轮确认MSVC artifact下载成功但checksum为CRLF；校验前文本归一化后，本地官方archive/binding SHA256两项均通过。 |
+| 18:52 | Release | M4 alpha.6 RC waiting-review | Run 31476110232三平台native build与aggregate通过；下载bundle的CRC、三份SHA/sidecar、布局、target、版本和manifest已独立复验。tag、Release、stable manifest未修改，等待显式发布批准。 |
+| 19:10 | Release | M4 alpha.6 published and reverified | GitLab Release已发布7个公开资产；三份archive重下载SHA、三target manifest、布局/version和direct download URLs复验通过。首次单target manifest上传已更正，immutable tag未移动。 |
+| 19:10 | Cycle | C28 closed | 用户批准不重跑直接发布alpha.6；GitLab Release、tag、7个公开资产和manifest已验收，Summary记录了scope、证据、风险与未执行的安装/部署/重启。 |
+
+## 2026-08-11 C29 Alpha 6 VSPLab 502 Hotfix
+
+| Time | Type | Event | Detail |
+| --- | --- | --- | --- |
+| 20:15 | Cycle | C29 started | 用户授权紧急修复；真实A/B锁定Alpha 6新增V2 routing tool output schema触发VSPLab 502，进入最小实现与验证。 |
+| 20:16 | Step | C29 implementation complete | V2 spawn保留routing输入、解析、child config与telemetry，只恢复简单model-facing output；进入focused core验证。 |
+| 20:19 | Validation | C29 focused tests passed | schema 6/6、V2 spawn 19/19及format/diff通过；用户追加授权真实smoke后发布Alpha 7 Linux hotfix。 |
+| 20:33 | Revision | Official spawn wire restored | 用户纠正错误归因；移除VSP私有`routing_class`参数后真实V2 root smoke成功，默认standard内部routing保留。 |
+| 21:00 | Validation | Alpha 7 Linux candidate passed | 真实Subagent routing/child启动、release 52/52、archive SHA/layout/ELF/版本验证通过；进入commit/tag/publish。 |

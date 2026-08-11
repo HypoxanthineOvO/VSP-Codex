@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "minimum_updater": "0.134.0-vsp.6",
+  "generated_at": "2026-06-30T22:19:05+08:00",
+  "releases": [
+    {
+      "version": "0.140.0-vsp.8.2",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.2/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "427a101bfecfa123c6795c12d6a2ca4b5a26952b6f6b61ba9a654106e20cb65b",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.2"
+    }
+  ]
+}

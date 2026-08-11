@@ -279,3 +279,11 @@ updated: 2026-08-11T00:28:05+08:00
 - 接受证据为focused core 35项执行全部通过，以及fmt、diff、Workflow YAML检查通过；cross-provider tier catalog问题已在接受前修复。
 - 用户要求接受后直接做omissions audit与最终验证，再准备Linux、Windows、macOS构建发布；Stage C AGENTS/runtime与Stage D image capability不再进入本次。
 - 发布准备和三平台发布已由最新用户请求授权；install、deploy与service restart仍未授权。
+
+## M4 alpha.6 已接受并关闭
+
+- 用户明确批准立即发布现有alpha.6三平台产物，不重新构建；Stable/lab留待后续需要新版本嵌入时再做。
+- GitLab canonical main提交发布元数据并创建immutable tag `v0.145.0-vsp.11.1-alpha.6`；GitLab Release上传三份archive、三份sidecar和aggregate manifest。
+- 公开下载复验通过：三份archive SHA与sidecar一致，manifest包含Linux/macOS/Windows三个target，包内metadata、布局、版本和direct download URLs正确。
+- 首次manifest上传误缩为单target，已在公开验收中发现并替换；archive字节和SHA未变，tag未移动，canonical main包含更正。
+- 接受范围不包含本地安装、部署、service restart；Stage C AGENTS/runtime、Stage D image capability与live Subagent 502风险保留到后续工作。

@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "minimum_updater": "0.134.0-vsp.6",
+  "generated_at": "2026-08-11T20:58:03+08:00",
+  "releases": [
+    {
+      "version": "0.145.0-vsp.11.1-alpha.7",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.7/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "77764b9fecfbe6e156757bb07755213e32fdb6f3570d6e7c60449e62cad424d8",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.7"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.6",
+      "channel": "alpha",
+      "target": "aarch64-apple-darwin",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6/downloads/vsp-codex-preview-macos-arm64.tar.gz",
+      "sha256": "5824b199315a154f3fe377ed5b8813533b351a15a632db5adad1f7a77bab1b07",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.6",
+      "channel": "alpha",
+      "target": "x86_64-pc-windows-msvc",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6/downloads/vsp-codex-preview-windows-x64-msvc.tar.gz",
+      "sha256": "1cefdba90a3f29d29b36c436482aa96985a4e321aec25da2a727453e86c02333",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.6",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "ced4c72705006186cc9c91a13ad6a1fff47afb91028d21967941e8399938d7dd",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.5",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.5/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "55945d913660978bbfd177abcde04eac90925bfba7ee53affc4fe77b2f1d3a30",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.5"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.4",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.4/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "fc6361bc6875053c156730a33085e784f289ede49a4af58440649a2ccfab26cd",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.4"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.3",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.3/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "682d8004c098420d78efd6879f58265e0ec856991cf49f6a11489696c95beb6b",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.3"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.2",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.2/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "84bd6631f09d1a2ad2824cab1250cfc75d98c2efcaaf15a7ca6771ad01591a32",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.2"
+    },
+    {
+      "version": "0.145.0-vsp.11.1-alpha.1",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.1/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "cf0702acb2b5ee7e5642be520dc1b429d0f39657531567c74d1a86df2328bff8",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.1"
+    },
+    {
+      "version": "0.145.0-vsp.11.0-alpha.3",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.0-alpha.3/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "96b70ca70e09d2272f5df6a1f018066b18a0ff7e7d707fa1dcf632a7ff72477e",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.0-alpha.3"
+    },
+    {
+      "version": "0.145.0-vsp.11.0-alpha.2",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.0-alpha.2/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "6f5cafb26823e202c88988039c4eb918fdb2b88e80fb7f762d6aba8117da7e95",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.0-alpha.2"
+    },
+    {
+      "version": "0.145.0-vsp.11.0-alpha.1",
+      "channel": "alpha",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.0-alpha.1/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "a09fcb11b29704528ab8fbd1cc124957280e95b4708d2a9f31867f55f75a238a",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.0-alpha.1"
+    },
+    {
+      "version": "0.145.0-vsp.9.5",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.5/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "ab1ce3615107c4aff70c1120bd8a2d19b26eea30ebb774623bb86313d07444a8",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.5"
+    },
+    {
+      "version": "0.145.0-vsp.9.4",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.4/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "e8f5681927cce431fa8f77d58377f6cea9517e2b658baacafbcdd8b9542670e2",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.4"
+    },
+    {
+      "version": "0.145.0-vsp.9.3",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.3/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "d8558ecf42b5f55703438f41948bb0fad776ff5b9bccc2884ea6ba66eb32d80d",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.3"
+    },
+    {
+      "version": "0.145.0-vsp.9.2",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.2/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "3078c348e3ea76ac39459125c8f165a6b9328d93ee628bd4345d5942d1781a38",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.2"
+    },
+    {
+      "version": "0.145.0-vsp.9.1",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.1/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "9dcc14a0f2d6cbbafdbc5e294094cc956a54942a00620aa66ee95f96164eb465",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9.1"
+    },
+    {
+      "version": "0.145.0-vsp.9",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "bbc6ecd5abbee8ea8273e57db80086bb05d3ba4dde6804937f1f5559db121a72",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9"
+    },
+    {
+      "version": "0.140.0-vsp.8.2",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.2/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "427a101bfecfa123c6795c12d6a2ca4b5a26952b6f6b61ba9a654106e20cb65b",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.2"
+    },
+    {
+      "version": "0.140.0-vsp.8.1",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.1/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "0ff6e0d34daf6265e23cb99d21b69d9acbbcce4df2067c168f72f0e7a82e567e",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8.1"
+    },
+    {
+      "version": "0.140.0-vsp.8",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "20c29f2b75395aa03f2281551c6b482de819a5c55591b75f6363f727312f6c3f",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.140.0-vsp.8"
+    },
+    {
+      "version": "0.134.0-vsp.7.2",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.7.2/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "844bafec1f1a89d60459dc6a68f3611f0bb5030c14e24dbfe55cde07734d8373",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.7.2"
+    },
+    {
+      "version": "0.134.0-vsp.7",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.7/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "7e23f41f3e2779c419161f636476da8ec0b5b3038e4e000778b0d14a85648eab",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.7"
+    },
+    {
+      "version": "0.134.0-vsp.6",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/raw/v0.134.0-vsp.6/.pipeline/release/C8-preview/vsp-codex-preview-linux-x64-gnu-debug.tar.gz",
+      "sha256": "666ee5841238914d200a496339d5d103b220fb933484defd3b4299fe959fa3bc",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.6"
+    }
+  ]
+}

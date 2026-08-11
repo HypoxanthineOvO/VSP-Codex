@@ -1,5 +1,22 @@
 ## Unreleased
 
+## v0.145.0-vsp.11.1-alpha.7 - 2026-08-11
+
+### Fixes
+
+- 恢复OpenAI-compatible `spawn_agent` provider wire shape，撤下Alpha 6泄漏到
+  `/responses` tool schema的VSP私有`routing_class`和routing diagnostics，修复VSPLab稳定502。
+- Worker Routing继续在客户端内部按trusted policy默认解析`standard` candidate；当semantic
+  reroute改变child配置时，`fork_turns=all`在Exec场景转换为no-history、其他场景转换为最近
+  3轮，避免full-history override冲突和ephemeral root fork失败。
+
+### Validation
+
+- `spawn_agent` schema 6/6、Multi-Agent V2 spawn 19/19、V2 prompt assembly 2/2通过。
+- 真实VSPLab V2 root smoke返回`ok`；Subagent smoke记录`standard-luna-max`内部解析和Luna
+  child session启动，无502或spawn error，root最终返回`root-ok`。
+- Alpha 7仅发布Linux x86-64 GNU hotfix；macOS和Windows不阻塞。
+
 ## v0.145.0-vsp.11.1-alpha.6 - 2026-08-11
 
 ### Features

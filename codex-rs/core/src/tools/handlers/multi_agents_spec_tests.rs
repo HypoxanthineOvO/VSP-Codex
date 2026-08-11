@@ -86,19 +86,7 @@ fn spawn_agent_tool_v2_requires_task_name_and_lists_visible_models() {
         Some(true)
     );
     assert!(properties.contains_key("fork_turns"));
-    assert_eq!(
-        properties
-            .get("routing_class")
-            .and_then(|schema| schema.enum_values.as_ref()),
-        Some(&vec![
-            json!("mechanical"),
-            json!("long_context"),
-            json!("standard"),
-            json!("explore"),
-            json!("critical"),
-            json!("escalation"),
-        ])
-    );
+    assert!(!properties.contains_key("routing_class"));
     assert!(!properties.contains_key("items"));
     assert!(!properties.contains_key("fork_context"));
     assert_eq!(
@@ -122,8 +110,22 @@ fn spawn_agent_tool_v2_requires_task_name_and_lists_visible_models() {
         Some(&vec!["task_name".to_string(), "message".to_string()])
     );
     assert_eq!(
-        output_schema.expect("spawn_agent output schema")["required"],
-        json!(["task_name", "nickname", "routing"])
+        output_schema.expect("spawn_agent output schema"),
+        json!({
+            "type": "object",
+            "properties": {
+                "task_name": {
+                    "type": "string",
+                    "description": "Canonical task name for the spawned agent."
+                },
+                "nickname": {
+                    "type": ["string", "null"],
+                    "description": "User-facing nickname for the spawned agent when available."
+                }
+            },
+            "required": ["task_name", "nickname"],
+            "additionalProperties": false
+        })
     );
 }
 
@@ -238,6 +240,7 @@ fn spawn_agent_tool_hides_service_tier_with_spawn_metadata() {
     let ToolSpec::Function(ResponsesApiTool {
         description,
         parameters,
+        output_schema,
         ..
     }) = tool
     else {
@@ -254,6 +257,20 @@ fn spawn_agent_tool_hides_service_tier_with_spawn_metadata() {
     assert!(!properties.contains_key("service_tier"));
     assert!(!description.contains(SPAWN_AGENT_INHERITED_MODEL_GUIDANCE));
     assert!(!description.contains("Available model overrides"));
+    assert_eq!(
+        output_schema.expect("spawn_agent output schema"),
+        json!({
+            "type": "object",
+            "properties": {
+                "task_name": {
+                    "type": "string",
+                    "description": "Canonical task name for the spawned agent."
+                }
+            },
+            "required": ["task_name"],
+            "additionalProperties": false
+        })
+    );
 }
 
 #[test]

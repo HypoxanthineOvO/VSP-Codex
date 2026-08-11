@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "test_roots": {
+    "from_alpha3": "/tmp/vsp11-alpha1-from-alpha3.yY7IRX",
+    "from_early_local_alpha4": "/tmp/vsp11-alpha1-from-alpha4.JC9ic9"
+  },
+  "target": "x86_64-unknown-linux-gnu",
+  "archives": {
+    "alpha3_version": "0.145.0-vsp.11.0-alpha.3",
+    "alpha3_repacked_sha256": "587389416dd3c8523ba58f255d3199bced29100b13c9bf4452eb7b5bd81b1a54",
+    "early_local_alpha4_version": "0.145.0-vsp.11.0-alpha.4",
+    "early_local_alpha4_repacked_sha256": "6498b279207925a7726369e9a2b0e1aef45bc287ad198db1dce4d4b2885297af",
+    "candidate_version": "0.145.0-vsp.11.1-alpha.1",
+    "candidate_sha256": "e4368f0e2bcf2175adfa9eb1d49e8ed3a9cb899944eeb57fc9c17cc149d5e6d4",
+    "candidate_entrypoint_sha256": "a14b75f7b8a6c7363a644bb071e484957f4141d7c256b5ebafdb1f859ac45345"
+  },
+  "stages": [
+    {
+      "action": "install-alpha3",
+      "version": "vsp-codex 0.145.0-vsp.11.0-alpha.3",
+      "marker": "preserve-across-upgrades"
+    },
+    {
+      "action": "upgrade-alpha3-to-candidate",
+      "version": "vsp-codex 0.145.0-vsp.11.1-alpha.1",
+      "marker": "preserve-across-upgrades",
+      "installed_entrypoint_matches_candidate": true
+    },
+    {
+      "action": "ephemeral-real-repeated-compaction",
+      "binary_version": "vsp-codex 0.145.0-vsp.11.1-alpha.1",
+      "first_command": "sed -n 1,400p large.txt",
+      "first_compaction_continued": true,
+      "second_command": "wc -l large.txt",
+      "second_compaction_continued": true,
+      "final_message": "CONTINUITY_SMOKE_OK 4000",
+      "turn_completed": true,
+      "event_log_sha256": "02e0e35dd8d32ae025b630c8e90fb9012095afc72edcdd50c1ffa553d9ea03e7"
+    },
+    {
+      "action": "rollback-to-alpha3",
+      "version": "vsp-codex 0.145.0-vsp.11.0-alpha.3",
+      "current": "/tmp/vsp11-alpha1-from-alpha3.yY7IRX/vsp-home/packages/standalone/releases/0.145.0-vsp.11.0-alpha.3-x86_64-unknown-linux-gnu",
+      "marker": "preserve-across-upgrades"
+    },
+    {
+      "action": "install-early-local-alpha4",
+      "version": "vsp-codex 0.145.0-vsp.11.0-alpha.4",
+      "entrypoint_sha256": "25331b17ab84b87a85b8cbbbf79ef4e37241756e93276b5ff0f813b95fd2b67a",
+      "marker": "preserve-across-upgrades"
+    },
+    {
+      "action": "upgrade-early-local-alpha4-to-candidate",
+      "version": "vsp-codex 0.145.0-vsp.11.1-alpha.1",
+      "marker": "preserve-across-upgrades",
+      "installed_entrypoint_matches_candidate": true
+    },
+    {
+      "action": "rollback-to-early-local-alpha4",
+      "version": "vsp-codex 0.145.0-vsp.11.0-alpha.4",
+      "current": "/tmp/vsp11-alpha1-from-alpha4.JC9ic9/vsp-home/packages/standalone/releases/0.145.0-vsp.11.0-alpha.4-x86_64-unknown-linux-gnu",
+      "marker": "preserve-across-upgrades"
+    }
+  ],
+  "problems_encountered": [
+    "The first builder invocation omitted the explicit alpha channel and was rejected before producing an archive; rerunning with --channel alpha completed successfully.",
+    "The first isolated upgrade harness attempted to write its marker before creating the test CODEX_HOME and stopped before invoking the installer; creating the directory first fixed the harness.",
+    "The ephemeral smoke reported a pre-existing session-compat migration warning for an unrelated historical rollout, but the repeated-compaction task completed successfully."
+  ],
+  "stable_manifest_modified": false
+}

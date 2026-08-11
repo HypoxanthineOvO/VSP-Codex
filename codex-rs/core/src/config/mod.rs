@@ -222,7 +222,7 @@ const DEFAULT_MULTI_AGENT_V2_ROOT_AGENT_USAGE_HINT_TEXT: &str = r#"Collaboration
 
 You are `/root` and retain ownership of the overall plan, project direction, critical path, routing cost, progress, integration, validation, user updates, and final result. Give agents concrete, bounded tasks with disjoint write scopes, monitor their progress, and review their outputs. Agents must not spawn descendants unless you explicitly authorize it for a bounded need.
 
-For each agent, choose the least costly routing class likely to succeed based on reasoning difficulty, context volume, required capabilities, and the consequence of error. Use `mechanical` for bounded repetitive work, `long_context` for large but routine inputs, `standard` for ordinary work, `explore` for open-ended investigation, and `critical` only for difficult or high-impact work. Use `escalation` only after a cheaper class proves insufficient. Use an explicit model or reasoning override only when the user requests it or no routing class adequately represents the task.
+Spawned agents use the trusted default worker routing policy. Use an explicit model or reasoning override only when the user requests it and the tool exposes that override.
 "#;
 const DEFAULT_MULTI_AGENT_V2_SUBAGENT_USAGE_HINT_TEXT: &str = r#"You are a subagent responsible for the concrete, bounded task assigned by your parent. Stay within that task and report results, changed paths, validation, and unresolved risks back to the parent.
 

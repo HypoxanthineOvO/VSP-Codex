@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "minimum_updater": "0.134.0-vsp.6",
+  "generated_at": "2026-06-02T14:12:00+08:00",
+  "releases": [
+    {
+      "version": "0.134.0-vsp.7",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.7/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "7e23f41f3e2779c419161f636476da8ec0b5b3038e4e000778b0d14a85648eab",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/blob/main/CHANGELOG.md"
+    },
+    {
+      "version": "0.134.0-vsp.6",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/raw/v0.134.0-vsp.6/.pipeline/release/C8-preview/vsp-codex-preview-linux-x64-gnu-debug.tar.gz",
+      "sha256": "666ee5841238914d200a496339d5d103b220fb933484defd3b4299fe959fa3bc",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.134.0-vsp.6"
+    }
+  ]
+}

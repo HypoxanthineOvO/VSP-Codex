@@ -144,7 +144,7 @@ cargo insta pending-snapshots --manifest-path tui/Cargo.toml
 
 ## 版本
 
-当前稳定预览版本为 `0.145.0-vsp.9.5`；当前 alpha 版本为 `0.145.0-vsp.11.1-alpha.6`。11.0 从 9.5 重新开发；11.1 引入新的本地压缩状态机、长上下文预算、执行连续性契约、Hypo-Workflow semantic Host UX、独立 Responses multi-provider 配置、统一模型切换，以及经过真实终端验证的 Markdown 标题和最终回复完整性合同。alpha.5 允许 session compatibility migration 在共同 migration 前缀和所需 schema 一致时兼容 Official/VSP 的尾部版本差异；alpha.6 重构提示词与 System Skills，新增受信任的 Subagent Worker Routing，并提供 Linux、macOS、Windows 原生预览产物。当前 alpha 继续使用 OpenAI Responses 兼容接口，不继承已废弃 10.x 线的 Chat API 实现。
+当前稳定预览版本为 `0.145.0-vsp.9.5`；当前 alpha 版本为 `0.145.0-vsp.11.1-alpha.7`。11.0 从 9.5 重新开发；11.1 引入新的本地压缩状态机、长上下文预算、执行连续性契约、Hypo-Workflow semantic Host UX、独立 Responses multi-provider 配置、统一模型切换，以及经过真实终端验证的 Markdown 标题和最终回复完整性合同。alpha.5 允许 session compatibility migration 在共同 migration 前缀和所需 schema 一致时兼容 Official/VSP 的尾部版本差异；alpha.6 重构提示词与 System Skills，新增受信任的 Subagent Worker Routing，并提供 Linux、macOS、Windows 原生预览产物；alpha.7 恢复官方 `spawn_agent` wire contract，修复 Alpha 6 连接 VSPLab `/responses` 稳定 502 的回归。当前 alpha 继续使用 OpenAI Responses 兼容接口，不继承已废弃 10.x 线的 Chat API 实现。
 
 版本格式为 `官方基线-vsp.递增号`。例如 `0.134.0-vsp.2` 表示基于官方 Codex Rust `0.134.0` 版本线的第 2 个 VSP 内部版本；合并新的官方版本线时更新官方基线前缀，`vsp.N` 继续沿用 VSP 自有功能/修复递增序列。只 fork baseline 不加 VSP 功能时不递增；加入 VSP 自有改动时递增。如果上游基线来自 alpha tag，文档和 release notes 会额外记录具体 upstream tag。
 

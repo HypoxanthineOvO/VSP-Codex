@@ -2,10 +2,10 @@
 kind: progress
 cycle: C28-prompt-stack-quality-redesign
 plan: PLAN.md
-status: active
-updated: 2026-08-11T14:40:46+08:00
-current: M4 cross-platform release preparation
-next: commit and run GitHub-native Linux/macOS/Windows build matrix
+status: completed
+updated: 2026-08-11T19:10:44+08:00
+current: closed
+next: none
 ---
 
 # C28 Progress
@@ -25,7 +25,7 @@ C28 已创建并聚焦。M1与S1-S5讨论均已完成；M2 Stage A和Stage B均�
 | M2 | 实现获批设计 | completed | Stage A、Stage B、Stage E均已接受；C/D延期 | 已完成 |
 | M3 | 回归与质量验证 | completed | accepted scope全绿；token目标因Stage C延期未达；live Subagent被VSPLab 502阻断；release遗漏已补 | 见`M3-FINAL-VALIDATION.md` |
 | S6 | 真实效果验收 | completed-with-residual-risk | 真实prompt/token已测；功能验证通过，原量化目标未达 | 风险带入release notes |
-| M4 | 跨平台构建发布与 Cycle 收尾 | in_progress | alpha.6版本与三平台workflow已准备；等待native builds | commit、mirror/Actions build、RC evidence、GitLab publish |
+| M4 | 跨平台构建发布与 Cycle 收尾 | completed | alpha.6 GitLab Release已发布；7个公开资产、三target manifest、SHA/布局/版本和URL复验通过；见`M4-RELEASE-CANDIDATE.md` | 关闭C28并交付最终报告 |
 
 ## 时间线
 
@@ -78,3 +78,9 @@ C28 已创建并聚焦。M1与S1-S5讨论均已完成；M2 Stage A和Stage B均�
 | 2026-08-11 14:08 | waiting-review | Stage E完成：trusted policy overlay、六类semantic resolver、offline candidate validation、fallback/skip reasons、role/explicit冲突、fork与routing output/telemetry已接通；focused core 35项执行全部通过，等待审阅。 |
 | 2026-08-11 14:14 | accepted | 用户接受Stage E完整实现、验证、已解决问题与剩余风险。M2完成；立即进入M3 omissions audit与最终验证，不启动延期的AGENTS/runtime或image capability。 |
 | 2026-08-11 14:40 | completed | M3/S6完成：accepted scope regressions/smoke通过；真实input tokens下降22.6%、non-tool chars下降28.4%，因Stage C延期未达原目标；live Subagent被VSPLab 502阻断。补齐multi-target archive/manifest/workflow遗漏，进入M4 alpha.6三平台构建准备。 |
+| 2026-08-11 16:45 | in_progress | GitHub public source-build mirror已建立并标明GitLab为canonical release/history。两轮native matrix实测发现并修复source snapshot无tag、Windows colon路径checkout和非Linux TUI voice残留编译问题；TUI focused group通过1/1，准备同步修订并重跑三平台。 |
+| 2026-08-11 16:59 | in_progress | 第三轮确认Windows checkout已通过，随后暴露共享setup action错误请求Unix风格V8 archive。MSVC现选择OpenAI官方`ptrcomp_sandbox` `.lib.gz`/binding/checksum pair；三个target asset名称与两行checksum manifests均已远端核验。 |
+| 2026-08-11 17:03 | in_progress | 第四轮完整log确认Windows checksum manifest为CRLF，Git Bash将`\r`读入filename。setup action现校验前归一化checksum文本；本地重新下载官方MSVC archive/binding后`sha256sum -c`两项均为OK。 |
+| 2026-08-11 18:52 | waiting-review | Run 31476110232三平台native jobs与aggregate全部成功；下载的611,396,708-byte bundle通过ZIP CRC，三份archive重算SHA与sidecar/manifest一致，布局、target、native version和GitLab URL断言通过。tag/Release/stable manifest保持未修改，等待显式发布批准。 |
+| 2026-08-11 19:07 | release-correction | 首次Generic Package manifest上传经公开下载复验发现误缩为单target；三份archive/sidecar无误。已恢复aggregate三target manifest，准备替换公开manifest资产并推送canonical更正commit，immutable tag不移动。 |
+| 2026-08-11 19:10 | completed | GitLab Release公开验收通过：7个资产、三份archive SHA、三target manifest、布局/version和direct download URLs均验证；canonical main manifest更正commit为`c0c9cf6224`，tag保持immutable。 |

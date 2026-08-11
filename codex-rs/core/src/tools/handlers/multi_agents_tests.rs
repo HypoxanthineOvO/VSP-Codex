@@ -517,7 +517,7 @@ min_context_window = 300000
                 "message": "mechanically inspect this repo",
                 "task_name": "routed_worker",
                 "routing_class": "mechanical",
-                "fork_turns": "none"
+                "fork_turns": "all"
             })),
         ))
         .await
@@ -525,20 +525,7 @@ min_context_window = 300000
     let (content, success) = expect_text_output(output);
     let result: serde_json::Value =
         serde_json::from_str(&content).expect("spawn_agent result should be json");
-    assert_eq!(
-        result["routing"],
-        json!({
-            "requested_class": "mechanical",
-            "policy_version": "test-routing-v1",
-            "candidate_id": "mechanical-openai",
-            "effective_provider": "alternate-openai",
-            "effective_model": "gpt-5.6-luna",
-            "effective_reasoning": "low",
-            "effective_service_tier": null,
-            "fallback": null,
-            "skipped_candidates": []
-        })
-    );
+    assert_eq!(result["task_name"], "/root/routed_worker");
     assert_eq!(success, Some(true));
     let agent_id = manager
         .captured_ops()
@@ -558,7 +545,7 @@ min_context_window = 300000
 }
 
 #[tokio::test]
-async fn multi_agent_v2_spawn_reports_inherited_fallback_for_unsupported_candidates() {
+async fn multi_agent_v2_spawn_uses_inherited_fallback_for_unsupported_candidates() {
     let (mut session, mut turn) = make_session_and_context().await;
     install_worker_routing_policy(
         &turn,
@@ -606,19 +593,22 @@ reasoning_effort = "low"
     let (content, _) = expect_text_output(output);
     let result: serde_json::Value =
         serde_json::from_str(&content).expect("spawn_agent result should be json");
-    assert_eq!(result["routing"]["requested_class"], "standard");
-    assert_eq!(result["routing"]["candidate_id"], serde_json::Value::Null);
-    assert_eq!(result["routing"]["effective_provider"], parent_provider);
-    assert_eq!(result["routing"]["effective_model"], parent_model);
-    assert_eq!(
-        result["routing"]["effective_reasoning"],
-        serde_json::to_value(parent_reasoning).expect("reasoning should serialize")
-    );
-    assert_eq!(result["routing"]["fallback"], "inherited");
-    assert_eq!(
-        result["routing"]["skipped_candidates"],
-        json!([{"candidate_id": "missing-provider", "reason": "unknown_provider"}])
-    );
+    assert_eq!(result["task_name"], "/root/fallback_worker");
+    let agent_id = manager
+        .captured_ops()
+        .into_iter()
+        .map(|(thread_id, _)| thread_id)
+        .find(|thread_id| *thread_id != root.thread_id)
+        .expect("spawned agent should receive an op");
+    let snapshot = manager
+        .get_thread(agent_id)
+        .await
+        .expect("spawned agent thread should exist")
+        .config_snapshot()
+        .await;
+    assert_eq!(snapshot.model_provider_id, parent_provider);
+    assert_eq!(snapshot.model, parent_model);
+    assert_eq!(snapshot.reasoning_effort, parent_reasoning);
 }
 
 #[tokio::test]
@@ -1415,18 +1405,7 @@ async fn multi_agent_v2_spawn_none_fork_reports_explicit_model_and_updates_child
     assert_eq!(
         result,
         json!({
-            "task_name": "/root/explicit_model",
-            "routing": {
-                "requested_class": null,
-                "policy_version": "worker-routing-v1",
-                "candidate_id": null,
-                "effective_provider": "openai",
-                "effective_model": "gpt-5.5",
-                "effective_reasoning": "low",
-                "effective_service_tier": null,
-                "fallback": null,
-                "skipped_candidates": []
-            }
+            "task_name": "/root/explicit_model"
         })
     );
     let agent_id = manager

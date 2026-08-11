@@ -9,7 +9,8 @@ status: active
 
 | Cycle | 目的 | 状态 | 当前项 | 下一步 |
 | --- | --- | --- | --- | --- |
-| [C28-prompt-stack-quality-redesign](C28-prompt-stack-quality-redesign/PLAN.md) | 提示词栈逐层审阅、重构与真实效果验收 | active | M2 Stage B | 实现System Skills；随后Stage C/E/F，Stage D延期 |
+| [C29-alpha6-vsplab-502-hotfix](C29-alpha6-vsplab-502-hotfix/PLAN.md) | 修复 Alpha 6 Multi-Agent V2 连接 VSPLab 的 502 回归 | active | implement | focused tests 与真实 VSPLab V2 smoke |
+| [C28-prompt-stack-quality-redesign](C28-prompt-stack-quality-redesign/PLAN.md) | 提示词栈逐层审阅、重构与真实效果验收 | closed | complete | alpha.6 Release与公开资产已复验，Summary已记录范围与风险 |
 | [C22](C22/PLAN.md) | Semantic Interface Adaptation | active（遗留，未刷新） | complete | 待刷新或关闭 |
 
 ## Closed Cycles

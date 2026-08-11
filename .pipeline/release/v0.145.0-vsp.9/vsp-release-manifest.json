@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "minimum_updater": "0.134.0-vsp.6",
+  "upstream_tag": "rust-v0.145.0-alpha.4",
+  "generated_at": "2026-07-11T14:45:57+08:00",
+  "releases": [
+    {
+      "version": "0.145.0-vsp.9",
+      "channel": "lab",
+      "target": "x86_64-unknown-linux-gnu",
+      "upstream_tag": "rust-v0.145.0-alpha.4",
+      "archive_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9/downloads/vsp-codex-preview-linux-x64-gnu.tar.gz",
+      "sha256": "bbc6ecd5abbee8ea8273e57db80086bb05d3ba4dde6804937f1f5559db121a72",
+      "notes_url": "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.9"
+    }
+  ]
+}

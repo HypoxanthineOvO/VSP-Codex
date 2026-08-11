@@ -10343,3 +10343,126 @@ entries:
     message: "Accepted Stage A/B/E contracts passed focused regressions and required smoke. Real VSPLab input fell 22.6% and non-tool characters 28.4%, below original targets because deferred Stage C leaves the root AGENTS payload intact. Live Subagent smoke was blocked before spawn by repeated VSPLab 502 responses. The audit found and fixed cross-platform release naming and same-version target aggregation gaps; 52 release checks pass. M4 alpha.6 cross-platform preparation started."
     reports:
       - ".pipeline/cycles/C28-prompt-stack-quality-redesign/M3-FINAL-VALIDATION.md"
+  - timestamp: "2026-08-11T16:45:19+08:00"
+    event_type: build_diagnostic
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: native_build_matrix
+    status: in_progress
+    message: "Public GitHub source-build mirror created. Native runs 31471403149 and 31471584439 exposed missing upstream-tag input, Windows-invalid colon paths, and stale non-Linux TUI voice compilation after upstream transport removal. Workflow/snapshot fixes are applied; the TUI focused group compiled and passed 1/1. A fresh three-platform matrix remains required before RC evidence."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/EXECUTION.md"
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/PROGRESS.md"
+  - timestamp: "2026-08-11T16:59:53+08:00"
+    event_type: build_diagnostic
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: native_build_matrix
+    status: in_progress
+    message: "Run 31474763600 proved the Windows checkout fix, then exposed Unix-only rusty_v8 artifact naming in the shared setup action. MSVC now selects the official ptrcomp_sandbox .lib.gz, binding, and checksum pair; all three target asset sets and two-line checksum manifests were verified against rusty-v8-v149.2.0."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/EXECUTION.md"
+  - timestamp: "2026-08-11T17:03:55+08:00"
+    event_type: build_diagnostic
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: native_build_matrix
+    status: in_progress
+    message: "Run 31475827303 downloaded the correct MSVC V8 pair but exposed CRLF filenames in the checksum manifest under Git Bash. The action now normalizes checksum text before validation; a fresh local download verified both official files with sha256sum -c."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/EXECUTION.md"
+  - timestamp: "2026-08-11T18:52:23+08:00"
+    event_type: release_candidate
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: cross_platform_release_candidate
+    status: waiting-review
+    version: "0.145.0-vsp.11.1-alpha.6"
+    canonical_commit: "f61aacca62593cc2ff2da56cbbaac4f89a4be4c8"
+    build_commit: "dc0a24f8c1d1ff53be8470fd9a03034ff0e46a95"
+    build_run: 31476110232
+    message: "Linux x64 GNU, macOS ARM64, Windows x64 MSVC, and aggregate jobs passed. The 611,396,708-byte downloaded bundle passed ZIP CRC validation; all archive hashes match sidecars and the aggregate manifest; layouts, targets, native version checks, and canonical GitLab URLs passed. Tag, Release, and stable manifest remain untouched pending explicit publication approval."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/M4-RELEASE-CANDIDATE.md"
+      - ".pipeline/release/v0.145.0-vsp.11.1-alpha.6/release-notes.md"
+  - timestamp: "2026-08-11T19:06:59+08:00"
+    event_type: release_correction
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: public_manifest_repair
+    status: in_progress
+    version: "0.145.0-vsp.11.1-alpha.6"
+    message: "Public asset verification caught that the first Generic Package manifest upload had one target because an already-aggregated manifest was merged again as a single input. Archive bytes and all archive digests were correct. Restored the original three-target aggregate, pushed a canonical metadata correction, and replaced the public manifest asset without moving the immutable tag."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/M4-RELEASE-CANDIDATE.md"
+  - timestamp: "2026-08-11T19:10:44+08:00"
+    event_type: release_complete
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: public_release_verification
+    status: completed
+    version: "0.145.0-vsp.11.1-alpha.6"
+    release_url: "https://gitlab.vsplab.cn/heyx/Codex/-/releases/v0.145.0-vsp.11.1-alpha.6"
+    tag_commit: "e068ac464d1eb24686c582201fe2f6280cf48304"
+    correction_commit: "c0c9cf6224"
+    message: "GitLab Release has seven public assets. All three archive re-downloads match their SHA-256 sidecars; public manifest contains all three targets and matching digests; direct download URLs, package metadata, layouts and version fields pass. A one-target manifest upload was corrected before final completion; immutable tag was not moved."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/M4-RELEASE-CANDIDATE.md"
+      - ".pipeline/release/v0.145.0-vsp.11.1-alpha.6/release-notes.md"
+  - timestamp: "2026-08-11T19:10:44+08:00"
+    event_type: cycle_complete
+    cycle: C28-prompt-stack-quality-redesign
+    milestone: M4
+    step: final_report_handoff
+    status: completed
+    version: "0.145.0-vsp.11.1-alpha.6"
+    message: "C28 closed after accepted Stage A/B/E implementation, omissions audit, native Linux/macOS/Windows builds, alpha.6 GitLab Release publication, public seven-asset re-download verification, and final risk handoff. Stage C/D, live Subagent inference, local install, deployment and restart remain explicitly outside this Cycle."
+    reports:
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/SUMMARY.md"
+      - ".pipeline/cycles/C28-prompt-stack-quality-redesign/M4-RELEASE-CANDIDATE.md"
+  - timestamp: "2026-08-11T20:15:10+08:00"
+    event_type: cycle_started
+    cycle: C29-alpha6-vsplab-502-hotfix
+    milestone: M1
+    step: implement_model_facing_output_rollback
+    status: in_progress
+    message: "User authorized emergency C29 after live sequential A/B proved alpha.5 succeeds while alpha.6 V2 returns repeated VSPLab 502. Alpha.6 no-collab and V1 succeed; V2 with prompt hints removed still fails. Scope is limited to removing nested routing diagnostics from the model-facing spawn output while preserving routing behavior and telemetry."
+    reports:
+      - ".pipeline/cycles/C29-alpha6-vsplab-502-hotfix/EXECUTION.md"
+  - timestamp: "2026-08-11T20:16:54+08:00"
+    event_type: step_complete
+    cycle: C29-alpha6-vsplab-502-hotfix
+    milestone: M1
+    step: implement_model_facing_output_rollback
+    status: completed
+    message: "Removed nested routing diagnostics from the V2 spawn_agent model-facing schema and serialized result. routing_class input, policy resolution, child configuration, telemetry, and tracing remain intact. Tests now assert simple output and complete routed/fallback child configs."
+    reports:
+      - ".pipeline/cycles/C29-alpha6-vsplab-502-hotfix/EXECUTION.md"
+  - timestamp: "2026-08-11T20:19:00+08:00"
+    event_type: validation_complete
+    cycle: C29-alpha6-vsplab-502-hotfix
+    milestone: M1
+    step: focused_core_validation
+    status: completed
+    message: "Provider-facing spawn schema tests passed 6/6 and Multi-Agent V2 spawn behavior tests passed 19/19. Format and diff hygiene pass. User additionally authorized a Linux-first alpha.7 hotfix publication after live V2 validation; macOS/Windows are not blockers."
+    reports:
+      - ".pipeline/cycles/C29-alpha6-vsplab-502-hotfix/EXECUTION.md"
+  - timestamp: "2026-08-11T20:33:00+08:00"
+    event_type: revision
+    cycle: C29-alpha6-vsplab-502-hotfix
+    milestone: M1
+    step: restore_official_spawn_wire_contract
+    status: completed
+    message: "User correctly rejected the upstream-incompatibility framing: VSP leaked a private routing_class parameter into the official OpenAI-compatible spawn_agent wire. Removing output diagnostics or changing enum to string did not fix 502; removing the private parameter restored the alpha.5/official shape and real V2 root smoke returned ok. Default internal standard routing remains; explicit six-class intent is deferred pending a client-internal channel."
+    reports:
+      - ".pipeline/cycles/C29-alpha6-vsplab-502-hotfix/EXECUTION.md"
+  - timestamp: "2026-08-11T21:00:00+08:00"
+    event_type: step_complete
+    cycle: C29-alpha6-vsplab-502-hotfix
+    milestone: M2
+    step: validate_and_build_linux_alpha7
+    status: completed
+    message: "Schema 6/6, V2 spawn 19/19, prompt assembly 2/2, and release 52/52 passed. Real VSPLab root and Subagent smokes completed without 502; internal standard-luna-max resolution and Luna child startup were observed. Linux Alpha 7 archive passed checksum, layout, ELF, metadata, and extracted version checks (SHA256 77764b9fecfbe6e156757bb07755213e32fdb6f3570d6e7c60449e62cad424d8)."
+    reports:
+      - ".pipeline/cycles/C29-alpha6-vsplab-502-hotfix/EXECUTION.md"
+      - ".pipeline/release/v0.145.0-vsp.11.1-alpha.7/release-notes.md"

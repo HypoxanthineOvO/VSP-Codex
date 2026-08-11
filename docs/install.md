@@ -68,7 +68,7 @@ vsp-codex vscode rollback --yes
 
 ## 预览版体验更新
 
-`0.145.0-vsp.11.1-alpha.6` 在 11.0 alpha 基线上包含新的本地压缩状态机、长上下文预算、执行连续性契约、Hypo-Workflow semantic Host UX、TUI quote/stream/finalize 与标题层级修复、独立 Responses multi-provider 配置和统一模型切换；本版重构基础提示与 System Skills，新增受信任的 Subagent Worker Routing，并发布 Linux x64、macOS ARM64 和 Windows x64 原生预览包。session compatibility migration 可在共同 migration 前缀和所需 schema 一致时兼容 Official/VSP 的尾部版本差异。它不包含已废弃 10.x 线的 Chat API 支持。默认 `lab` 频道仍停留在 9.5，只有显式选择 `alpha` 的安装和更新会进入 11.x alpha。
+`0.145.0-vsp.11.1-alpha.7` 在 11.0 alpha 基线上包含新的本地压缩状态机、长上下文预算、执行连续性契约、Hypo-Workflow semantic Host UX、TUI quote/stream/finalize 与标题层级修复、独立 Responses multi-provider 配置和统一模型切换；本版保留受信任的 Subagent Worker Routing，但恢复官方 `spawn_agent` wire contract，修复 Alpha 6 连接 VSPLab `/responses` 稳定 502 的回归。Alpha 7 紧急发布 Linux x64 预览包，macOS ARM64 和 Windows x64 继续使用 Alpha 6。session compatibility migration 可在共同 migration 前缀和所需 schema 一致时兼容 Official/VSP 的尾部版本差异。它不包含已废弃 10.x 线的 Chat API 支持。默认 `lab` 频道仍停留在 9.5，只有显式选择 `alpha` 的安装和更新会进入 11.x alpha。
 
 `0.145.0-vsp.9.5` 是当前内部预览版，基于 upstream `rust-v0.145.0-alpha.4`，并包含发布版本一致性校验。它包含以下可见体验和兼容性更新：
 

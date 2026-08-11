@@ -16,6 +16,7 @@ use crate::tools::handlers::multi_agents_spec::SpawnAgentToolOptions;
 use crate::tools::handlers::multi_agents_spec::create_spawn_agent_tool_v2;
 use crate::tools::handlers::multi_agents_v2::message_tool::message_content;
 use codex_protocol::AgentPath;
+use codex_protocol::protocol::SessionSource;
 use codex_tools::ToolSpec;
 
 #[derive(Default)]
@@ -164,8 +165,21 @@ async fn handle_spawn_agent(
     );
     let has_spawn_overrides =
         role_name.is_some() || effective_model_configuration != parent_model_configuration;
-    let fork_mode =
-        spawn_agent_fork_mode(fork_turns.as_deref(), fork_context, has_spawn_overrides)?;
+    let effective_fork_turns = if semantic_routing.is_some()
+        && effective_model_configuration != parent_model_configuration
+        && fork_turns
+            .as_deref()
+            .is_some_and(|fork_turns| fork_turns.trim().eq_ignore_ascii_case("all"))
+    {
+        if matches!(session_source, SessionSource::Exec) {
+            Some("none")
+        } else {
+            None
+        }
+    } else {
+        fork_turns.as_deref()
+    };
+    let fork_mode = spawn_agent_fork_mode(effective_fork_turns, fork_context, has_spawn_overrides)?;
     if matches!(fork_mode, Some(SpawnAgentForkMode::FullHistory)) && has_spawn_overrides {
         return Err(FunctionCallError::RespondToModel(
             "Full-history forked agents must inherit the parent agent type and model configuration; omit agent_type, routing_class, model, reasoning_effort, and service_tier, or use a partial/no-history fork."
@@ -271,12 +285,11 @@ async fn handle_spawn_agent(
 
     let hide_agent_metadata = turn.config.multi_agent_v2.hide_spawn_agent_metadata;
     if hide_agent_metadata {
-        Ok(SpawnAgentResult::HiddenMetadata { task_name, routing })
+        Ok(SpawnAgentResult::HiddenMetadata { task_name })
     } else {
         Ok(SpawnAgentResult::WithNickname {
             task_name,
             nickname,
-            routing,
         })
     }
 }
@@ -347,11 +360,9 @@ pub(crate) enum SpawnAgentResult {
     WithNickname {
         task_name: String,
         nickname: Option<String>,
-        routing: WorkerRoutingSelection,
     },
     HiddenMetadata {
         task_name: String,
-        routing: WorkerRoutingSelection,
     },
 }
 
